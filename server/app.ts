@@ -13,6 +13,7 @@ import cors from "cors";
 import expressSession from "express-session";
 import passport from "passport";
 import googleRoute from "./routes/googleRoute";
+import chatBotRoute from "./routes/chatBotRoute";
 
 const promise: Promise<Express> = new Promise((resolve, reject) => {
   dotenv.config();
@@ -44,6 +45,7 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
   // app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/api/chatbot", chatBotRoute);
 
   // Database connection
   mongoose

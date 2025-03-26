@@ -1,5 +1,38 @@
+import {Fab, Tooltip} from "@mui/material";
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import ChatBot from "@/components/ChatBot.tsx";
+import {useState} from "react";
+
 export default function HomePage() {
-  return <div>Home Page</div>;
+  const [isChatOpen, setChatOpen] = useState(false);
+
+  const handleOpenChat = () => {
+    setChatOpen(true);
+  };
+
+  const handleCloseChat = () => {
+    setChatOpen(false);
+  };
+  return <div>Home Page
+    <Tooltip title="Open Candy Recommender">
+      <Fab
+          color="primary"
+          onClick={handleOpenChat}
+          sx={{
+            backgroundColor: "rgb(30, 153, 139)",
+            position: "fixed",
+            bottom: 16,
+            right: 16,
+          }}
+      >
+        <SavedSearchIcon />
+      </Fab>
+    </Tooltip>
+    <ChatBot
+        isChatOpen={isChatOpen}
+        handleCloseChat={handleCloseChat}
+    />
+  </div>;
 }
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
