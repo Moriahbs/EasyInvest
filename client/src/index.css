@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Manrope";
   line-height: 1.5;
   font-weight: 400;
 
@@ -151,8 +150,6 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
-
-
 
 @layer base {
   * {

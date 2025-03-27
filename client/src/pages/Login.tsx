@@ -49,9 +49,9 @@ export default function AuthPage() {
       validateToken();
     } catch (error: any) {
       if (error.status === 401) {
-        setGeneralError("Incorrect credentials");
+        setGeneralError("פרטים לא נכונים");
       } else {
-        setGeneralError(error.response.data.error || "Internal error");
+        setGeneralError(error.response?.data?.error || "שגיאה בשרת");
       }
     }
   };
@@ -60,22 +60,29 @@ export default function AuthPage() {
     (window.location.href = `${config.SERVER_URL}/auth/google`);
 
   const errorClass = "text-red-500 text-xs w-fit ml-1 mt-1";
+  const labelClass = "block font-medium text-right mb-1";
 
   return (
-    <div className="flex items-center justify-center bg-gray-100 rounded w-1/3 p-4">
-      <Card className="w-full max-w-md shadow-lg">
+    <div
+      className="flex items-center justify-center bg-gray-100 rounded w-1/2 p-4 font-hebrew"
+      dir="rtl"
+    >
+      <Card className="w-full shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-xl font-bold p-3">
-            {isLogin ? "Login" : "Register"}
+          <CardTitle className="text-center text-3xl p-3 !font-normal">
+            {isLogin ? "התחברות לEasy Invest" : "הרשמה לEasy Invest"}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
+              <label className={labelClass}>משתמש</label>
               <Input
                 type="username"
-                placeholder="Username"
-                {...register("username", { required: "Username is required" })}
+                placeholder="שם משתמש"
+                {...register("username", {
+                  required: "יש להכניס פרטי שם משתמש",
+                })}
                 className="w-full"
               />
               {errors.username && (
@@ -84,10 +91,11 @@ export default function AuthPage() {
             </div>
             {!isLogin && (
               <div>
+                <label className={labelClass}>מייל</label>
                 <Input
                   type="email"
-                  placeholder="Email"
-                  {...register("email", { required: "Email is required" })}
+                  placeholder="כתובת מייל"
+                  {...register("email", { required: "יש להכניס כתובת מייל" })}
                   className="w-full"
                 />
                 {errors.email && (
@@ -96,11 +104,12 @@ export default function AuthPage() {
               </div>
             )}
             <div>
+              <label className={labelClass}>סיסמא</label>
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder={isLogin ? "********" : "סיסמא בעלת 10 תווים לפחות"}
                 {...register("password", {
-                  required: "Password is required",
+                  required: "יש להכניס סיסמא",
                 })}
                 className="w-full"
               />
@@ -108,25 +117,28 @@ export default function AuthPage() {
                 <p className={errorClass}>{errors.password.message}</p>
               )}
             </div>
-            <Button type="submit" className="w-full hover:border-none">
-              {isLogin ? "Login" : "Register"}
+            <Button
+              type="submit"
+              className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none"
+            >
+              {isLogin ? "התחברות" : "הרשמה"}
             </Button>
             {generalError && <p className={errorClass}>{generalError}</p>}
           </form>
           <Button
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-2 mt-4 bg-white border border-gray-300 text-gray-600 hover:bg-gray-100 hover:border-none"
+            className="w-full flex items-center justify-center gap-2 mt-4 bg-white text-gray-600 hover:bg-gray-100 border-transparent"
           >
             <FcGoogle size={20} /> {isLogin ? "Sign in" : "Sign up"} with Google
           </Button>
           <p className="text-center text-sm mt-4">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button
+            {isLogin ? "עדיין לא רשום?" : "כבר יש לך משתמש?"}{" "}
+            <span
               onClick={() => setIsLogin(!isLogin)}
-              className="text-gray-600 hover:underline"
+              className="text-gray-600 hover:underline cursor-pointer"
             >
-              {isLogin ? "Register" : "Login"}
-            </button>
+              {isLogin ? "להרשמה" : "להתחברות"}
+            </span>
           </p>
         </CardContent>
       </Card>

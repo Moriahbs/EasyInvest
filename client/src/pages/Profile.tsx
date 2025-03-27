@@ -120,7 +120,7 @@ export default function ProfilePage() {
     <div className="p-6 space-x-8 flex h-fit w-full justify-around">
       <Card className="h-fit w-1/2">
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
+          <CardTitle className=" text-xl p-1">פרופיל אישי</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center gap-3 justify-around">
           <UploadProfile
@@ -130,7 +130,7 @@ export default function ProfilePage() {
           />
           <div className="space-y-4 w-1/2">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">שם משתמש</Label>
               <Input
                 id="username"
                 value={newUsername}
@@ -140,12 +140,12 @@ export default function ProfilePage() {
               {allUsernames.includes(newUsername) &&
                 !(newUsername === user.username) && (
                   <p className="text-red-500 text-xs w-fit ml-1 mt-1">
-                    Username is taken
+                    שם המשתמש תפוס{" "}
                   </p>
                 )}
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">כתובת מייל</Label>
               <Input id="email" value={user.email} disabled />
             </div>
 
@@ -158,7 +158,7 @@ export default function ProfilePage() {
                   !(newUsername === user.username))
               }
             >
-              Save Changes
+              שמירת שינויים{" "}
             </Button>
           </div>
         </CardContent>

@@ -51,13 +51,18 @@ router.post("/register", async (req: Request, res: Response) => {
   try {
     const { username, email, password, profilePhoto } = req.body;
     if (!username || !email || !password) {
-      res.status(400).send({ error: "Please provide all fields" });
+      res.status(400).send({ error: "יש למלא את כל השדות" });
       return;
     }
 
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
     if (existingUser) {
-      res.status(400).send({ error: "User already exists" });
+      res.status(400).send({ error: "שם משתמש או אמייל כבר קיימים" });
+      return;
+    }
+
+    if (password.length < 10) {
+      res.status(400).send({ error: "סיסמא צריכה להיות באורך 10 תווים לפחות" });
       return;
     }
 
