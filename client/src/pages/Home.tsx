@@ -1,5 +1,5 @@
 import {Fab, Tooltip} from "@mui/material";
-import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ChatBot from "@/components/ChatBot.tsx";
 import {useState} from "react";
 
@@ -14,8 +14,8 @@ export default function HomePage() {
     setChatOpen(false);
   };
   return <div>Home Page
-    <Tooltip title="Open Candy Recommender">
-      <Fab
+    <Tooltip title="Search Invest with AI">
+    <Fab
           color="primary"
           onClick={handleOpenChat}
           sx={{
@@ -25,7 +25,7 @@ export default function HomePage() {
             right: 16,
           }}
       >
-        <SavedSearchIcon />
+        <AutoAwesomeIcon />
       </Fab>
     </Tooltip>
     <ChatBot
