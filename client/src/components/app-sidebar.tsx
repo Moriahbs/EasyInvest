@@ -1,4 +1,4 @@
-import { Home, LogOut, UserPen } from "lucide-react";
+import { Home, LogOut, UserPen, Map } from "lucide-react";
 
 import {
   Sidebar,
@@ -23,6 +23,11 @@ const items = [
     title: "Profile",
     url: "profile",
     icon: UserPen,
+  },
+  {
+    title: "Map",
+    url: "map",
+    icon: Map,
   },
 ];
 
