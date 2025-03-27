@@ -38,7 +38,9 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Trip Pix</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg mb-4">
+            Easy Invest
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
