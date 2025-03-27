@@ -4,6 +4,8 @@ export interface Startup {
     description: string;
     fundingStage: string;
     location: string;
+    latitude: number;
+    longitude: number;
     foundedYear: number;
     valuationLastRound: number;
 }
@@ -14,7 +16,9 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         "tags": ["cleantech", "renewable-energy", "sustainability", "AI", "big-data"],
         "description": "Using AI and big data to optimize renewable energy solutions for urban areas.",
         "fundingStage": "Series A",
-        "location": "San Francisco, CA",
+        "location": "Tel Aviv, Israel",
+        "latitude": 32.0853,
+        "longitude": 34.7818,
         "foundedYear": 2020,
         "valuationLastRound": 25
     },
@@ -23,7 +27,9 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         "tags": ["healthtech", "wearables", "data-analytics", "telemedicine", "mobile-app"],
         "description": "Wearable devices syncing with telemedicine platforms for real-time health monitoring.",
         "fundingStage": "Seed",
-        "location": "Boston, MA",
+        "location": "Tel Aviv, Israel",
+        "latitude": 32.0865,
+        "longitude": 34.7822,
         "foundedYear": 2021,
         "valuationLastRound": 8
     },
@@ -32,7 +38,9 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         "tags": ["edtech", "virtual-reality", "e-learning", "gamification", "mobile-app"],
         "description": "An immersive VR platform for interactive and gamified education experiences.",
         "fundingStage": "Series B",
-        "location": "London, UK",
+        "location": "Tel Aviv, Israel",
+        "latitude": 32.0840,
+        "longitude": 34.7805,
         "foundedYear": 2019,
         "valuationLastRound": 60
     },
@@ -42,6 +50,8 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         "description": "Enterprise-grade cloud security solutions with blockchain-enhanced data privacy.",
         "fundingStage": "Series A",
         "location": "Tel Aviv, Israel",
+        "latitude": 32.0853,
+        "longitude": 34.7818,
         "foundedYear": 2020,
         "valuationLastRound": 30
     },
@@ -50,53 +60,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         "tags": ["foodtech", "AI", "supply-chain", "sustainability", "automation"],
         "description": "AI-driven solutions to streamline food supply chains and reduce waste.",
         "fundingStage": "Pre-Seed",
-        "location": "Austin, TX",
+        "location": "Tel Aviv, Israel",
+        "latitude": 32.0837,
+        "longitude": 34.7799,
         "foundedYear": 2022,
         "valuationLastRound": 5
-    },
-    {
-        "companyName": "DriveSmart",
-        "tags": ["autotech", "electric-vehicles", "IoT", "smart-cities", "data-analytics"],
-        "description": "IoT solutions for electric vehicles integrated with smart city infrastructure.",
-        "fundingStage": "Series A",
-        "location": "Munich, Germany",
-        "foundedYear": 2021,
-        "valuationLastRound": 22
-    },
-    {
-        "companyName": "FinFlow",
-        "tags": ["fintech", "blockchain", "payments", "decentralized", "mobile-app"],
-        "description": "A decentralized payment platform leveraging blockchain for secure transactions.",
-        "fundingStage": "Seed",
-        "location": "Singapore",
-        "foundedYear": 2020,
-        "valuationLastRound": 15
-    },
-    {
-        "companyName": "SpaceXplor",
-        "tags": ["spacetech", "satellites", "AI", "exploration", "big-data"],
-        "description": "AI-driven satellites for low-cost space exploration and data collection.",
-        "fundingStage": "Series B",
-        "location": "Cape Canaveral, FL",
-        "foundedYear": 2018,
-        "valuationLastRound": 75
-    },
-    {
-        "companyName": "MindWell",
-        "tags": ["mental-health", "AI", "wellness", "mobile-app", "data-analytics"],
-        "description": "A mobile app using AI to provide personalized mental health support.",
-        "fundingStage": "Seed",
-        "location": "Toronto, Canada",
-        "foundedYear": 2021,
-        "valuationLastRound": 12
-    },
-    {
-        "companyName": "AgriBotics",
-        "tags": ["agritech", "robotics", "sustainability", "automation", "IoT"],
-        "description": "Robotics and IoT solutions for sustainable farming and automated crop management.",
-        "fundingStage": "Series A",
-        "location": "Amsterdam, Netherlands",
-        "foundedYear": 2019,
-        "valuationLastRound": 28
     }
-]
+];

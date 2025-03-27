@@ -1,7 +1,7 @@
 import {Fab, Tooltip} from "@mui/material";
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import ChatBot from "@/components/ChatBot.tsx";
-import {useState} from "react";
+import { useState} from "react";
 
 export default function HomePage() {
   const [isChatOpen, setChatOpen] = useState(false);
