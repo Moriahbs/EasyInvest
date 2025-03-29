@@ -1,10 +1,17 @@
-import {Fab, Tooltip} from "@mui/material";
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { Fab, Tooltip } from "@mui/material";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChatBot from "@/components/ChatBot.tsx";
-import { useState} from "react";
+import { useState } from "react";
+import { Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import CreatePostModal from "@/components/CreateProject";
+import { Project } from "@/models/projectModel";
+import config from "@/config";
 
 export default function HomePage() {
+  const [dbProjects, setDbProjects] = useState<Project[]>([]);
   const [isChatOpen, setChatOpen] = useState(false);
+  const [openCreateProject, setOpenCreateProject] = useState(false);
 
   const handleOpenChat = () => {
     setChatOpen(true);
@@ -13,9 +20,18 @@ export default function HomePage() {
   const handleCloseChat = () => {
     setChatOpen(false);
   };
-  return <div>Home Page
-    <Tooltip title="Search Invest with AI">
-    <Fab
+
+  const handleCreateProject = (newProject: Project) => {
+    setDbProjects([newProject, ...dbProjects]);
+    setOpenCreateProject(false);
+    window.location.href = `${config.CLIENT_URL}/home`;
+  };
+
+  return (
+    <div>
+      Home Page
+      <Tooltip title="Search Invest with AI">
+        <Fab
           color="primary"
           onClick={handleOpenChat}
           sx={{
@@ -24,15 +40,24 @@ export default function HomePage() {
             bottom: 16,
             right: 16,
           }}
+        >
+          <AutoAwesomeIcon />
+        </Fab>
+      </Tooltip>
+      <Button
+        className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
+        onClick={() => setOpenCreateProject(true)}
       >
-        <AutoAwesomeIcon />
-      </Fab>
-    </Tooltip>
-    <ChatBot
-        isChatOpen={isChatOpen}
-        handleCloseChat={handleCloseChat}
-    />
-  </div>;
+        <Plus className="w-6 h-6" />
+      </Button>
+      <CreatePostModal
+        open={openCreateProject}
+        setOpen={setOpenCreateProject}
+        onCreate={handleCreateProject}
+      />
+      <ChatBot isChatOpen={isChatOpen} handleCloseChat={handleCloseChat} />
+    </div>
+  );
 }
 // import { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
@@ -42,8 +67,6 @@ export default function HomePage() {
 // import Posts from "@/components/Posts";
 // import CommentSection from "@/components/Comments";
 // import CreatePostModal from "@/components/CreatePost";
-// import { Loader2, Plus } from "lucide-react";
-// import { Button } from "@/components/ui/button";
 // import Paging from "@/components/Paging";
 // import { Post } from "@/models/postModel";
 // import { getPostFromRestApi } from "@/actions/restPhotos";
@@ -52,7 +75,6 @@ export default function HomePage() {
 
 // export default function HomePage() {
 //   const [openComment, setOpenComment] = useState<string | null>(null);
-//   const [openCreate, setOpenCreate] = useState(false);
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [dbPosts, setDbPosts] = useState<Post[]>([]);
 //   const [generatedPosts, setGeneratedPosts] = useState<any[]>([]);
@@ -107,11 +129,11 @@ export default function HomePage() {
 //     }
 //   };
 
-//   const handleCreatePost = (newPost: Post) => {
-//     setDbPosts([newPost, ...dbPosts]);
-//     setOpenCreate(false);
-//     window.location.href = `${config.CLIENT_URL}/home`;
-//   };
+// const handleCreatePost = (newPost: Post) => {
+//   setDbPosts([newPost, ...dbPosts]);
+//   setOpenCreate(false);
+//   window.location.href = `${config.CLIENT_URL}/home`;
+// };
 
 //   const indexOfLastPost = currentPage * postsPerPage;
 //   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -156,18 +178,20 @@ export default function HomePage() {
 //           />
 //         )}
 
-//         <Button
-//           className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
-//           onClick={() => setOpenCreate(true)}
-//         >
-//           <Plus className="w-6 h-6" />
-//         </Button>
+{
+  /* <Button
+  className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
+  // onClick={() => setOpenCreate(true)}
+>
+  <Plus className="w-6 h-6" />
+</Button>;
 
-//         <CreatePostModal
-//           open={openCreate}
-//           setOpen={setOpenCreate}
-//           onCreate={handleCreatePost}
-//         />
+<CreatePostModal
+  open={openCreate}
+  setOpen={setOpenCreate}
+  onCreate={handleCreatePost}
+/>; */
+}
 
 //         {openComment && (
 //           <CommentSection

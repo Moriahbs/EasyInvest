@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Heart, MessageCircle } from "lucide-react";
 import Cookies from "js-cookie";
 import config from "@/config";
-import { Post } from "@/models/postModel";
-import { addLikeToPost, deleteLikeFromPost } from "@/actions/postsActions";
+import { Post } from "@/models/projectModel";
+import { addLikeToPost, deleteLikeFromPost } from "@/actions/projectActions";
 import { getUser } from "@/actions/profileActions";
 
 export default function Posts({
