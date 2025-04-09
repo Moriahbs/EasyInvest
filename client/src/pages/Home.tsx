@@ -4,7 +4,7 @@ import ChatBot from "@/components/ChatBot.tsx";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CreatePostModal from "@/components/CreateProject";
+import CreateProjectModal from "@/components/CreateProject";
 import { Project } from "@/models/projectModel";
 import config from "@/config";
 
@@ -50,7 +50,7 @@ export default function HomePage() {
       >
         <Plus className="w-6 h-6" />
       </Button>
-      <CreatePostModal
+      <CreateProjectModal
         open={openCreateProject}
         setOpen={setOpenCreateProject}
         onCreate={handleCreateProject}

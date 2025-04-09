@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createProject } from "@/actions/projectActions";
 import UploadImage from "./UploadImage";
+import { toast } from "sonner";
 
 export interface NewProject {
   name: string;
@@ -49,7 +50,7 @@ export default function CreateProjectModal({
       !targetAudience ||
       !financialGoals
     )
-      return alert("יש למלא את כל השדות");
+      return toast.error("יש למלא את כל השדות");
 
     setLoading(true);
     const newProject = await createProject(

@@ -1,14 +1,21 @@
 import React, { useState, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import config from "@/config";
+import { cn } from "@/lib/utils";
 
 interface UploadProfileProps {
   username: string;
   setImage: (image: File | null) => void;
-  imageUrl: string | undefined,
+  imageUrl?: string | undefined;
+  isRegister: boolean;
 }
 
-const UploadProfile: React.FC<UploadProfileProps> = ({ username, setImage, imageUrl }) => {
+const UploadProfile: React.FC<UploadProfileProps> = ({
+  username,
+  setImage,
+  imageUrl,
+  isRegister,
+}) => {
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,17 +29,19 @@ const UploadProfile: React.FC<UploadProfileProps> = ({ username, setImage, image
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div onClick={() => fileInputRef.current?.click()} style={{ cursor: "pointer" }}>
-        <Avatar className="w-32 h-32">
+      <div
+        onClick={() => fileInputRef.current?.click()}
+        style={{ cursor: "pointer" }}
+      >
+        <Avatar className={cn(isRegister ? "w-24 h-24" : "w-32 h-32")}>
           {preview ? (
             <AvatarImage src={preview} alt="Profile Preview" />
+          ) : imageUrl ? (
+            <>
+              <AvatarImage src={`${config.SERVER_URL}/${imageUrl}`} />
+            </>
           ) : (
-            imageUrl ? (
-              <>
-                <AvatarImage src={`${config.SERVER_URL}/${imageUrl}`} />
-              </>
-            ) :
-              <AvatarFallback>{username[0]?.toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{username[0]?.toUpperCase()}</AvatarFallback>
           )}
         </Avatar>
       </div>

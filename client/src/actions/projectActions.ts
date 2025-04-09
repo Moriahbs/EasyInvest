@@ -40,7 +40,7 @@ export const createProject = async (
   image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("projectImage", image);
   formData.append("name", name);
   formData.append("category", category);
   formData.append("description", description);
@@ -65,7 +65,7 @@ export const editProject = async (
   image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("projectImage", image);
   formData.append("name", name);
   formData.append("category", category);
   formData.append("description", description);
