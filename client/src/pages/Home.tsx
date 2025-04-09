@@ -1,24 +1,35 @@
 import { Fab, Tooltip } from "@mui/material";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import ChatBot from "@/components/ChatBot.tsx";
+import SearchIcon from '@mui/icons-material/Search';
+import SmartSearch from "@/components/SmartSearch";
+import ChatIcon from '@mui/icons-material/Chat';
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CreateProjectModal from "@/components/CreateProject";
 import { Project } from "@/models/projectModel";
 import config from "@/config";
+import TopicsChat from "@/components/TopicsChat";
 
 export default function HomePage() {
   const [dbProjects, setDbProjects] = useState<Project[]>([]);
   const [isChatOpen, setChatOpen] = useState(false);
+  const [isSearchOpen, setSearchOpen] = useState(false);
   const [openCreateProject, setOpenCreateProject] = useState(false);
 
   const handleOpenChat = () => {
     setChatOpen(true);
   };
 
+  const handleOpenSearch = () => {
+    setSearchOpen(true);
+  };
+
   const handleCloseChat = () => {
     setChatOpen(false);
+  };
+
+  const handleCloseSearch = () => {
+    setSearchOpen(false);
   };
 
   const handleCreateProject = (newProject: Project) => {
@@ -33,7 +44,7 @@ export default function HomePage() {
       <Tooltip title="Search Invest with AI">
         <Fab
           color="primary"
-          onClick={handleOpenChat}
+          onClick={handleOpenSearch}
           sx={{
             backgroundColor: "rgb(30, 153, 139)",
             position: "fixed",
@@ -41,7 +52,21 @@ export default function HomePage() {
             right: 16,
           }}
         >
-          <AutoAwesomeIcon />
+          <SearchIcon />
+        </Fab>
+      </Tooltip>
+      <Tooltip title="Chat with AI">
+        <Fab
+          color="primary"
+          onClick={handleOpenChat}
+          sx={{
+            backgroundColor: "rgb(77, 153, 30)",
+            position: "fixed",
+            bottom: 145,
+            right: 16,
+          }}
+        >
+          <ChatIcon />
         </Fab>
       </Tooltip>
       <Button
@@ -55,7 +80,8 @@ export default function HomePage() {
         setOpen={setOpenCreateProject}
         onCreate={handleCreateProject}
       />
-      <ChatBot isChatOpen={isChatOpen} handleCloseChat={handleCloseChat} />
+      <SmartSearch isSearchOpen={isSearchOpen} handleCloseChat={handleCloseSearch} />
+      <TopicsChat isChatOpen={isChatOpen} handleCloseChat={handleCloseChat} />
     </div>
   );
 }

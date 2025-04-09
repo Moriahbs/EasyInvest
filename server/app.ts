@@ -13,7 +13,8 @@ import path from "path";
 import expressSession from "express-session";
 import passport from "passport";
 import googleRoute from "./routes/googleRoute";
-import chatBotRoute from "./routes/chatBotRoute";
+import smartSearchRoute from "./routes/smartSearchRoute";
+import topicsRoute from "./routes/topicsRoute";
 
 const promise: Promise<Express> = new Promise((resolve, reject) => {
   dotenv.config();
@@ -45,7 +46,8 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
   app.use("/images", express.static(path.join(__dirname, "images")));
-  app.use("/api/chatbot", chatBotRoute);
+  app.use("/api/smartSearch", smartSearchRoute);
+  app.use("/api/topics", topicsRoute);
 
   // Database connection
   mongoose
