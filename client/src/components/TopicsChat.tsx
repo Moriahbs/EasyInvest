@@ -36,7 +36,6 @@ const TopicsChat: React.FC<TopicsChatProps> = ({ isChatOpen, handleCloseChat }) 
             const response = await axios.post(`${config.SERVER_URL}/api/topics`, {
                 prompt: userInput,
             });
-            console.log({ response });
 
             setAiResponse(response.data.aiResponse);
         } catch (error) {
