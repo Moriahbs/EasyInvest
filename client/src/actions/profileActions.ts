@@ -1,5 +1,4 @@
 import config from "@/config";
-import { User } from "@/models/userModel";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
 
@@ -12,7 +11,11 @@ export const getUser = async (token: string) => {
   return res;
 };
 
-export const updateUser = async (token: string, username: string, profilePhoto: File | null) => {
+export const updateUser = async (
+  token: string,
+  username: string,
+  profilePhoto: File | null
+) => {
   const { userId } = decodeToken(token);
 
   const formData = new FormData();
@@ -25,16 +28,16 @@ export const updateUser = async (token: string, username: string, profilePhoto: 
     {
       headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
-    },
+    }
   );
 
   return res.status === 201;
 };
 
-export const getAllUsersNames = async () => {
+export const getAllUsers = async () => {
   const res = await axios.get(`${config.SERVER_URL}/users`, {
     withCredentials: true,
   });
-  
-  return res.data.map((user: User) => user.username);
+
+  return res.data;
 };

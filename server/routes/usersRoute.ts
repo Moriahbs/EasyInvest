@@ -9,7 +9,6 @@ import {
   generateRefreshToken,
   getAccessToken,
   verifyAccessToken,
-  verifyRefreshToken,
 } from "../handlers/authUtils";
 
 const router = express.Router();
@@ -47,44 +46,62 @@ router.use(authMiddleware);
  *         description: Error occurred during creation.
  */
 // REGISTER
-router.post("/register", async (req: Request, res: Response) => {
-  try {
-    const { username, email, password, profilePhoto } = req.body;
-    if (!username || !email || !password) {
-      res.status(400).send({ error: "Please provide all fields" });
-      return;
+router.post(
+  "/register",
+  upload.single("profileImage"),
+  async (req: Request, res: Response) => {
+    try {
+      const { username, email, password } = req.body;
+      const destination = req.file?.destination;
+      const filename = req.file?.filename;
+      const profilePhoto =
+        destination && filename ? `${destination}${filename}` : "";
+
+      if (!username || !email || !password) {
+        res.status(400).send({ error: "יש למלא את כל השדות" });
+        return;
+      }
+
+      const existingUser = await User.findOne({
+        $or: [{ username }, { email }],
+      });
+      if (existingUser) {
+        res.status(400).send({ error: "שם משתמש או אמייל כבר קיימים" });
+        return;
+      }
+
+      if (password.length < 10) {
+        res
+          .status(400)
+          .send({ error: "סיסמא צריכה להיות באורך 10 תווים לפחות" });
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        profilePhoto,
+      });
+
+      const user = await newUser.save();
+      const userId = user._id.toString();
+
+      const accessToken = generateAccessToken({ userId });
+      const refreshToken = generateRefreshToken({ userId });
+
+      res.cookie("refreshToken", refreshToken);
+      res.cookie("Authorization", `Bearer ${accessToken}`);
+
+      res.status(201).send({ accessToken });
+    } catch (error) {
+      console.error("Error creating user:", error);
+      res.status(500).send({ error: "An error occurred" });
     }
-
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-    if (existingUser) {
-      res.status(400).send({ error: "User already exists" });
-      return;
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-      profilePhoto,
-    });
-
-    const user = await newUser.save();
-    const userId = user._id.toString();
-
-    const accessToken = generateAccessToken({ userId });
-    const refreshToken = generateRefreshToken({ userId });
-
-    res.cookie("refreshToken", refreshToken);
-    res.cookie("Authorization", `Bearer ${accessToken}`);
-
-    res.status(201).send({ accessToken });
-  } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).send({ error: "An error occurred" });
   }
-});
+);
 
 /**
  * @swagger

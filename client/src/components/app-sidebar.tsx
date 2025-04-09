@@ -1,4 +1,4 @@
-import { Home, LogOut, UserPen } from "lucide-react";
+import { Home, LogOut, UserPen, Map } from "lucide-react";
 
 import {
   Sidebar,
@@ -24,6 +24,11 @@ const items = [
     url: "profile",
     icon: UserPen,
   },
+  {
+    title: "Map",
+    url: "map",
+    icon: Map,
+  },
 ];
 
 export function AppSidebar() {
@@ -38,7 +43,9 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Trip Pix</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg mb-4">
+            Easy Invest
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

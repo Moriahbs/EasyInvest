@@ -4,14 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import UploadProfile from "@/components/UploadProfile";
 import { Label } from "@/components/ui/label";
-import {
-  getUser,
-  updateUser,
-  getAllUsersNames,
-} from "@/actions/profileActions";
+import { getUser, updateUser, getAllUsers } from "@/actions/profileActions";
 import Cookies from "js-cookie";
 import { isTokenValid } from "@/utils/authUtils";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 // import {
 //   deletePost,
 //   getPostsById,
@@ -48,12 +45,14 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>(initialUser);
   const [newUsername, setNewUsername] = useState<string>(user.username);
+  const [newEmail, setNewEmail] = useState<string>(user.email);
   const [image, setImage] = useState<File | null>(null);
+  const [allUsernames, setAllUsernames] = useState<string[]>([]);
+  const [allEmails, setAllEmails] = useState<string[]>([]);
   // const [, setUserPosts] = useState<Post[]>([]);
   // const [openComuserPostsment, setOpenComment] = useState<string | null>(null);
   // const [openEdit, setOpenEdit] = useState<string | null>(null);
   // const [currentPage, setCurrentPage] = useState(1);
-  const [allUsernames, setAllUsernames] = useState<string[]>([]);
 
   // const postsPerPage = 5;
   const token = Cookies.get("Authorization") || "";
@@ -71,10 +70,15 @@ export default function ProfilePage() {
     const fetchData = async () => {
       await getUserDetails();
       // await fetchPosts();
-      const allUsers = await getAllUsersNames();
+      const allUsers = await getAllUsers();
+
+      const allUsernames = allUsers.map((user: User) => user.username);
+      const allEmails = allUsers.map((user: User) => user.email);
+
       setAllUsernames(
-        allUsers.filter((name: string) => name !== user.username)
+        allUsernames.filter((name: string) => name !== user.username)
       );
+      setAllEmails(allEmails.filter((email: string) => email !== user.email));
     };
     fetchData();
   }, []);
@@ -87,7 +91,6 @@ export default function ProfilePage() {
 
   const getUserDetails = async () => {
     const currentUser = await getUser(token);
-    console.log("current", currentUser);
     const { username, email, password, profilePhoto } = currentUser.data;
     setUser({ username, email, password, profilePhotoUrl: profilePhoto });
   };
@@ -101,9 +104,16 @@ export default function ProfilePage() {
   // };
 
   const handleSave = () => {
-    if (newUsername || image) {
-      updateUser(token, newUsername, image);
-      getUserDetails();
+    try {
+      if (newUsername || image) {
+        updateUser(token, newUsername, image);
+        getUserDetails();
+        toast.success("השינויים נשמרו בהצלחה");
+      } else {
+        toast.info("לא התבצעו שינויים");
+      }
+    } catch (error) {
+      toast.error("קרתה שגיאה בשמירת השינויים");
     }
   };
 
@@ -120,33 +130,42 @@ export default function ProfilePage() {
     <div className="p-6 space-x-8 flex h-fit w-full justify-around">
       <Card className="h-fit w-1/2">
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
+          <CardTitle className=" text-xl p-1">פרופיל אישי</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center gap-3 justify-around">
           <UploadProfile
             username={user.username}
             setImage={setImage}
             imageUrl={user.profilePhotoUrl}
+            isRegister={false}
           />
           <div className="space-y-4 w-1/2">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">שם משתמש</Label>
               <Input
                 id="username"
-                value={newUsername}
-                placeholder={user.username}
+                value={newUsername ? newUsername : user.username}
                 onChange={(e) => setNewUsername(e.target.value)}
               />
               {allUsernames.includes(newUsername) &&
                 !(newUsername === user.username) && (
                   <p className="text-red-500 text-xs w-fit ml-1 mt-1">
-                    Username is taken
+                    שם המשתמש תפוס{" "}
                   </p>
                 )}
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" value={user.email} disabled />
+              <Label htmlFor="email">כתובת מייל</Label>
+              <Input
+                id="email"
+                value={newEmail ? newEmail : user.email}
+                onChange={(e) => setNewEmail(e.target.value)}
+              />
+              {allEmails.includes(newEmail) && !(newEmail === user.email) && (
+                <p className="text-red-500 text-xs w-fit ml-1 mt-1">
+                  כתובת המייל תפוסה{" "}
+                </p>
+              )}
             </div>
 
             <Button
@@ -158,7 +177,7 @@ export default function ProfilePage() {
                   !(newUsername === user.username))
               }
             >
-              Save Changes
+              שמירת שינויים{" "}
             </Button>
           </div>
         </CardContent>

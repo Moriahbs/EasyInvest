@@ -3,16 +3,17 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-// import postsRoute from "./routes/postsRoute";
+import projectsRoute from "./routes/projectsRoute";
 // import commentsRoute from "./routes/commentsRoute";
 import usersRoute from "./routes/usersRoute";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig";
 import cors from "cors";
-// import path from "path";
+import path from "path";
 import expressSession from "express-session";
 import passport from "passport";
 import googleRoute from "./routes/googleRoute";
+import chatBotRoute from "./routes/chatBotRoute";
 
 const promise: Promise<Express> = new Promise((resolve, reject) => {
   dotenv.config();
@@ -40,10 +41,11 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   // Routes
   app.use("/auth", googleRoute);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  // app.use("/posts", postsRoute);
+  app.use("/projects", projectsRoute);
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
-  // app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/api/chatbot", chatBotRoute);
 
   // Database connection
   mongoose

@@ -6,36 +6,29 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   profilePhoto: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
-  // posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],
 });
 
-const postSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  body: { type: String, required: true },
-  author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  image: { type: String, required: false },
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  comments: [
-    {
-      body: { type: String, required: true },
-      date: { type: Date, default: Date.now },
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    },
-  ],
+const projectSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  category: { type: String, required: true },
+  description: { type: String, required: true },
+  targetAudience: { type: String, required: true },
+  financialGoals: { type: String, required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   hidden: { type: Boolean, default: false },
-  meta: {
-    votes: { type: Number, default: 0 },
-    favs: { type: Number, default: 0 },
-  },
+
+  image: { type: String, required: false },
+  // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  // meta: {
+  //   votes: { type: Number, default: 0 },
+  //   favs: { type: Number, default: 0 },
+  // },
 });
 
 const User = mongoose.model("User", userSchema);
-const Post = mongoose.model("Post", postSchema);
+const Project = mongoose.model("Project", projectSchema);
 
-module.exports = { User, Post };
+module.exports = { User, Project };
