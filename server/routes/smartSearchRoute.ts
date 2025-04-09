@@ -1,4 +1,4 @@
-import {getInvestmentRecommendations} from "../controllers/chatBotController";
+import {getInvestmentRecommendations} from "../controllers/smartSearchController";
 import express from "express";
 
 const router = express.Router();
