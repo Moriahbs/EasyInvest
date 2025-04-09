@@ -2,19 +2,19 @@ import config from "@/config";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
 
-export const getAllProjects = async () => {
-  const res = await axios.get(`${config.SERVER_URL}/projects`, {
+export const getAllStartups = async () => {
+  const res = await axios.get(`${config.SERVER_URL}/startups`, {
     withCredentials: true,
   });
 
   return res.data;
 };
 
-export const getProjectsBySender = async (token: string) => {
+export const getStartupsBySender = async (token: string) => {
   const { userId } = decodeToken(token);
 
   const res = await axios.get(
-    `${config.SERVER_URL}/projects/sender/${userId}`,
+    `${config.SERVER_URL}/startups/sender/${userId}`,
     {
       withCredentials: true,
     }
@@ -23,31 +23,39 @@ export const getProjectsBySender = async (token: string) => {
   return res.data;
 };
 
-export const getProjectsById = async (projectId: string) => {
-  const res = await axios.get(`${config.SERVER_URL}/projects/${projectId}`, {
+export const getStartupsById = async (startupId: string) => {
+  const res = await axios.get(`${config.SERVER_URL}/startups/${startupId}`, {
     withCredentials: true,
   });
 
   return res.data;
 };
 
-export const createProject = async (
+export const createStartup = async (
   name: string,
-  category: string,
+  tags: string[],
   description: string,
-  targetAudience: string,
-  financialGoals: string,
-  image: File | null
+  fundingStage: string,
+  foundedYear: number,
+  valuationLastRound: number,
+  location: string,
+  latitude: number,
+  longitude: number,
+  image: string
 ) => {
   const formData = new FormData();
   image && formData.append("image", image);
   formData.append("name", name);
-  formData.append("category", category);
+  formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
-  formData.append("targetAudience", targetAudience);
-  formData.append("financialGoals", financialGoals);
+  formData.append("fundingStage", fundingStage);
+  formData.append("location", location);
+  formData.append("foundedYear", foundedYear.toString());
+  formData.append("valuationLastRound", valuationLastRound.toString());
+  formData.append("longitude", longitude.toString());
+  formData.append("latitude", latitude.toString());
 
-  const res = await axios.post(`${config.SERVER_URL}/projects`, formData, {
+  const res = await axios.post(`${config.SERVER_URL}/startups`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
     withCredentials: true,
   });
@@ -55,25 +63,32 @@ export const createProject = async (
   return res.data;
 };
 
-export const editProject = async (
-  projectId: string,
+export const editStartup = async (
   name: string,
-  category: string,
+  tags: string[],
   description: string,
-  targetAudience: string,
-  financialGoals: string,
-  image: File | null
+  fundingStage: string,
+  foundedYear: number,
+  valuationLastRound: number,
+  location: string,
+  latitude: number,
+  longitude: number,
+  image: string
 ) => {
   const formData = new FormData();
   image && formData.append("image", image);
   formData.append("name", name);
-  formData.append("category", category);
+  formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
-  formData.append("targetAudience", targetAudience);
-  formData.append("financialGoals", financialGoals);
+  formData.append("fundingStage", fundingStage);
+  formData.append("location", location);
+  formData.append("foundedYear", foundedYear.toString());
+  formData.append("valuationLastRound", valuationLastRound.toString());
+  formData.append("longitude", longitude.toString());
+  formData.append("latitude", latitude.toString());
 
   const res = await axios.put(
-    `${config.SERVER_URL}/projects/${projectId}`,
+    `${config.SERVER_URL}/startups/${startupId}`,
     formData,
     {
       headers: { "Content-Type": "multipart/form-data" },
@@ -84,8 +99,8 @@ export const editProject = async (
   return res.data;
 };
 
-export const deleteProject = async (projectId: string) => {
-  const res = await axios.delete(`${config.SERVER_URL}/projects/${projectId}`, {
+export const deleteStartup = async (startupId: string) => {
+  const res = await axios.delete(`${config.SERVER_URL}/startups/${startupId}`, {
     withCredentials: true,
   });
 
