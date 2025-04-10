@@ -5,16 +5,15 @@ import ChatIcon from '@mui/icons-material/Chat';
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import CreateProjectModal from "@/components/CreateProject";
-import { Project } from "@/models/projectModel";
 import config from "@/config";
 import TopicsChat from "@/components/TopicsChat";
+import { Startup } from "@/models/StartupModel";
 
 export default function HomePage() {
-  const [dbProjects, setDbProjects] = useState<Project[]>([]);
+  const [dbStartups, setDbStartups] = useState<Startup[]>([]);
   const [isChatOpen, setChatOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
-  const [openCreateProject, setOpenCreateProject] = useState(false);
+  const [openCreateStartup, setOpenCreateStartup] = useState(false);
 
   const handleOpenChat = () => {
     setChatOpen(true);
@@ -32,9 +31,9 @@ export default function HomePage() {
     setSearchOpen(false);
   };
 
-  const handleCreateProject = (newProject: Project) => {
-    setDbProjects([newProject, ...dbProjects]);
-    setOpenCreateProject(false);
+  const handleCreateStartup = (newStartup: Startup) => {
+    setDbStartups([newStartup, ...dbStartups]);
+    setOpenCreateStartup(false);
     window.location.href = `${config.CLIENT_URL}/home`;
   };
 
@@ -71,14 +70,14 @@ export default function HomePage() {
       </Tooltip>
       <Button
         className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
-        onClick={() => setOpenCreateProject(true)}
+        onClick={() => setOpenCreateStartup(true)}
       >
         <Plus className="w-6 h-6" />
       </Button>
-      <CreateProjectModal
-        open={openCreateProject}
-        setOpen={setOpenCreateProject}
-        onCreate={handleCreateProject}
+      <CreatePostModal
+        open={openCreateStartup}
+        setOpen={setOpenCreateStartup}
+        onCreate={handleCreateStartup}
       />
       <SmartSearch isSearchOpen={isSearchOpen} handleCloseChat={handleCloseSearch} />
       <TopicsChat isChatOpen={isChatOpen} handleCloseChat={handleCloseChat} />

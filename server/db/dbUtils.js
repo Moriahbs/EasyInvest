@@ -6,21 +6,24 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   profilePhoto: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
-  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: "Project" }],
+  startups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Startup" }],
 });
 
-const projectSchema = new mongoose.Schema({
+const startupSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  category: { type: String, required: true },
   description: { type: String, required: true },
-  targetAudience: { type: String, required: true },
-  financialGoals: { type: String, required: true },
+  fundingStage: { type: String, required: true },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   hidden: { type: Boolean, default: false },
-
   image: { type: String, required: false },
+  valuationLastRound: { type: Number, required: true },
+  location: { type: String, required: true },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
+  foundedYear: { type: Number, required: true },
+  tags: { type: [String], required: true }
   // likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   // meta: {
   //   votes: { type: Number, default: 0 },
@@ -29,6 +32,6 @@ const projectSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
-const Project = mongoose.model("Project", projectSchema);
+const Startup = mongoose.model("Startup", startupSchema);
 
-module.exports = { User, Project };
+module.exports = { User, Startup };

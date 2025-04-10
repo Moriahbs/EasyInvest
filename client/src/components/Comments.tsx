@@ -7,7 +7,7 @@
 //   DialogHeader,
 //   DialogTitle,
 // } from "@/components/ui/dialog";
-// // import { getCommentsByPost, addCommentToPost } from "@/actions/projectActions";
+// // import { getCommentsByPost, addCommentToPost } from "@/actions/startupActions";
 // import { Comment } from "@/models/commentModel";
 
 // export default function CommentSection({

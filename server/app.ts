@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import projectsRoute from "./routes/projectsRoute";
+import startupsRoute from "./routes/startupsRoute";
 // import commentsRoute from "./routes/commentsRoute";
 import usersRoute from "./routes/usersRoute";
 import swaggerUi from "swagger-ui-express";
@@ -43,7 +43,7 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   // Routes
   app.use("/auth", googleRoute);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  app.use("/projects", projectsRoute);
+  app.use("/startups", startupsRoute);
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
   // app.use("/images", express.static(path.join(__dirname, "images")));

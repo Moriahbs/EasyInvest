@@ -30,7 +30,7 @@ const StartupList: React.FC<StartupListProps> = ({ startups, topMatches }) => {
                     <Typography variant="h6">Other Matches:</Typography>
                     <List>
                         {startups
-                            .filter((s) => !topMatches.some((top) => top.companyName === s.companyName))
+                            .filter((s) => !topMatches.some((top) => top.name === s.name))
                             .map((startup, index) => (
                                 <StartupCard key={index} startup={startup} />
                             ))}

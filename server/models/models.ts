@@ -5,7 +5,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   createdAt: Date;
-  projects: mongoose.Types.Array<mongoose.Types.ObjectId>;
+  startups: mongoose.Types.Array<mongoose.Types.ObjectId>;
 }
 
 const userSchema = new Schema<IUser>({
@@ -13,22 +13,26 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   createdAt: { type: Date, default: Date.now },
-  projects: [{ type: Schema.Types.ObjectId, ref: "Project" }],
+  startups: [{ type: Schema.Types.ObjectId, ref: "Startup" }],
 });
 
 export const User =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
-export interface IProject extends Document {
+export interface IStartup extends Document {
   // _id: string;
   owner: mongoose.Types.ObjectId;
   name: string;
-  category: string;
   description: string;
-  targetAudience: string;
-  financialGoals: string;
-  // image?: string;
+  location: string;
+  fundingStage: string;
+  image?: string;
+  valuationLastRound: number;
+  latitude: number;
+  longitude: number;
   createdAt: Date;
+  foundedYear: number;
+  tags: string[];
   updatedAt?: Date;
   hidden: boolean;
   // meta: {
@@ -37,21 +41,26 @@ export interface IProject extends Document {
   // };
 }
 
-const projectSchema = new Schema<IProject>({
+const startupSchema = new Schema<IStartup>({
   name: { type: String, required: true },
-  category: { type: String, required: true },
   description: { type: String, required: true },
-  targetAudience: { type: String, required: true },
-  financialGoals: { type: String, required: true },
+  fundingStage: { type: String, required: true },
   owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   hidden: { type: Boolean, default: false },
+  image: { type: String, required: false },
+  location: { type: String, required: true },
+  valuationLastRound: { type: Number, required: true },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
+  foundedYear: { type: Number, required: true },
+  tags: { type: [String], required: true }
   // meta: {
   //   votes: { type: Number, default: 0 },
   //   favs: { type: Number, default: 0 },
   // },
 });
 
-export const Project =
-  mongoose.models.Project || mongoose.model<IProject>("Project", projectSchema);
+export const Startup =
+  mongoose.models.Startup || mongoose.model<IStartup>("Startup", startupSchema);

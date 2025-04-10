@@ -8,8 +8,8 @@
 // import { Input } from "@/components/ui/input";
 // import { Button } from "@/components/ui/button";
 // import { Textarea } from "@/components/ui/textarea";
-// import { editPost, getPostsById } from "@/actions/projectActions";
-// import { NewPost } from "./CreateProject";
+// import { editPost, getPostsById } from "@/actions/startupActions";
+// import { NewPost } from "./CreateStartup";
 // import UploadImage from "./UploadImage";
 
 // export default function EditPostModal({
