@@ -13,7 +13,7 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, isTopMatch = false }
             <ListItemText
                 primary={
                     <Typography variant="body1" fontWeight={isTopMatch ? "bold" : "normal"}>
-                        {startup.companyName} {isTopMatch && "(Top Match)"}
+                        {startup.name} {isTopMatch && "(Top Match)"}
                     </Typography>
                 }
                 secondary={
