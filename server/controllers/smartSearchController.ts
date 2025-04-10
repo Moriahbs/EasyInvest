@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import asyncHandler from "express-async-handler";
-import {Startup, STARTUP_MOCK_DATA} from "../mocks/mocks";
+import { Startup, STARTUP_MOCK_DATA } from "../mocks/mocks";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
@@ -111,3 +111,21 @@ function scoreStartups(startups: Startup[], preferences: any) {
         return { startup, score };
     });
 }
+
+export const simplifyDescription = asyncHandler(async (req, res) => {
+    try {
+      const { userText } = req.body;
+  
+      const prompt = `Simplify this project description for a general audience in the same language:\n\n${userText}`;
+  
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const simplified = response.text();
+  
+      res.status(200).json({ simplified });
+    } catch (error) {
+      console.error("Error simplifying description:", error);
+      res.status(500).json({ error: "Failed to simplify description" });
+    }
+  });
+  
