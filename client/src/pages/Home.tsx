@@ -38,8 +38,81 @@ export default function HomePage() {
   };
 
   return (
-    <div>
-      Home Page
+    <div className="relative w-full h-[30vh]">
+      <img
+        src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+        alt="Background"
+        className="w-full h-full object-cover"
+      />
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/30">
+        <h1 className="text-4xl font-bold mb-4">Easy Invets</h1>
+        <h4 className="text-xl font-bold mb-4">
+          השקעות בפרויקטים מתחילים
+        </h4>
+        <div className="flex gap-4">
+          <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-full">
+            השקעות
+          </button>
+          <button className="px-6 py-2 bg-green-600 hover:bg-green-700 rounded-full">
+            תשקיע
+          </button>
+        </div>
+      </div>
+      <div className="mt-8">
+        <h2 className="text-3xl font-semibold mb-2">פרויקטים בשבילך</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-8">
+          <div className="flex flex-col items-center">
+            <img
+              src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+              alt="Project 1"
+              className="w-40 h-40 object-cover rounded-lg"
+            />
+            <h3 className="mt-4 text-xl font-semibold">פרויקט 1</h3>
+          </div>
+          <div className="flex flex-col items-center">
+            <img
+              src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+              alt="Project 2"
+              className="w-40 h-40 object-cover rounded-lg"
+            />
+            <h3 className="mt-4 text-xl font-semibold">פרויקט 2</h3>
+          </div>
+          <div className="flex flex-col items-center">
+            <img
+              src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+              alt="Project 3"
+              className="w-40 h-40 object-cover rounded-lg"
+            />
+            <h3 className="mt-4 text-xl font-semibold">פרויקט 3</h3>
+          </div>
+          <div className="flex flex-col items-center">
+            <img
+              src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
+              alt="Project 4"
+              className="w-40 h-40 object-cover rounded-lg"
+            />
+            <h3 className="mt-4 text-xl font-semibold">פרויקט 4</h3>
+          </div>
+        </div>
+      </div>
+      <div className="w-full bg-purple-700 py-12 flex justify-around text-white mt-8">
+        <div className="text-center max-w-xs">
+          <h2 className="text-3xl font-semibold mb-2">+100M</h2>
+          <h4 className="text-xl font-semibold mb-2">פרויקטים</h4>
+          <p>חרטוטים חרטוטים חרטוטים חרטוטים </p>
+        </div>
+        <div className="text-center max-w-xs">
+          <h2 className="text-3xl font-semibold mb-2">325</h2>
+          <h4 className="text-xl font-semibold mb-2">פרויקטים</h4>
+          <p>חרטוטים חרטוטים חרטוטים חרטוטים </p>
+        </div>
+        <div className="text-center max-w-xs">
+          <h2 className="text-3xl font-semibold mb-2">6250</h2>
+          <h4 className="text-xl font-semibold mb-2">פרויקטים</h4>
+          <p>חרטוטים חרטוטים חרטוטים חרטוטים </p>
+        </div>
+      </div>
       <Tooltip title="Search Invest with AI">
         <Fab
           color="primary"
