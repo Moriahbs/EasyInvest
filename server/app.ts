@@ -16,6 +16,7 @@ import googleRoute from "./routes/googleRoute";
 import chatBotRoute from "./routes/smartSearchRoute";
 import smartSearchRoute from "./routes/smartSearchRoute";
 import topicsRoute from "./routes/topicsRoute";
+import path from "path";
 
 const promise: Promise<Express> = new Promise((resolve, reject) => {
   dotenv.config();
@@ -46,7 +47,7 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   app.use("/startups", startupsRoute);
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
-  // app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/images", express.static(path.join(__dirname, "images")));
   app.use("/api/smartSearch", smartSearchRoute);
   app.use("/api/topics", topicsRoute);
   // Database connection

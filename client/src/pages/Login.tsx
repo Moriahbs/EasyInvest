@@ -63,85 +63,90 @@ export default function AuthPage() {
   const labelClass = "block font-medium text-right mb-1";
 
   return (
-    <div
-      className="flex items-center justify-center bg-gray-100 rounded w-1/2 p-4 font-hebrew"
-      dir="rtl"
-    >
-      <Card className="w-full shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-3xl p-3 !font-normal">
-            {isLogin ? "התחברות לEasy Invest" : "הרשמה לEasy Invest"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label className={labelClass}>משתמש</label>
-              <Input
-                type="username"
-                placeholder="שם משתמש"
-                {...register("username", {
-                  required: "יש להכניס פרטי שם משתמש",
-                })}
-                className="w-full"
-              />
-              {errors.username && (
-                <p className={errorClass}>{errors.username.message}</p>
-              )}
-            </div>
-            {!isLogin && (
+    <div className="w-full flex justify-center">
+      <div
+        className="flex items-center justify-center bg-gray-100 rounded w-1/2 p-4 font-hebrew"
+        dir="rtl"
+      >
+        <Card className="w-full shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-3xl p-3 !font-normal">
+              {isLogin ? "התחברות לEasy Invest" : "הרשמה לEasy Invest"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className={labelClass}>מייל</label>
+                <label className={labelClass}>משתמש</label>
                 <Input
-                  type="email"
-                  placeholder="כתובת מייל"
-                  {...register("email", { required: "יש להכניס כתובת מייל" })}
+                  type="username"
+                  placeholder="שם משתמש"
+                  {...register("username", {
+                    required: "יש להכניס פרטי שם משתמש",
+                  })}
                   className="w-full"
                 />
-                {errors.email && (
-                  <p className={errorClass}>{errors.email.message}</p>
+                {errors.username && (
+                  <p className={errorClass}>{errors.username.message}</p>
                 )}
               </div>
-            )}
-            <div>
-              <label className={labelClass}>סיסמא</label>
-              <Input
-                type="password"
-                placeholder={isLogin ? "********" : "סיסמא בעלת 10 תווים לפחות"}
-                {...register("password", {
-                  required: "יש להכניס סיסמא",
-                })}
-                className="w-full"
-              />
-              {errors.password && (
-                <p className={errorClass}>{errors.password.message}</p>
+              {!isLogin && (
+                <div>
+                  <label className={labelClass}>מייל</label>
+                  <Input
+                    type="email"
+                    placeholder="כתובת מייל"
+                    {...register("email", { required: "יש להכניס כתובת מייל" })}
+                    className="w-full"
+                  />
+                  {errors.email && (
+                    <p className={errorClass}>{errors.email.message}</p>
+                  )}
+                </div>
               )}
-            </div>
+              <div>
+                <label className={labelClass}>סיסמא</label>
+                <Input
+                  type="password"
+                  placeholder={
+                    isLogin ? "********" : "סיסמא בעלת 10 תווים לפחות"
+                  }
+                  {...register("password", {
+                    required: "יש להכניס סיסמא",
+                  })}
+                  className="w-full"
+                />
+                {errors.password && (
+                  <p className={errorClass}>{errors.password.message}</p>
+                )}
+              </div>
+              <Button
+                type="submit"
+                className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none"
+              >
+                {isLogin ? "התחברות" : "הרשמה"}
+              </Button>
+              {generalError && <p className={errorClass}>{generalError}</p>}
+            </form>
             <Button
-              type="submit"
-              className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none"
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-2 mt-4 bg-white text-gray-600 hover:bg-gray-100 border-transparent"
             >
-              {isLogin ? "התחברות" : "הרשמה"}
+              <FcGoogle size={20} /> {isLogin ? "Sign in" : "Sign up"} with
+              Google
             </Button>
-            {generalError && <p className={errorClass}>{generalError}</p>}
-          </form>
-          <Button
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-2 mt-4 bg-white text-gray-600 hover:bg-gray-100 border-transparent"
-          >
-            <FcGoogle size={20} /> {isLogin ? "Sign in" : "Sign up"} with Google
-          </Button>
-          <p className="text-center text-sm mt-4">
-            {isLogin ? "עדיין לא רשום?" : "כבר יש לך משתמש?"}{" "}
-            <span
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-gray-600 hover:underline cursor-pointer"
-            >
-              {isLogin ? "להרשמה" : "להתחברות"}
-            </span>
-          </p>
-        </CardContent>
-      </Card>
+            <p className="text-center text-sm mt-4">
+              {isLogin ? "עדיין לא רשום?" : "כבר יש לך משתמש?"}{" "}
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-gray-600 hover:underline cursor-pointer"
+              >
+                {isLogin ? "להרשמה" : "להתחברות"}
+              </span>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import config from "@/config";
 import TopicsChat from "@/components/TopicsChat";
 import { Startup } from "@/models/StartupModel";
+import CreateStartupModal from "@/components/CreateStartup";
 
 export default function HomePage() {
   const [dbStartups, setDbStartups] = useState<Startup[]>([]);
@@ -147,7 +148,7 @@ export default function HomePage() {
       >
         <Plus className="w-6 h-6" />
       </Button>
-      <CreatePostModal
+      <CreateStartupModal
         open={openCreateStartup}
         setOpen={setOpenCreateStartup}
         onCreate={handleCreateStartup}
