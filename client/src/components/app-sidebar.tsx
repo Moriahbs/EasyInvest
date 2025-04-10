@@ -29,6 +29,11 @@ const items = [
     url: "map",
     icon: Map,
   },
+  {
+    title: "Startup Page",
+    url: "example-startup",
+    icon: Map,
+  },
 ];
 
 export function AppSidebar() {
