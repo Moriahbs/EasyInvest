@@ -15,12 +15,12 @@ import { Startup } from "@/models/StartupModel.ts";
 import config from "@/config.ts";
 import StartupList from "./StartupList";
 
-interface ChatBotProps {
-    isChatOpen: boolean;
+interface SmartSearchProps {
+    isSearchOpen: boolean;
     handleCloseChat: () => void;
 }
 
-const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat }) => {
+const SmartSearch: React.FC<SmartSearchProps> = ({ isSearchOpen, handleCloseChat }) => {
     const [userInput, setUserInput] = useState<string>("");
     const [filteredStartups, setFilteredStartups] = useState<Startup[]>([]);
     const [topMatches, setTopMatches] = useState<Startup[]>([]);
@@ -36,7 +36,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat }) => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(`${config.SERVER_URL}/api/chatbot/recommended`, {
+            const response = await axios.post(`${config.SERVER_URL}/api/smartSearch/recommended`, {
                 prompt: userInput,
             });
             setPreferences(response.data.preferences);
@@ -50,7 +50,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat }) => {
     };
 
     return (
-        <Dialog open={isChatOpen} onClose={handleCloseChat} maxWidth="md" fullWidth>
+        <Dialog open={isSearchOpen} onClose={handleCloseChat} maxWidth="md" fullWidth>
             <DialogTitle>AI Startup Investment Assistant</DialogTitle>
             <DialogContent>
                 <Box sx={{ mb: 2 }}>
@@ -105,4 +105,4 @@ const ChatBot: React.FC<ChatBotProps> = ({ isChatOpen, handleCloseChat }) => {
     );
 };
 
-export default ChatBot;
+export default SmartSearch;

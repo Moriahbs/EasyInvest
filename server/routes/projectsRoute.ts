@@ -64,7 +64,7 @@ interface ProjectRequestBody {
 // CREATE NEW PROJECT
 router.post(
   "/",
-  upload.single("projectImage"),
+  upload.single("startupImage"),
   async (req: Request, res: Response) => {
     try {
       const {
@@ -334,7 +334,7 @@ router.get("/:id", async (req: Request, res: Response) => {
 // UPDATE PROJECT BY ID
 router.put(
   "/:id",
-  upload.single("projectImage"),
+  upload.single("startupImage"),
   async (req: Request, res: Response) => {
     try {
       const updatedProject: Partial<ProjectRequestBody> = {};

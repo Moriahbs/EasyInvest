@@ -1,15 +1,4 @@
 import { Home, LogOut, UserPen, Map } from "lucide-react";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 
@@ -40,37 +29,34 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-lg mb-4">
-            Easy Invest
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={async () => await handleLogout()}
-                  className="hover:border-none"
-                >
-                  <LogOut />
-                  <span>Logout</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <div className="bg-gray-800 text-white py-4 px-6 shadow-md">
+      <div className="flex items-center justify-between">
+        {/* Brand or Logo */}
+        <div className="text-lg font-semibold">Easy Invest</div>
+
+        {/* Menu Items */}
+        <div className="flex space-x-6">
+          {items.map((item) => (
+            <a
+              key={item.title}
+              href={item.url}
+              className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md"
+            >
+              <item.icon />
+              <span>{item.title}</span>
+            </a>
+          ))}
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md"
+          >
+            <LogOut />
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

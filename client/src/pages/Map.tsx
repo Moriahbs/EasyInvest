@@ -1,26 +1,88 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { STARTUP_MOCK_DATA } from "@/models/StartupModel";
+import { useEffect, useState } from "react";
+import { getAllStartups } from "@/actions/startupActions";
+import { Startup } from "@/models/startupModel";
+import { Skeleton } from "@/components/ui/skeleton";
+import StartupCard from "@/components/StartupCard"; // Import the StartupCard component
 
 export default function MapPage() {
-  const position = [32.0853, 34.7818]; // Tel Aviv coordinates
+  const [startups, setStartUps] = useState<Startup[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await getAllStartups();
+      setStartUps(res);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const FitBounds = ({ startups }: { startups: Startup[] }) => {
+    const map = useMap();
+    const latitudes = startups.map(startup => startup.latitude);
+    const longitudes = startups.map(startup => startup.longitude);
+
+    const minLat = Math.min(...latitudes);
+    const maxLat = Math.max(...latitudes);
+    const minLng = Math.min(...longitudes);
+    const maxLng = Math.max(...longitudes);
+
+    map.fitBounds([
+      [minLat, minLng],
+      [maxLat, maxLng]
+    ]);
+
+    return null;
+  };
 
   return (
-    <MapContainer
-      center={position}
-      zoom={13}
-      style={{ height: "500px", width: "100%" }}
-    >
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {STARTUP_MOCK_DATA.map((startup, index) => (
-        <Marker key={index} position={[startup.latitude, startup.longitude]}>
-          <Popup>
-            <strong>{startup.companyName}</strong>
-            <br />
-            {startup.description}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <div className="flex gap-8 flex-wrap items-start">
+      {/* Map Container */}
+      <div className="flex-1">
+        {loading ? (
+          <div style={{ height: "500px", width: "100%" }}>
+            <Skeleton />
+          </div>
+        ) : (
+          <MapContainer
+            center={[32.0853, 34.7818]} // Default initial center
+            zoom={13}
+            style={{ height: "500px", width: "100%" }}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {startups.map((startup, index) => (
+              <Marker key={index} position={[startup.latitude, startup.longitude]}>
+                <Popup>
+                  <strong>{startup.name}</strong>
+                  <br />
+                  {startup.description}
+                </Popup>
+              </Marker>
+            ))}
+            {/* Fit the map bounds to all the markers */}
+            <FitBounds startups={startups} />
+          </MapContainer>
+        )}
+      </div>
+
+      {/* Startup Cards */}
+      <div className="w-full sm:w-[48%] md:w-[30%]">
+        {loading ? (
+          <Skeleton />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {startups.map((startup, index) => (
+              <div key={index}>
+                <StartupCard startup={startup} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,39 +1,31 @@
 import React from "react";
-import { Box, Chip, ListItem, ListItemText, Typography } from "@mui/material";
 import { Startup } from "@/models/StartupModel.ts";
+import config from "@/config";
 
 interface StartupCardProps {
-    startup: Startup;
-    isTopMatch?: boolean;
+  startup: Startup;
+  isTopMatch?: boolean;
 }
 
-const StartupCard: React.FC<StartupCardProps> = ({ startup, isTopMatch = false }) => {
-    return (
-        <ListItem alignItems="flex-start" sx={{ backgroundColor: isTopMatch ? "#f0f8ff" : "inherit" }}>
-            <ListItemText
-                primary={
-                    <Typography variant="body1" fontWeight={isTopMatch ? "bold" : "normal"}>
-                        {startup.companyName} {isTopMatch && "(Top Match)"}
-                    </Typography>
-                }
-                secondary={
-                    <>
-                        <Typography component="span" variant="body2" color="textPrimary">
-                            {startup.description}
-                        </Typography>
-                        <Box sx={{ mt: 1 }}>
-                            <Chip label={`Funding: ${startup.fundingStage}`} size="small" color="primary" />
-                            <Chip label={`Valuation: $${startup.valuationLastRound}M`} size="small" color="success" sx={{ ml: 1 }} />
-                            <Chip label={`Location: ${startup.location}`} size="small" color="info" sx={{ ml: 1 }} />
-                            {startup.tags.map((tag) => (
-                                <Chip key={tag} label={tag} size="small" variant="outlined" sx={{ ml: 1 }} />
-                            ))}
-                        </Box>
-                    </>
-                }
-            />
-        </ListItem>
-    );
+const StartupCard: React.FC<StartupCardProps> = ({
+  startup,
+  isTopMatch = false,
+}) => {
+  return (
+    <div className="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="relative">
+        <img
+          src={startup.image ? config.SERVER_URL + "/" + startup.image : "/src/assets/default-image.png"} // Fallback image if none provided
+          alt={startup.name}
+          className="w-full h-64 object-cover"
+        />
+      </div>
+      <div className="p-4">
+        <h2 className="text-2xl font-bold text-gray-800">{startup.name}</h2>
+        <p className="text-gray-600 text-sm mt-1">{startup.description}</p>
+      </div>
+    </div>
+  );
 };
 
 export default StartupCard;
