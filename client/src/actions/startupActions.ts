@@ -41,7 +41,7 @@ export const createStartup = async (
   location: string,
   latitude: number,
   longitude: number,
-  image: string
+  image: File | null
 ) => {
   const formData = new FormData();
   image && formData.append("startupImage", image);
@@ -64,6 +64,7 @@ export const createStartup = async (
 };
 
 export const editStartup = async (
+  startupId: string,
   name: string,
   tags: string[],
   description: string,
@@ -73,7 +74,7 @@ export const editStartup = async (
   location: string,
   latitude: number,
   longitude: number,
-  image: string
+  image: File | null
 ) => {
   const formData = new FormData();
   image && formData.append("startupImage", image);

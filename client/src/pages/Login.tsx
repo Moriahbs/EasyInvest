@@ -166,7 +166,6 @@ export default function AuthPage() {
               <FcGoogle size={20} /> {isLogin ? "Sign in" : "Sign up"} with
               Google
             </Button>
-            <p className={errorClass}>{generalError}</p>
             <p className="text-center text-sm mt-4">
               {isLogin ? "עדיין לא רשום?" : "כבר יש לך משתמש?"}{" "}
               <span

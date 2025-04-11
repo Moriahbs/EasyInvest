@@ -129,7 +129,7 @@ export default function ProfilePage() {
   return (
     <div className="p-6 space-x-8 flex h-fit w-full justify-around">
       <Card className="h-fit w-1/2">
-        <CardHeader>
+        <CardHeader className="items-center">
           <CardTitle className=" text-xl p-1">פרופיל אישי</CardTitle>
         </CardHeader>
         <CardContent className="flex items-center gap-3 justify-around">

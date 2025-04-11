@@ -10,10 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createStartup } from "@/actions/startupActions";
 import UploadImage from "./UploadImage";
-import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { STARTUP_CATEGORIES } from "../models/startupModel";
+import { STARTUP_CATEGORIES } from "../models/StartupModel";
 import { MultiSelect } from "./ui/multi-select";
 import { toast } from "sonner";
 
@@ -109,8 +108,8 @@ export default function CreateStartupModal({
       foundedYear,
       valuationLastRound,
       location,
-      latitude,
-      longitude,
+      latitude || 0,
+      longitude || 0,
       image
     );
     setLoading(false);
@@ -207,7 +206,7 @@ export default function CreateStartupModal({
               onChange={(e) =>
                 setStartupDetails({
                   ...startupDetails,
-                  foundedYear: e.target.value,
+                  foundedYear: Number(e.target.value),
                 })
               }
             />
@@ -227,7 +226,7 @@ export default function CreateStartupModal({
                 const rawValue = e.target.value.replace(/[^\d]/g, ""); // remove non-numbers
                 setStartupDetails({
                   ...startupDetails,
-                  valuationLastRound: rawValue,
+                  valuationLastRound: Number(rawValue),
                 });
               }}
             />

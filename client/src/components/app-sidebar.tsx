@@ -31,10 +31,8 @@ export function AppSidebar() {
   return (
     <div className="bg-gray-800 text-white py-4 px-6 shadow-md">
       <div className="flex items-center justify-between">
-        {/* Brand or Logo */}
         <div className="text-lg font-semibold">Easy Invest</div>
 
-        {/* Menu Items */}
         <div className="flex space-x-6">
           {items.map((item) => (
             <a
@@ -47,7 +45,6 @@ export function AppSidebar() {
             </a>
           ))}
 
-          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="flex items-center space-x-2 hover:bg-gray-700 p-2 rounded-md"
