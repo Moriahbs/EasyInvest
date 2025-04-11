@@ -1,36 +1,23 @@
-import { Fab, Tooltip } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import SmartSearch from "@/components/SmartSearch";
-import ChatIcon from "@mui/icons-material/Chat";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, MessageCircleMore, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import config from "@/config";
 import TopicsChat from "@/components/TopicsChat";
 import { Startup } from "@/models/StartupModel";
 import CreateStartupModal from "@/components/CreateStartup";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function HomePage() {
   const [dbStartups, setDbStartups] = useState<Startup[]>([]);
-  const [isChatOpen, setChatOpen] = useState(false);
-  const [isSearchOpen, setSearchOpen] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
   const [openCreateStartup, setOpenCreateStartup] = useState(false);
-
-  const handleOpenChat = () => {
-    setChatOpen(true);
-  };
-
-  const handleOpenSearch = () => {
-    setSearchOpen(true);
-  };
-
-  const handleCloseChat = () => {
-    setChatOpen(false);
-  };
-
-  const handleCloseSearch = () => {
-    setSearchOpen(false);
-  };
 
   const handleCreateStartup = (newStartup: Startup) => {
     setDbStartups([newStartup, ...dbStartups]);
@@ -112,50 +99,54 @@ export default function HomePage() {
           <p>חרטוטים חרטוטים חרטוטים חרטוטים </p>
         </div>
       </div>
-      <Tooltip title="Search Invest with AI">
-        <Fab
-          color="primary"
-          onClick={handleOpenSearch}
-          sx={{
-            backgroundColor: "rgb(30, 153, 139)",
-            position: "fixed",
-            bottom: 16,
-            right: 16,
-          }}
-        >
-          <SearchIcon />
-        </Fab>
-      </Tooltip>
-      <Tooltip title="Chat with AI">
-        <Fab
-          color="primary"
-          onClick={handleOpenChat}
-          sx={{
-            backgroundColor: "rgb(77, 153, 30)",
-            position: "fixed",
-            bottom: 145,
-            right: 16,
-          }}
-        >
-          <ChatIcon />
-        </Fab>
-      </Tooltip>
-      <Button
-        className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
-        onClick={() => setOpenCreateStartup(true)}
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              className="fixed bottom-36 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
+              onClick={() => setOpenSearch(true)}
+            >
+              <Search className="w-6 h-6" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="z-[999]">
+            <p>Search Invest with AI</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
+              onClick={() => setOpenChat(true)}
+            >
+              <MessageCircleMore className="w-6 h-6" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="z-[999]">
+            <p>Chat with AI</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              className="fixed bottom-4 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-red-500 hover:bg-red-400 border-0 text-white"
+              onClick={() => setOpenCreateStartup(true)}
+            >
+              <Plus className="w-6 h-6" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent className="z-[999]">
+            <p>Create Startup</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <CreateStartupModal
         open={openCreateStartup}
         setOpen={setOpenCreateStartup}
         onCreate={handleCreateStartup}
       />
-      <SmartSearch
-        isSearchOpen={isSearchOpen}
-        handleCloseChat={handleCloseSearch}
-      />
-      <TopicsChat isChatOpen={isChatOpen} handleCloseChat={handleCloseChat} />
+      <SmartSearch open={openSearch} setOpen={setOpenSearch} />
+      <TopicsChat open={openChat} setOpen={setOpenChat} />
     </div>
   );
 }
