@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Manrope"', "sans-serif"],
-        hebrew: ['"Assistant"', "sans-serif"],
+        sans: ["Manrope"],
+        hebrew: ["Assistant"],
       },
       borderRadius: {
         lg: "var(--radius)",

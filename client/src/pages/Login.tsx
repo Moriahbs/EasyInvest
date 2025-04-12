@@ -68,7 +68,7 @@ export default function AuthPage() {
   const handleGoogleLogin = () =>
     (window.location.href = `${config.SERVER_URL}/auth/google`);
 
-  const errorClass = "text-red-500 text-xs w-fit ml-1 mt-1";
+  const errorClass = "text-blue-600 text-xs w-fit ml-1 mt-1";
   const labelClass = "block font-medium text-right mb-1";
 
   return (
@@ -151,7 +151,7 @@ export default function AuthPage() {
                   </div>
                   <Button
                     type="submit"
-                    className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none mt-4"
+                    className="w-full bg-blue-600 hover:bg-blue-400 border-none mt-4"
                   >
                     {isLogin ? "התחברות" : "הרשמה"}
                   </Button>

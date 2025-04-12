@@ -68,7 +68,7 @@ export default function SmartSearch({
           />
           {isLoading ? (
             <div className="flex flex-col items-center mt-4 gap-2">
-              <Loader2 className="animate-spin h-12 w-12 text-red-500" />
+              <Loader2 className="animate-spin h-12 w-12 text-blue-600" />
               <p className="text-sm text-muted-foreground">Thinking...</p>
             </div>
           ) : (

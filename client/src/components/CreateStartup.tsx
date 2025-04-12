@@ -277,7 +277,7 @@ export default function CreateStartupModal({
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-1/3 bg-[#5252cb] hover:bg-[#7878e0] border-none mt-2 just"
+                className="w-1/3 bg-blue-600 hover:bg-blue-400 border-none mt-2 just"
               >
                 {loading ? "מעלה את הסטארטאפ..." : "יצירה"}
               </Button>
