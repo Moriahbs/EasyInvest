@@ -9,7 +9,6 @@ import usersRoute from "./routes/usersRoute";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig";
 import cors from "cors";
-// import path from "path";
 import expressSession from "express-session";
 import passport from "passport";
 import googleRoute from "./routes/googleRoute";
@@ -48,6 +47,8 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
   app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/api/chatbot", chatBotRoute);
+
   app.use("/api/smartSearch", smartSearchRoute);
   app.use("/api/topics", topicsRoute);
   // Database connection

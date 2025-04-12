@@ -76,10 +76,10 @@ interface StartupRequestBody {
  *       500:
  *         description: Error occurred during creation.
  */
-// CREATE NEW PROJECT
+// CREATE NEW STARTUP
 router.post(
   "/",
-  upload.single("image"),
+  upload.single("startupImage"),
   async (req: Request, res: Response) => {
     try {
       const {
@@ -187,18 +187,94 @@ router.post(
  *                     type: integer
  *                   tags:
  *                     type: array
- *                     items:
+ *                   items:
  *                       type: string
  *       500:
  *         description: Error occurred during fetch.
  */
-// GET ALL PROJECTS
+// GET ALL STARTUPS
 router.get("/", async (req: Request, res: Response) => {
   try {
     const allStartups = await Startup.find()
       .populate("owner")
       .sort({ createdAt: -1 });
     res.status(200).send(allStartups);
+  } catch (error) {
+    console.error("Error fetching startups:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching startups" });
+  }
+});
+
+/**
+ * @swagger
+ * /startups/sender/{ownerId}:
+ *   get:
+ *     summary: Retrieve startups by a specific owner
+ *     tags: [Startups]
+ *     parameters:
+ *       - name: ownerId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the owner
+ *     responses:
+ *       200:
+ *         description: A list of startups by the specified owner.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   fundingStage:
+ *                     type: string
+ *                   valuationLastRound:
+ *                     type: number
+ *                   latitude:
+ *                     type: number
+ *                   location:
+ *                     type: string
+ *                   longitude:
+ *                     type: number
+ *                   foundedYear:
+ *                     type: integer
+ *                   tags:
+ *                     type: array
+ *                   items:
+ *                       type: string
+ *       400:
+ *         description: Invalid input.
+ *       404:
+ *         description: No startups found for the given owner.
+ *       500:
+ *         description: Error occurred during fetch.
+ */
+// GET ALL STARTUPS BY SENDER
+router.get("/sender/:sender", async (req: Request, res: Response) => {
+  try {
+    const sender = req.params.sender;
+    if (!sender) {
+      res.status(400).send({ error: "Please provide sender id" });
+      return;
+    }
+    const senderStartups = await Startup.find({ owner: sender })
+      .populate("owner")
+      .sort({ createdAt: -1 });
+    if (!senderStartups.length) {
+      res.status(404).send({ error: "No startups found for this sender" });
+      return;
+    }
+    res.status(200).send(senderStartups);
   } catch (error) {
     console.error("Error fetching startups:", error);
     res
@@ -230,7 +306,7 @@ router.get("/", async (req: Request, res: Response) => {
  *       500:
  *         description: Error occurred during fetch.
  */
-// GET PROJECT BY ID
+// GET STARTUP BY ID
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -278,7 +354,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  *               - description
  *               - fundingStage
  *               - valuationLastRound
- *               - location 
+ *               - location
  *               - latitude
  *               - longitude
  *               - foundedYear
@@ -318,10 +394,10 @@ router.get("/:id", async (req: Request, res: Response) => {
  *       500:
  *         description: Error occurred during update.
  */
-// UPDATE PROJECT BY ID
+// UPDATE STARTUP BY ID
 router.put(
   "/:id",
-  upload.single("image"),
+  upload.single("startupImage"),
   async (req: Request, res: Response) => {
     try {
       const updatedStartup: Partial<StartupRequestBody> = {};
@@ -428,19 +504,20 @@ router.put(
  *       500:
  *         description: Error occurred during delete.
  */
-// DELETE PROJECT BY ID
+// DELETE STARTUP BY ID
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
+    const startupId = req.params.id;
 
-    if (!id) {
+    if (!startupId) {
       res.status(400).send({ error: "Please provide startup id" });
       return;
     }
 
-    const startup = await Startup.findById(id).populate("owner");
+    const startup = await Startup.findById(startupId).populate("owner");
+    const startupToDelete = startup as unknown as IStartup & { owner: IUser };
 
-    if (!startup) {
+    if (!startupToDelete) {
       res.status(404).send({ error: "Startup not found" });
       return;
     }
@@ -448,12 +525,17 @@ router.delete("/:id", async (req: Request, res: Response) => {
     const token = getAccessToken(req) || "";
     const { userId } = verifyAccessToken(token) || { userId: "" };
 
-    if (startup.owner._id.toString() !== userId) {
+    if (startupToDelete.owner._id.toString() !== userId) {
       res.status(401).send({ error: "No permission to delete this startup" });
       return;
     }
 
-    await Startup.deleteOne({ _id: id });
+    const user = startupToDelete.owner;
+    user.startups.pull(startupId);
+    await user.save();
+
+    await Startup.findByIdAndDelete(startupId);
+
     res.status(200).send({ message: "Startup successfully deleted" });
   } catch (error) {
     console.error("Error deleting startup:", error);

@@ -2,9 +2,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { getAllStartups } from "@/actions/startupActions";
-import { Startup } from "@/models/startupModel";
+import { Startup } from "@/models/StartupModel";
 import { Skeleton } from "@/components/ui/skeleton";
-import StartupCard from "@/components/StartupCard"; // Import the StartupCard component
+import StartupCard from "@/components/StartupCard";
 
 export default function MapPage() {
   const [startups, setStartUps] = useState<Startup[]>([]);
@@ -23,8 +23,11 @@ export default function MapPage() {
 
   const FitBounds = ({ startups }: { startups: Startup[] }) => {
     const map = useMap();
-    const latitudes = startups.map(startup => startup.latitude);
-    const longitudes = startups.map(startup => startup.longitude);
+
+    if (!map || !startups || startups.length === 0) return null;
+
+    const latitudes = startups.map((startup) => startup.latitude);
+    const longitudes = startups.map((startup) => startup.longitude);
 
     const minLat = Math.min(...latitudes);
     const maxLat = Math.max(...latitudes);
@@ -33,7 +36,7 @@ export default function MapPage() {
 
     map.fitBounds([
       [minLat, minLng],
-      [maxLat, maxLng]
+      [maxLat, maxLng],
     ]);
 
     return null;
@@ -41,7 +44,6 @@ export default function MapPage() {
 
   return (
     <div className="flex gap-8 flex-wrap items-start">
-      {/* Map Container */}
       <div className="flex-1">
         {loading ? (
           <div style={{ height: "500px", width: "100%" }}>
@@ -49,13 +51,16 @@ export default function MapPage() {
           </div>
         ) : (
           <MapContainer
-            center={[32.0853, 34.7818]} // Default initial center
+            center={[32.0853, 34.7818]}
             zoom={13}
             style={{ height: "500px", width: "100%" }}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {startups.map((startup, index) => (
-              <Marker key={index} position={[startup.latitude, startup.longitude]}>
+              <Marker
+                key={index}
+                position={[startup.latitude, startup.longitude]}
+              >
                 <Popup>
                   <strong>{startup.name}</strong>
                   <br />
@@ -63,13 +68,11 @@ export default function MapPage() {
                 </Popup>
               </Marker>
             ))}
-            {/* Fit the map bounds to all the markers */}
             <FitBounds startups={startups} />
           </MapContainer>
         )}
       </div>
 
-      {/* Startup Cards */}
       <div className="w-full sm:w-[48%] md:w-[30%]">
         {loading ? (
           <Skeleton />

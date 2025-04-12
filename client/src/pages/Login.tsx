@@ -9,6 +9,8 @@ import { loginUser, registerUser } from "@/actions/authActions";
 import { isTokenValid } from "@/utils/authUtils";
 import { FcGoogle } from "react-icons/fc";
 import config from "@/config";
+import UploadProfile from "@/components/UploadProfile";
+import { cn } from "@/lib/utils";
 
 interface AuthForm {
   username: string;
@@ -20,6 +22,8 @@ export default function AuthPage() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [generalError, setGeneralError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
@@ -43,7 +47,12 @@ export default function AuthPage() {
       if (isLogin) {
         await loginUser(data.username, data.password);
       } else {
-        await registerUser(data.username, data.email || "", data.password);
+        await registerUser(
+          data.username,
+          data.email || "",
+          data.password,
+          image
+        );
       }
 
       validateToken();
@@ -75,58 +84,80 @@ export default function AuthPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div>
-                <label className={labelClass}>משתמש</label>
-                <Input
-                  type="username"
-                  placeholder="שם משתמש"
-                  {...register("username", {
-                    required: "יש להכניס פרטי שם משתמש",
-                  })}
-                  className="w-full"
-                />
-                {errors.username && (
-                  <p className={errorClass}>{errors.username.message}</p>
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              onChange={(event: any) => setUsername(event.target.value)}
+              className="space-y-4"
+            >
+              <div className="flex w-full">
+                {!isLogin && (
+                  <div className="w-1/5 ml-2 mt-6">
+                    <UploadProfile
+                      username={username}
+                      setImage={setImage}
+                      isRegister={true}
+                    />
+                  </div>
                 )}
-              </div>
-              {!isLogin && (
-                <div>
-                  <label className={labelClass}>מייל</label>
-                  <Input
-                    type="email"
-                    placeholder="כתובת מייל"
-                    {...register("email", { required: "יש להכניס כתובת מייל" })}
-                    className="w-full"
-                  />
-                  {errors.email && (
-                    <p className={errorClass}>{errors.email.message}</p>
+
+                <div
+                  className={cn(!isLogin ? "w-4/5 flex flex-col" : "w-full")}
+                >
+                  <div>
+                    <label className={labelClass}>משתמש</label>
+                    <Input
+                      type="username"
+                      placeholder="שם משתמש"
+                      {...register("username", {
+                        required: "יש להכניס פרטי שם משתמש",
+                      })}
+                      className="w-full"
+                    />
+                    {errors.username && (
+                      <p className={errorClass}>{errors.username.message}</p>
+                    )}
+                  </div>
+                  {!isLogin && (
+                    <div>
+                      <label className={labelClass}>מייל</label>
+                      <Input
+                        type="email"
+                        placeholder="כתובת מייל"
+                        {...register("email", {
+                          required: "יש להכניס כתובת מייל",
+                        })}
+                        className="w-full"
+                      />
+                      {errors.email && (
+                        <p className={errorClass}>{errors.email.message}</p>
+                      )}
+                    </div>
                   )}
+                  <div>
+                    <label className={labelClass}>סיסמא</label>
+                    <Input
+                      type="password"
+                      placeholder={
+                        isLogin ? "********" : "סיסמא בעלת 10 תווים לפחות"
+                      }
+                      {...register("password", {
+                        required: "יש להכניס סיסמא",
+                      })}
+                      className="w-full"
+                    />
+                    {errors.password && (
+                      <p className={errorClass}>{errors.password.message}</p>
+                    )}
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none mt-4"
+                  >
+                    {isLogin ? "התחברות" : "הרשמה"}
+                  </Button>
+                  {generalError && <p className={errorClass}>{generalError}</p>}
                 </div>
-              )}
-              <div>
-                <label className={labelClass}>סיסמא</label>
-                <Input
-                  type="password"
-                  placeholder={
-                    isLogin ? "********" : "סיסמא בעלת 10 תווים לפחות"
-                  }
-                  {...register("password", {
-                    required: "יש להכניס סיסמא",
-                  })}
-                  className="w-full"
-                />
-                {errors.password && (
-                  <p className={errorClass}>{errors.password.message}</p>
-                )}
               </div>
-              <Button
-                type="submit"
-                className="w-full bg-[#5252cb] hover:bg-[#7878e0] border-none"
-              >
-                {isLogin ? "התחברות" : "הרשמה"}
-              </Button>
-              {generalError && <p className={errorClass}>{generalError}</p>}
             </form>
             <Button
               onClick={handleGoogleLogin}
