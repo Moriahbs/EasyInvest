@@ -9,6 +9,9 @@ import config from "@/config";
 import TopicsChat from "@/components/TopicsChat";
 import { Startup } from "@/models/StartupModel";
 import CreateStartupModal from "@/components/CreateStartup";
+import React from "react";
+import Lottie from "lottie-react";
+import myAnimation from "../assets/SearchBar.json";
 
 export default function HomePage() {
   const [dbStartups, setDbStartups] = useState<Startup[]>([]);
@@ -39,8 +42,15 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative w-full h-[30vh]">
-      <img
+    <div className="relative w-full h-[30vh] flex items-center justify-center">
+      <div style={{ width: "500px", height: "500px" }}>
+        <Lottie
+          animationData={myAnimation}
+          loop={true}
+          autoplay={true}
+        />
+      </div>
+      {/* <img
         src="https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg"
         alt="Background"
         className="w-full h-full object-cover"
@@ -113,7 +123,7 @@ export default function HomePage() {
           <h4 className="text-xl font-semibold mb-2">פרויקטים</h4>
           <p>חרטוטים חרטוטים חרטוטים חרטוטים </p>
         </div>
-      </div>
+      </div> */}
       <Tooltip title="Search Invest with AI">
         <Fab
           color="primary"
