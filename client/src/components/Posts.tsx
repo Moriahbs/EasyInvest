@@ -66,9 +66,9 @@
 //             onClick={onLikeClicked}
 //           >
 //             {liked ? (
-//               <Heart className="w-5 h-5 text-red-400" fill="currentColor" />
+//               <Heart className="w-5 h-5 text-blue-400" fill="currentColor" />
 //             ) : (
-//               <Heart className="w-5 h-5 text-red-400" />
+//               <Heart className="w-5 h-5 text-blue-400" />
 //             )}
 //             <span>{post.likes.length}</span>
 //           </div>

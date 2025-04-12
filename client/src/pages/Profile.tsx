@@ -149,7 +149,7 @@ export default function ProfilePage() {
               />
               {allUsernames.includes(newUsername) &&
                 !(newUsername === user.username) && (
-                  <p className="text-red-500 text-xs w-fit ml-1 mt-1">
+                  <p className="text-blue-600 text-xs w-fit ml-1 mt-1">
                     שם המשתמש תפוס{" "}
                   </p>
                 )}
@@ -162,7 +162,7 @@ export default function ProfilePage() {
                 onChange={(e) => setNewEmail(e.target.value)}
               />
               {allEmails.includes(newEmail) && !(newEmail === user.email) && (
-                <p className="text-red-500 text-xs w-fit ml-1 mt-1">
+                <p className="text-blue-600 text-xs w-fit ml-1 mt-1">
                   כתובת המייל תפוסה{" "}
                 </p>
               )}

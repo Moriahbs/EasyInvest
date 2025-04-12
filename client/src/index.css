@@ -5,7 +5,7 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-
+  font-family: "Manrope", "Assistant";
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -18,11 +18,10 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #51a2ff;
 }
 
 body {
@@ -50,7 +49,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: blue-600;
 }
 button:focus,
 button:focus-visible {
@@ -63,7 +62,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: blue-600;
   }
   button {
     background-color: #f9f9f9;
