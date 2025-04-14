@@ -18,16 +18,20 @@ export const loginUser = async (username: string, password: string) => {
 export const registerUser = async (
   username: string,
   email: string,
-  password: string
+  password: string,
+  profilePhoto?: File | null
 ) => {
+  const formData = new FormData();
+  profilePhoto && formData.append("profileImage", profilePhoto);
+  formData.append("username", username);
+  formData.append("email", email);
+  formData.append("password", password);
+
   const res = await axios.post(
     `${config.SERVER_URL}/users/register`,
+    formData,
     {
-      username,
-      email,
-      password,
-    },
-    {
+      headers: { "Content-Type": "multipart/form-data" },
       withCredentials: true,
     }
   );

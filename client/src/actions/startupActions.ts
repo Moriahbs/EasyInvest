@@ -41,10 +41,10 @@ export const createStartup = async (
   location: string,
   latitude: number,
   longitude: number,
-  image: string
+  image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("startupImage", image);
   formData.append("name", name);
   formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
@@ -64,6 +64,7 @@ export const createStartup = async (
 };
 
 export const editStartup = async (
+  startupId: string,
   name: string,
   tags: string[],
   description: string,
@@ -73,10 +74,10 @@ export const editStartup = async (
   location: string,
   latitude: number,
   longitude: number,
-  image: string
+  image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("startupImage", image);
   formData.append("name", name);
   formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
