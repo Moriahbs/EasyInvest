@@ -12,6 +12,7 @@ export interface Startup {
     image?: string;
 }
 
+// רשימת קטגוריות קבועה לבחירה
 export const STARTUP_CATEGORIES: string[] = [
     "טכנולוגיה ירוקה",
     "אנרגיה מתחדשת",
@@ -35,4 +36,17 @@ export const STARTUP_CATEGORIES: string[] = [
     "טכנולוגיית מזון",
     "שרשרת אספקה",
     "אוטומציה",
+];
+
+// רשימת שלבי מימון קבועים לבחירה
+export const FUNDING_STAGES: string[] = [
+    "פרה-סיד",
+    "סיד",
+    "סבב גיוס ראשון",
+    "סבב גיוס שני",
+    "סבב גיוס שלישי",
+    "סבב גיוס רביעי",
+    "מאוחר יותר",
+    "גשר",
+    "IPO",
 ];

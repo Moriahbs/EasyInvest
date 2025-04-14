@@ -12,7 +12,7 @@ import { createStartup } from "@/actions/startupActions";
 import UploadImage from "./UploadImage";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { STARTUP_CATEGORIES } from "../models/StartupModel";
+import { STARTUP_CATEGORIES, FUNDING_STAGES } from "../models/StartupModel"
 import { MultiSelect } from "./ui/multi-select";
 import { toast } from "sonner";
 
@@ -183,17 +183,25 @@ export default function CreateStartupModal({
             />
 
             <label className={labelClass}>שלב מימון</label>
-            <Input
-              className={inputClass}
-              placeholder="שלב מימון"
-              value={startupDetails.fundingStage}
-              onChange={(e) =>
-                setStartupDetails({
-                  ...startupDetails,
-                  fundingStage: e.target.value,
-                })
-              }
-            />
+            <select
+                className={`w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputClass}`}
+                value={startupDetails.fundingStage}
+                onChange={(e) =>
+                    setStartupDetails({
+                      ...startupDetails,
+                      fundingStage: e.target.value,
+                    })
+                }
+            >
+              <option value="" disabled>
+                בחר שלב מימון
+              </option>
+              {FUNDING_STAGES.map((stage) => (
+                  <option key={stage} value={stage}>
+                    {stage}
+                  </option>
+              ))}
+            </select>
 
             <label className={labelClass}>שנת הקמה</label>
             <Input
