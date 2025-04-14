@@ -1,16 +1,7 @@
+// StartupInfo.tsx
 import React from 'react';
 import { Startup } from '@/models/StartupModel.ts';
-import {
-    Card,
-    CardContent,
-    Typography,
-    Chip,
-    Grid,
-    Box,
-    Button,
-    Avatar,
-} from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+// import { ArrowLeftIcon } from '@heroicons/react/24/solid'; // החלפה של ArrowForwardIcon
 
 interface StartupInfoProps {
     startup: Startup;
@@ -24,167 +15,89 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
     });
 
     return (
-        <Card
-            sx={{
-                maxWidth: 800,
-                borderRadius: '16px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                backgroundColor: '#f5faff',
-                padding: 4,
-                direction: 'rtl',
-                fontFamily: "'Rubik', sans-serif",
-            }}
+        <div
+            className="max-w-4xl rounded-2xl shadow-lg bg-blue-50 p-6 direction-rtl font-rubik"
         >
-            <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, flexDirection: 'row-reverse', gap: 8 }}>
-                    <Avatar
-                        src="/path-to-logo.png" //TODO
-                        sx={{
-                            width: 120,
-                            height: 120,
-                            ml: 2,
-                            backgroundColor: '#1a2a44',
-                            color: '#fff',
-                        }}
-                    >
-                        לוגו
-                    </Avatar>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1a2a44' }}>
-                        {startup.companyName}
-                    </Typography>
-                </Box>
-
-                <Typography
-                    variant="body1"
-                    sx={{
-                        color: '#1a2a44',
-                        mb: 3,
-                        textAlign: 'right',
-                        direction: 'rtl',
-                        fontSize: '1.1rem',
-                    }}
-                >
-                    {startup.description}
-                </Typography>
-
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3, justifyContent: 'flex-start' }}>
-                    {startup.tags.map((tag, index) => (
-                        <Chip
-                            key={index}
-                            label={tag}
-                            sx={{
-                                backgroundColor: '#e3f2fd',
-                                color: '#1976d2',
-                                fontSize: '0.85rem',
-                                fontWeight: 'medium',
-                                marginLeft: 1,
+            <div>
+                {/* כותרת עם לוגו ושם החברה */}
+                <div className="flex items-center mb-6 flex-row-reverse gap-8">
+                    {/* לוגו עגול */}
+                    <div className="relative w-32 h-32 ml-2">
+                        <img
+                            src="/path-to-logo.png" //TODO
+                            alt="לוגו"
+                            className="w-full h-full rounded-full bg-blue-950 text-white flex items-center justify-center"
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.nextElementSibling!.style.display = 'flex';
                             }}
                         />
-                    ))}
-                </Box>
+                        <div
+                            className="w-full h-full rounded-full bg-blue-950 text-white flex items-center justify-center text-2xl hidden"
+                        >
+                            לוגו
+                        </div>
+                    </div>
+                    <h1 className="text-4xl font-bold text-blue-950">
+                        {startup.companyName} {/* תיקון מ-startup.name ל-startup.companyName */}
+                    </h1>
+                </div>
 
-                <Grid
-                    container
-                    spacing={2}
-                    sx={{
-                        textAlign: 'center',
-                        mb: 3,
-                        justifyContent: 'space-between',
-                    }}
+                {/* תיאור */}
+                <p
+                    className="text-blue-950 mb-6 text-right direction-rtl text-lg"
                 >
-                    <Grid item xs={4}>
-                        <Box
-                            sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '8px',
-                                p: 2,
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-                                width: '100%',
-                                height: '100px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography variant="caption" sx={{ color: '#666', fontSize: '0.9rem' }}>
-                                שווי בסיבוב האחרון
-                            </Typography>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2a44', fontSize: '1.2rem' }}>
-                                {valuationInShekels}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Box
-                            sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '8px',
-                                p: 2,
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-                                width: '100%',
-                                height: '100px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography variant="caption" sx={{ color: '#666', fontSize: '0.9rem' }}>
-                                שנת הקמה
-                            </Typography>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2a44', fontSize: '1.2rem' }}>
-                                {startup.foundedYear}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Box
-                            sx={{
-                                backgroundColor: '#fff',
-                                borderRadius: '8px',
-                                p: 2,
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-                                width: '100%',
-                                height: '100px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography variant="caption" sx={{ color: '#666', fontSize: '0.9rem' }}>
-                                שלב מימון
-                            </Typography>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1a2a44', fontSize: '1.2rem' }}>
-                                {startup.fundingStage}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                </Grid>
+                    {startup.description}
+                </p>
 
-                <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 3 }}>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            backgroundColor: '#6b48ff',
-                            color: '#fff',
-                            borderRadius: '50px',
-                            padding: '8px 16px',
-                            textTransform: 'none',
-                            fontWeight: 'medium',
-                            fontSize: '1rem',
-                            '&:hover': {
-                                backgroundColor: '#5a3de6',
-                            },
-                        }}
-                        startIcon={<ArrowForwardIcon />}
+                {/* תגיות */}
+                <div className="flex flex-wrap gap-2 mb-6 justify-start">
+                    {startup.tags.map((tag, index) => (
+                        <span
+                            key={index}
+                            className="bg-blue-100 text-blue-600 text-sm font-medium px-3 py-1 rounded-full mr-2"
+                        >
+                            {tag}
+                        </span>
+                    ))}
+                </div>
+
+                {/* סטטיסטיקות */}
+                <div className="flex justify-between mb-6 text-center">
+                    {/* שווי בסיבוב האחרון */}
+                    <div
+                        className="bg-white rounded-lg p-4 shadow-sm w-full h-24 flex flex-col justify-center items-center mx-2"
                     >
-                        לפרטים נוספים
-                    </Button>
-                </Box>
-            </CardContent>
-        </Card>
+                        <p className="text-gray-500 text-sm">שווי בסיבוב האחרון</p>
+                        <h2 className="text-xl font-bold text-blue-950">{valuationInShekels}</h2>
+                    </div>
+                    {/* שנת הקמה */}
+                    <div
+                        className="bg-white rounded-lg p-4 shadow-sm w-full h-24 flex flex-col justify-center items-center mx-2"
+                    >
+                        <p className="text-gray-500 text-sm">שנת הקמה</p>
+                        <h2 className="text-xl font-bold text-blue-950">{startup.foundedYear}</h2>
+                    </div>
+                    {/* שלב מימון */}
+                    <div
+                        className="bg-white rounded-lg p-4 shadow-sm w-full h-24 flex flex-col justify-center items-center mx-2"
+                    >
+                        <p className="text-gray-500 text-sm">שלב מימון</p>
+                        <h2 className="text-xl font-bold text-blue-950">{startup.fundingStage}</h2>
+                    </div>
+                </div>
+
+                {/* כפתור */}
+                <div className="flex justify-start mt-6">
+                    <button
+                        className="bg-purple-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-purple-700 transition flex items-center gap-2"
+                    >
+                        <span>לפרטים נוספים</span>
+                        {/*<ArrowLeftIcon className="w-5 h-5" />*/} //todo with tailwind
+                    </button>
+                </div>
+            </div>
+        </div>
     );
 };
 
