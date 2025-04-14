@@ -6,7 +6,7 @@ import Layout from "./assets/Layout";
 import HomePage from "./pages/Home";
 import MapPage from "./pages/Map";
 import { Toaster } from "sonner";
-import ExampleStartupWrapperPage from "@/pages/ExampleStartupWrapperPage.tsx";
+import StartupWrapperPage from "@/pages/StartupWrapperPage.tsx";
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/map" element={<MapPage />} />
-            <Route path="/example-startup" element={<ExampleStartupWrapperPage />} />
+            <Route path="/startup/:id" element={<StartupWrapperPage />} />
           </Route>
         </Routes>
       </Router>
