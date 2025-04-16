@@ -28,6 +28,9 @@ export interface IStartup extends Document {
   fundingStage: string;
   image?: string;
   valuationLastRound: number;
+  contactEmail: string;
+  contactPhone: string;
+  founders: string;
   latitude: number;
   longitude: number;
   createdAt: Date;

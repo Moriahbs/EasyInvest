@@ -9,12 +9,15 @@ export interface Startup {
     longitude: number;
     foundedYear: number;
     valuationLastRound: number;
+    contactEmail: string;
+    contactPhone: string;
+    founders: string;
     image?: string;
 }
 
 export const STARTUP_MOCK_DATA: Startup[] = [
     {
-        _id: "1", // הוספת מזהה
+        _id: "1",
         name: "GreenTech Innovations",
         tags: ["טכנולוגיה ירוקה", "אנרגיה מתחדשת", "קיימות", "בינה מלאכותית", "ביג דאטה"],
         description: "משתמשים בבינה מלאכותית ובביג דאטה כדי לייעל פתרונות אנרגיה מתחדשת באזורים עירוניים.",
@@ -24,6 +27,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         longitude: 34.7818,
         foundedYear: 2020,
         valuationLastRound: 87500000,
+        contactEmail: "contact@greentech.com",
+        contactPhone: "+972-50-1234567",
+        founders: "יובל כהן, דנה לוי",
+        image: undefined,
     },
     {
         _id: "67f7dbc48ede715934b244f8",
@@ -36,6 +43,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         longitude: 34.7822,
         foundedYear: 2021,
         valuationLastRound: 28000000,
+        contactEmail: "info@healthsync.com",
+        contactPhone: "+972-52-9876543",
+        founders: "איתן שמיר",
+        image: undefined,
     },
     {
         _id: "3",
@@ -48,6 +59,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         longitude: 34.7805,
         foundedYear: 2019,
         valuationLastRound: 210000000,
+        contactEmail: "support@eduverse.com",
+        contactPhone: "+972-54-5551234",
+        founders: "מיכל בר, עידן גל",
+        image: undefined,
     },
     {
         _id: "4",
@@ -60,6 +75,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         longitude: 34.7818,
         foundedYear: 2020,
         valuationLastRound: 105000000,
+        contactEmail: "contact@securenest.com",
+        contactPhone: "+972-53-4567890",
+        founders: "רועי דניאל",
+        image: undefined,
     },
     {
         _id: "5",
@@ -72,6 +91,10 @@ export const STARTUP_MOCK_DATA: Startup[] = [
         longitude: 34.7799,
         foundedYear: 2022,
         valuationLastRound: 17500000,
+        contactEmail: "info@foodchainai.com",
+        contactPhone: "+972-57-3216547",
+        founders: "שירן אמיר, תומר רז",
+        image: undefined,
     },
 ];
 
@@ -99,4 +122,16 @@ export const STARTUP_CATEGORIES: string[] = [
     "טכנולוגיית מזון",
     "שרשרת אספקה",
     "אוטומציה",
+];
+
+export const FUNDING_STAGES: string[] = [
+    "פרה-סיד",
+    "סיד",
+    "סבב גיוס ראשון",
+    "סבב גיוס שני",
+    "סבב גיוס שלישי",
+    "סבב גיוס רביעי",
+    "מאוחר יותר",
+    "גשר",
+    "IPO",
 ];
