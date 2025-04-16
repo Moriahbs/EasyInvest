@@ -29,12 +29,12 @@ export default function CreateStartupPage() {
   }, [token]);
 
   if (isAuthenticated === null) {
-    return <div className="min-h-screen bg-gray-100 flex items-center justify-center">טוען...</div>;
+    return <div className="min-h-screen bg-white flex items-center justify-center">טוען...</div>;
   }
 
   if (!isAuthenticated) {
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="min-h-screen bg-white flex items-center justify-center">
           <Card className="max-w-md p-6 text-center">
             <CardHeader>
               <CardTitle className="text-2xl font-bold">כדי ליצור סטארטאפ</CardTitle>
@@ -54,9 +54,9 @@ export default function CreateStartupPage() {
   }
 
   return (
-      <div className="min-h-screen bg-gray-100">
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-6">
-          <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
+      <div className="min-h-screen bg-white">
+        <div className="sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-6 shadow-md">
+          <div className="px-4 flex justify-between items-center">
             <h1 className="text-3xl font-bold">יצירת סטארטאפ חדש</h1>
             <Button
                 variant="ghost"
@@ -68,7 +68,7 @@ export default function CreateStartupPage() {
           </div>
         </div>
 
-        <div dir="rtl" className="font-hebrew max-w-6xl mx-auto px-4 py-8">
+        <div dir="rtl" className="font-hebrew px-4 py-8">
           <motion.div
               className="bg-white p-8 rounded-xl shadow-md"
               variants={fadeIn}
