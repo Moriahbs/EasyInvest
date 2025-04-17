@@ -1,22 +1,27 @@
-import { Home, LogOut, UserPen, Map } from "lucide-react";
+import { Home, LogOut, UserPen, Map, Plus } from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 
 const items = [
   {
     title: "ראשי",
-    url: "home",
+    url: "/home",
     icon: Home,
   },
   {
     title: "פרופיל",
-    url: "profile",
+    url: "/profile",
     icon: UserPen,
   },
   {
     title: "מפה",
-    url: "map",
+    url: "/map",
     icon: Map,
+  },
+  {
+    title: "יצירת סטארטאפ",
+    url: "/create-startup",
+    icon: Plus,
   },
 ];
 

@@ -9,6 +9,9 @@ export interface Startup {
     longitude: number;
     foundedYear: number;
     valuationLastRound: number;
+    contactEmail: string;
+    contactPhone: string;
+    founders: string;
     image?: string;
 }
 

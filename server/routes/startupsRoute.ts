@@ -18,6 +18,9 @@ interface StartupRequestBody {
   name: string;
   description: string;
   fundingStage: string;
+  contactEmail: string;
+  contactPhone: string;
+  founders: string;
   image: string;
 }
 
@@ -30,7 +33,7 @@ interface StartupRequestBody {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -43,6 +46,9 @@ interface StartupRequestBody {
  *               - longitude
  *               - foundedYear
  *               - tags
+ *               - contactEmail
+ *               - contactPhone
+ *               - founders
  *             properties:
  *               tags:
  *                 type: array
@@ -64,8 +70,15 @@ interface StartupRequestBody {
  *                 type: string
  *               fundingStage:
  *                 type: string
- *               image:
+ *               contactEmail:
  *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               founders:
+ *                 type: string
+ *               startupImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Startup successfully created.
@@ -78,39 +91,44 @@ interface StartupRequestBody {
  */
 // CREATE NEW STARTUP
 router.post(
-  "/",
-  upload.single("startupImage"),
-  async (req: Request, res: Response) => {
-    try {
-      const {
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-      }: StartupRequestBody = req.body;
-      const image = req.file
-        ? `${req.file?.destination}${req.file?.filename}`
-        : undefined;
-
-      if (
-        !name ||
-        !description ||
-        !fundingStage ||
-        !valuationLastRound ||
-        !location ||
-        !latitude ||
-        !longitude ||
-        !foundedYear ||
-        !tags
-      ) {
-        res.status(400).send({ error: "Please provide all details" });
-        return;
-      }
+    "/",
+    upload.single("startupImage"),
+    async (req: Request, res: Response) => {
+      try {
+        const {
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+        }: StartupRequestBody = req.body;
+        const image = req.file
+            ? `${req.file?.destination}${req.file?.filename}`
+            : undefined;
+        if (
+            !name ||
+            !description ||
+            !fundingStage ||
+            !valuationLastRound ||
+            !location ||
+            !latitude ||
+            !longitude ||
+            !foundedYear ||
+            !tags ||
+            !contactEmail ||
+            !contactPhone ||
+            !founders
+        ) {
+          res.status(400).send({ error: "Please provide all details" });
+          return;
+        }
 
       const token = getAccessToken(req) || "";
       const { userId } = verifyAccessToken(token) || { userId: "" };
@@ -121,19 +139,22 @@ router.post(
         return;
       }
 
-      const newStartup = new Startup({
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-        owner: userId,
-        image,
-      });
+        const newStartup = new Startup({
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+          owner: userId,
+          image,
+        });
 
       await newStartup.save();
 
@@ -185,10 +206,18 @@ router.post(
  *                     type: number
  *                   foundedYear:
  *                     type: integer
+ *                   contactEmail:
+ *                     type: string
+ *                   contactPhone:
+ *                     type: string
+ *                   founders:
+ *                     type: string
  *                   tags:
  *                     type: array
- *                   items:
+ *                     items:
  *                       type: string
+ *                   image:
+ *                     type: string
  *       500:
  *         description: Error occurred during fetch.
  */
@@ -248,10 +277,18 @@ router.get("/", async (req: Request, res: Response) => {
  *                     type: number
  *                   foundedYear:
  *                     type: integer
+ *                   contactEmail:
+ *                     type: string
+ *                   contactPhone:
+ *                     type: string
+ *                   founders:
+ *                     type: string
  *                   tags:
  *                     type: array
- *                   items:
+ *                     items:
  *                       type: string
+ *                   image:
+ *                     type: string
  *       400:
  *         description: Invalid input.
  *       404:
@@ -299,6 +336,41 @@ router.get("/sender/:sender", async (req: Request, res: Response) => {
  *     responses:
  *       200:
  *         description: Startup details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 fundingStage:
+ *                   type: string
+ *                 valuationLastRound:
+ *                   type: number
+ *                 latitude:
+ *                   type: number
+ *                 location:
+ *                   type: string
+ *                 longitude:
+ *                   type: number
+ *                 foundedYear:
+ *                   type: integer
+ *                 contactEmail:
+ *                   type: string
+ *                 contactPhone:
+ *                   type: string
+ *                 founders:
+ *                   type: string
+ *                 tags:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 image:
+ *                   type: string
  *       400:
  *         description: Invalid input.
  *       404:
@@ -346,7 +418,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -359,6 +431,9 @@ router.get("/:id", async (req: Request, res: Response) => {
  *               - longitude
  *               - foundedYear
  *               - tags
+ *               - contactEmail
+ *               - contactPhone
+ *               - founders
  *             properties:
  *               tags:
  *                 type: array
@@ -380,8 +455,15 @@ router.get("/:id", async (req: Request, res: Response) => {
  *                 type: string
  *               fundingStage:
  *                 type: string
- *               image:
+ *               contactEmail:
  *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               founders:
+ *                 type: string
+ *               startupImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Startup successfully updated.
@@ -396,54 +478,65 @@ router.get("/:id", async (req: Request, res: Response) => {
  */
 // UPDATE STARTUP BY ID
 router.put(
-  "/:id",
-  upload.single("startupImage"),
-  async (req: Request, res: Response) => {
-    try {
-      const updatedStartup: Partial<StartupRequestBody> = {};
-      const {
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-      } = req.body;
-      const image = `${req.file?.destination}${req.file?.filename}`;
-      const id = req.params.id;
+    "/:id",
+    upload.single("startupImage"),
+    async (req: Request, res: Response) => {
+      try {
+        const updatedStartup: Partial<StartupRequestBody> = {};
+        const {
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+        } = req.body;
+        const image = req.file
+            ? `${req.file?.destination}${req.file?.filename}`
+            : undefined;
+        const id = req.params.id;
 
-      if (
-        !name ||
-        !description ||
-        !fundingStage ||
-        !valuationLastRound ||
-        !location ||
-        !latitude ||
-        !longitude ||
-        !foundedYear ||
-        !tags ||
-        !id
-      ) {
-        res
-          .status(400)
-          .send({ error: "Please provide startup id and update details" });
-        return;
-      }
+        if (
+            !name ||
+            !description ||
+            !fundingStage ||
+            !valuationLastRound ||
+            !location ||
+            !latitude ||
+            !longitude ||
+            !foundedYear ||
+            !tags ||
+            !contactEmail ||
+            !contactPhone ||
+            !founders ||
+            !id
+        ) {
+          res
+              .status(400)
+              .send({ error: "Please provide startup id and update details" });
+          return;
+        }
 
-      if (tags) updatedStartup.tags = tags;
-      if (foundedYear) updatedStartup.foundedYear = foundedYear;
-      if (valuationLastRound)
-        updatedStartup.valuationLastRound = valuationLastRound;
-      if (latitude) updatedStartup.latitude = latitude;
-      if (location) updatedStartup.location = location;
-      if (longitude) updatedStartup.longitude = longitude;
-      if (name) updatedStartup.name = name;
-      if (description) updatedStartup.description = description;
-      if (fundingStage) updatedStartup.fundingStage = fundingStage;
-      if (req.file) updatedStartup.image = image;
+        if (tags) updatedStartup.tags = tags;
+        if (foundedYear) updatedStartup.foundedYear = foundedYear;
+        if (valuationLastRound)
+          updatedStartup.valuationLastRound = valuationLastRound;
+        if (latitude) updatedStartup.latitude = latitude;
+        if (location) updatedStartup.location = location;
+        if (longitude) updatedStartup.longitude = longitude;
+        if (name) updatedStartup.name = name;
+        if (description) updatedStartup.description = description;
+        if (fundingStage) updatedStartup.fundingStage = fundingStage;
+        if (contactEmail) updatedStartup.contactEmail = contactEmail;
+        if (contactPhone) updatedStartup.contactPhone = contactPhone;
+        if (founders) updatedStartup.founders = founders;
+        if (image) updatedStartup.image = image;
 
       const startup = await Startup.findById(id).populate("owner");
       const startupToUpdate = startup as unknown as IStartup & { owner: IUser };
