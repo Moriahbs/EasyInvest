@@ -1,4 +1,4 @@
-import { LogOut, UserPen, Map, Plus, Search } from "lucide-react";
+import { LogOut, UserPen, Map, Search } from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 

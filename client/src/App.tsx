@@ -9,11 +9,14 @@ import { Toaster } from "sonner";
 import StartupWrapperPage from "@/pages/StartupWrapperPage.tsx";
 import CreateStartupPage from "@/pages/CreateStartup.tsx";
 import SmartSearchPage from "@/pages/SmartSearch.tsx";
+import TopicsChat from "./components/TopicsChat";
 
 function App() {
   return (
     <>
       <Toaster richColors />
+      <TopicsChat />
+
       <Router>
         <Routes>
           <Route path="/" element={<AuthPage />} />
