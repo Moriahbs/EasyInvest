@@ -6,7 +6,6 @@ import ChatBotAnimation from "../assets/ChatBot.json";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import TopicsChat from "@/components/TopicsChat";
 import {
   Tooltip,
   TooltipContent,

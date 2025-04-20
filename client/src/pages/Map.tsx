@@ -45,7 +45,7 @@ export default function MapPage() {
   };
 
   return (
-      <div className="flex gap-8 flex-wrap items-start">
+      <div className="flex gap-8 flex-wrap items-start p-4">
         <div className="flex-1">
           {loading ? (
               <div style={{ height: "500px", width: "100%" }}>
