@@ -8,6 +8,7 @@ import MapPage from "./pages/Map";
 import { Toaster } from "sonner";
 import StartupWrapperPage from "@/pages/StartupWrapperPage.tsx";
 import CreateStartupPage from "@/pages/CreateStartup.tsx";
+import SmartSearchPage from "@/pages/SmartSearch.tsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/create-startup" element={<CreateStartupPage />} />
+            <Route path="/smart-search" element={<SmartSearchPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/startup/:id" element={<StartupWrapperPage />} />
           </Route>

@@ -1,17 +1,12 @@
-import { Home, LogOut, UserPen, Map, Plus } from "lucide-react";
+import { LogOut, UserPen, Map, Plus, Search } from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 
 const items = [
   {
-    title: "ראשי",
-    url: "/home",
-    icon: Home,
-  },
-  {
-    title: "פרופיל",
-    url: "/profile",
-    icon: UserPen,
+    title: "חיפוש חכם",
+    url: "/smart-search",
+    icon: Search,
   },
   {
     title: "מפה",
@@ -19,9 +14,9 @@ const items = [
     icon: Map,
   },
   {
-    title: "יצירת סטארטאפ",
-    url: "/create-startup",
-    icon: Plus,
+    title: "פרופיל",
+    url: "/profile",
+    icon: UserPen,
   },
 ];
 
@@ -36,8 +31,7 @@ export function AppSidebar() {
   return (
     <div className="bg-gray-800 text-white py-4 px-6 shadow-md">
       <div className="flex items-center justify-between">
-        <div className="text-lg font-semibold">Easy Invest</div>
-
+        <div className="text-lg font-semibold cursor-pointer" onClick={() => navigate("/Home")}>Easy Invest</div>
         <div className="flex gap-4">
           {items.map((item) => (
             <a
@@ -54,7 +48,7 @@ export function AppSidebar() {
             onClick={handleLogout}
             className="flex items-center space-x-2 gap-1 bg-gray-800 p-2 rounded-md hover:text-blue-400"
           >
-            <LogOut />
+            <LogOut className="transform -scale-x-100"/>
             <span>התנתקות</span>
           </button>
         </div>

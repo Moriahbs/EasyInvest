@@ -3,7 +3,7 @@ import Lottie from "lottie-react";
 import BlueSearchAnimation from "../assets/SmartSearch.json";
 import LocationsOnMapAnimation from "../assets/LocationsOnMap.json";
 import ChatBotAnimation from "../assets/ChatBot.json";
-import SmartSearch from "@/components/SmartSearch";
+// import SmartSearch from "@/components/SmartSearch";
 import {MessageCircleMore, Plus, Search} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ import {
 
 export default function HomePage() {
   const [openChat, setOpenChat] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  // const [openSearch, setOpenSearch] = useState(false);
 
   return (
       <div className="space-y-[140px] overflow-hidden">
@@ -81,7 +81,7 @@ export default function HomePage() {
         </div>
 
         <TooltipProvider>
-          <Tooltip>
+          {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button
                   className="fixed bottom-36 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
@@ -93,7 +93,7 @@ export default function HomePage() {
             <TooltipContent className="z-[999]">
               <p>Search Invest with AI</p>
             </TooltipContent>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -122,7 +122,7 @@ export default function HomePage() {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <SmartSearch open={openSearch} setOpen={setOpenSearch} />
+        {/* <SmartSearch open={openSearch} setOpen={setOpenSearch} /> */}
         <TopicsChat open={openChat} setOpen={setOpenChat} />
       </div>
   );
