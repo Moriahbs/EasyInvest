@@ -58,7 +58,10 @@ const startupSchema = new Schema<IStartup>({
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   foundedYear: { type: Number, required: true },
-  tags: { type: [String], required: true }
+  tags: { type: [String], required: true },
+  contactEmail: { type: String, required: true },
+  contactPhone: { type: String, required: true },
+  founders: { type: String, required: true },
   // meta: {
   //   votes: { type: Number, default: 0 },
   //   favs: { type: Number, default: 0 },

@@ -1,4 +1,4 @@
-import { LogOut, UserPen, Map, Search } from "lucide-react";
+import {LogOut, UserPen, Map, Search, Plus} from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +7,11 @@ const items = [
     title: "חיפוש חכם",
     url: "/smart-search",
     icon: Search,
+  },
+  {
+    title: "יצירת סטארטאפ",
+    url: "/create-startup",
+    icon: Plus,
   },
   {
     title: "מפה",
