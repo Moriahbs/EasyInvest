@@ -30,7 +30,7 @@ export default function TopicsChat() {
 
   return (
     <div
-      className={`fixed bottom-4 right-4 bg-white shadow-lg rounded-lg p-3 resize ${isMinimized ? "w-[260px] h-[40px] overflow-hidden" : "w-[380px] max-h-[80vh] overflow-auto"
+      className={`fixed bottom-4 left-4 bg-white shadow-lg rounded-lg p-3 resize ${isMinimized ? "w-[260px] h-[40px] overflow-hidden" : "w-[380px] max-h-[80vh] overflow-auto"
         } z-[9999] transition-all duration-300`}
     >
       <div className="flex justify-between items-center mb-2">
