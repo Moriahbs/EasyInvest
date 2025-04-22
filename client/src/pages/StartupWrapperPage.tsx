@@ -19,6 +19,7 @@ const StartupWrapperPage: React.FC = () => {
 
         fetchData();
     }, []);
+    
     const { id } = useParams<{ id: string }>();
     const startup = startups.find((s) => s._id === id);
 

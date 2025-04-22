@@ -8,10 +8,10 @@ import {
 import axios from "axios";
 import { Startup } from "@/models/StartupModel.ts";
 import config from "@/config.ts";
-import StartupList from "./StartupList";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import StartupMatches from "./StartupMatches";
 
 export default function SmartSearch({
   open,
@@ -97,7 +97,7 @@ export default function SmartSearch({
                     : "Any"}
                 </p>
               )}
-              <StartupList
+              <StartupMatches
                 startups={filteredStartups}
                 topMatches={topMatches}
               />

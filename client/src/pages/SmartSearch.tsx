@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
-import StartupList from "@/components/StartupList";
+import ChatStartupList from "@/components/ChatStartupList";
 import { Startup } from "@/models/StartupModel";
 import axios from "axios";
 import config from "@/config";
@@ -93,7 +93,7 @@ export default function SmartSearchPage() {
               </div>
             )}
             <div className="mt-6">
-              <StartupList startups={filteredStartups} topMatches={topMatches} />
+              <ChatStartupList startups={filteredStartups} topMatches={topMatches} />
             </div>
           </>
         )}
