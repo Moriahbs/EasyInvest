@@ -10,9 +10,14 @@ interface StartupCardProps {
 
 const formatValuation = (value: number) => `₪ ${value.toLocaleString("he-IL")}`;
 
-const StartupCard: React.FC<StartupCardProps> = ({ startup, isTopMatch = false }) => {
+const StartupCard: React.FC<StartupCardProps> = ({
+  startup,
+  isTopMatch = false,
+}) => {
   const [imgSrc, setImgSrc] = useState(
-    startup.image ? `${config.SERVER_URL}/${startup.image}` : "/default-image.png"
+    startup.image
+      ? `${config.SERVER_URL}/${startup.image}`
+      : "/default-image.png"
   );
 
   return (
@@ -36,7 +41,9 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, isTopMatch = false }
 
         <div className="flex items-center text-gray-600 text-sm gap-1">
           <MapPin className="w-4 h-4 text-blue-500" />
-          <span>{startup.location}</span>
+          <span className="truncate max-w-[150px] block">
+            {startup.location}
+          </span>
         </div>
 
         <div className="flex items-center text-gray-600 text-sm gap-1">
@@ -54,7 +61,9 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, isTopMatch = false }
             </span>
           ))}
           {startup.tags.length > 3 && (
-            <span className="text-xs text-gray-500">+{startup.tags.length - 3} נוספים</span>
+            <span className="text-xs text-gray-500">
+              +{startup.tags.length - 3} נוספים
+            </span>
           )}
         </div>
       </div>
