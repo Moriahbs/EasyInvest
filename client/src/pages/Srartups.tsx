@@ -27,7 +27,7 @@ export default function StartupsPage() {
       <FilterBar />
       <div className="w-full flex flex-row flex-wrap justify-between">
         <Map startups={startups} />
-        <div className="w-full md:w-[30%]">
+        <div className="w-full md:w-[35%]">
           <StartupList startups={startups} loading={loading} />
         </div>
       </div>
