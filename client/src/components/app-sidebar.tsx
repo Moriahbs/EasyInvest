@@ -1,33 +1,27 @@
-import { Home, LogOut, UserPen, Map } from "lucide-react";
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import {LogOut, UserPen, Map, Search, Plus} from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
 
 const items = [
   {
-    title: "Home",
-    url: "home",
-    icon: Home,
+    title: "חיפוש חכם",
+    url: "/smart-search",
+    icon: Search,
   },
   {
-    title: "Profile",
-    url: "profile",
-    icon: UserPen,
+    title: "יצירת סטארטאפ",
+    url: "/create-startup",
+    icon: Plus,
   },
   {
-    title: "Map",
-    url: "map",
+    title: "מפה",
+    url: "/map",
     icon: Map,
+  },
+  {
+    title: "פרופיל",
+    url: "/profile",
+    icon: UserPen,
   },
 ];
 
@@ -40,37 +34,30 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-lg mb-4">
-            Easy Invest
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  onClick={async () => await handleLogout()}
-                  className="hover:border-none"
-                >
-                  <LogOut />
-                  <span>Logout</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <div className="bg-gray-800 text-white py-4 px-6 shadow-md">
+      <div className="flex items-center justify-between">
+        <div className="text-lg font-semibold cursor-pointer" onClick={() => navigate("/Home")}>Easy Invest</div>
+        <div className="flex gap-4">
+          {items.map((item) => (
+            <a
+              key={item.title}
+              href={item.url}
+              className="flex items-center gap-1 p-2 rounded-md"
+            >
+              <item.icon />
+              <span>{item.title}</span>
+            </a>
+          ))}
+
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-2 gap-1 bg-gray-800 p-2 rounded-md hover:text-blue-400"
+          >
+            <LogOut className="transform -scale-x-100"/>
+            <span>התנתקות</span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

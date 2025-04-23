@@ -18,6 +18,9 @@ interface StartupRequestBody {
   name: string;
   description: string;
   fundingStage: string;
+  contactEmail: string;
+  contactPhone: string;
+  founders: string;
   image: string;
 }
 
@@ -30,7 +33,7 @@ interface StartupRequestBody {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -43,6 +46,9 @@ interface StartupRequestBody {
  *               - longitude
  *               - foundedYear
  *               - tags
+ *               - contactEmail
+ *               - contactPhone
+ *               - founders
  *             properties:
  *               tags:
  *                 type: array
@@ -64,8 +70,15 @@ interface StartupRequestBody {
  *                 type: string
  *               fundingStage:
  *                 type: string
- *               image:
+ *               contactEmail:
  *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               founders:
+ *                 type: string
+ *               startupImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Startup successfully created.
@@ -76,41 +89,46 @@ interface StartupRequestBody {
  *       500:
  *         description: Error occurred during creation.
  */
-// CREATE NEW PROJECT
+// CREATE NEW STARTUP
 router.post(
-  "/",
-  upload.single("image"),
-  async (req: Request, res: Response) => {
-    try {
-      const {
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-      }: StartupRequestBody = req.body;
-      const image = req.file
-        ? `${req.file?.destination}${req.file?.filename}`
-        : undefined;
-
-      if (
-        !name ||
-        !description ||
-        !fundingStage ||
-        !valuationLastRound ||
-        !location ||
-        !latitude ||
-        !longitude ||
-        !foundedYear ||
-        !tags
-      ) {
-        res.status(400).send({ error: "Please provide all details" });
-        return;
-      }
+    "/",
+    upload.single("startupImage"),
+    async (req: Request, res: Response) => {
+      try {
+        const {
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+        }: StartupRequestBody = req.body;
+        const image = req.file
+            ? `${req.file?.destination}${req.file?.filename}`
+            : undefined;
+        if (
+            !name ||
+            !description ||
+            !fundingStage ||
+            !valuationLastRound ||
+            !location ||
+            !latitude ||
+            !longitude ||
+            !foundedYear ||
+            !tags ||
+            !contactEmail ||
+            !contactPhone ||
+            !founders
+        ) {
+          res.status(400).send({ error: "Please provide all details" });
+          return;
+        }
 
       const token = getAccessToken(req) || "";
       const { userId } = verifyAccessToken(token) || { userId: "" };
@@ -121,19 +139,22 @@ router.post(
         return;
       }
 
-      const newStartup = new Startup({
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-        owner: userId,
-        image,
-      });
+        const newStartup = new Startup({
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+          owner: userId,
+          image,
+        });
 
       await newStartup.save();
 
@@ -185,20 +206,112 @@ router.post(
  *                     type: number
  *                   foundedYear:
  *                     type: integer
+ *                   contactEmail:
+ *                     type: string
+ *                   contactPhone:
+ *                     type: string
+ *                   founders:
+ *                     type: string
  *                   tags:
  *                     type: array
  *                     items:
  *                       type: string
+ *                   image:
+ *                     type: string
  *       500:
  *         description: Error occurred during fetch.
  */
-// GET ALL PROJECTS
+// GET ALL STARTUPS
 router.get("/", async (req: Request, res: Response) => {
   try {
     const allStartups = await Startup.find()
       .populate("owner")
       .sort({ createdAt: -1 });
     res.status(200).send(allStartups);
+  } catch (error) {
+    console.error("Error fetching startups:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching startups" });
+  }
+});
+
+/**
+ * @swagger
+ * /startups/sender/{ownerId}:
+ *   get:
+ *     summary: Retrieve startups by a specific owner
+ *     tags: [Startups]
+ *     parameters:
+ *       - name: ownerId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the owner
+ *     responses:
+ *       200:
+ *         description: A list of startups by the specified owner.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   fundingStage:
+ *                     type: string
+ *                   valuationLastRound:
+ *                     type: number
+ *                   latitude:
+ *                     type: number
+ *                   location:
+ *                     type: string
+ *                   longitude:
+ *                     type: number
+ *                   foundedYear:
+ *                     type: integer
+ *                   contactEmail:
+ *                     type: string
+ *                   contactPhone:
+ *                     type: string
+ *                   founders:
+ *                     type: string
+ *                   tags:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                   image:
+ *                     type: string
+ *       400:
+ *         description: Invalid input.
+ *       404:
+ *         description: No startups found for the given owner.
+ *       500:
+ *         description: Error occurred during fetch.
+ */
+// GET ALL STARTUPS BY SENDER
+router.get("/sender/:sender", async (req: Request, res: Response) => {
+  try {
+    const sender = req.params.sender;
+    if (!sender) {
+      res.status(400).send({ error: "Please provide sender id" });
+      return;
+    }
+    const senderStartups = await Startup.find({ owner: sender })
+      .populate("owner")
+      .sort({ createdAt: -1 });
+    if (!senderStartups.length) {
+      res.status(404).send({ error: "No startups found for this sender" });
+      return;
+    }
+    res.status(200).send(senderStartups);
   } catch (error) {
     console.error("Error fetching startups:", error);
     res
@@ -223,6 +336,41 @@ router.get("/", async (req: Request, res: Response) => {
  *     responses:
  *       200:
  *         description: Startup details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 description:
+ *                   type: string
+ *                 fundingStage:
+ *                   type: string
+ *                 valuationLastRound:
+ *                   type: number
+ *                 latitude:
+ *                   type: number
+ *                 location:
+ *                   type: string
+ *                 longitude:
+ *                   type: number
+ *                 foundedYear:
+ *                   type: integer
+ *                 contactEmail:
+ *                   type: string
+ *                 contactPhone:
+ *                   type: string
+ *                 founders:
+ *                   type: string
+ *                 tags:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 image:
+ *                   type: string
  *       400:
  *         description: Invalid input.
  *       404:
@@ -230,7 +378,7 @@ router.get("/", async (req: Request, res: Response) => {
  *       500:
  *         description: Error occurred during fetch.
  */
-// GET PROJECT BY ID
+// GET STARTUP BY ID
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -270,7 +418,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
@@ -278,11 +426,14 @@ router.get("/:id", async (req: Request, res: Response) => {
  *               - description
  *               - fundingStage
  *               - valuationLastRound
- *               - location 
+ *               - location
  *               - latitude
  *               - longitude
  *               - foundedYear
  *               - tags
+ *               - contactEmail
+ *               - contactPhone
+ *               - founders
  *             properties:
  *               tags:
  *                 type: array
@@ -304,8 +455,15 @@ router.get("/:id", async (req: Request, res: Response) => {
  *                 type: string
  *               fundingStage:
  *                 type: string
- *               image:
+ *               contactEmail:
  *                 type: string
+ *               contactPhone:
+ *                 type: string
+ *               founders:
+ *                 type: string
+ *               startupImage:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       200:
  *         description: Startup successfully updated.
@@ -318,56 +476,67 @@ router.get("/:id", async (req: Request, res: Response) => {
  *       500:
  *         description: Error occurred during update.
  */
-// UPDATE PROJECT BY ID
+// UPDATE STARTUP BY ID
 router.put(
-  "/:id",
-  upload.single("image"),
-  async (req: Request, res: Response) => {
-    try {
-      const updatedStartup: Partial<StartupRequestBody> = {};
-      const {
-        tags,
-        foundedYear,
-        valuationLastRound,
-        location,
-        latitude,
-        longitude,
-        name,
-        description,
-        fundingStage,
-      } = req.body;
-      const image = `${req.file?.destination}${req.file?.filename}`;
-      const id = req.params.id;
+    "/:id",
+    upload.single("startupImage"),
+    async (req: Request, res: Response) => {
+      try {
+        const updatedStartup: Partial<StartupRequestBody> = {};
+        const {
+          tags,
+          foundedYear,
+          valuationLastRound,
+          location,
+          latitude,
+          longitude,
+          name,
+          description,
+          fundingStage,
+          contactEmail,
+          contactPhone,
+          founders,
+        } = req.body;
+        const image = req.file
+            ? `${req.file?.destination}${req.file?.filename}`
+            : undefined;
+        const id = req.params.id;
 
-      if (
-        !name ||
-        !description ||
-        !fundingStage ||
-        !valuationLastRound ||
-        !location ||
-        !latitude ||
-        !longitude ||
-        !foundedYear ||
-        !tags ||
-        !id
-      ) {
-        res
-          .status(400)
-          .send({ error: "Please provide startup id and update details" });
-        return;
-      }
+        if (
+            !name ||
+            !description ||
+            !fundingStage ||
+            !valuationLastRound ||
+            !location ||
+            !latitude ||
+            !longitude ||
+            !foundedYear ||
+            !tags ||
+            !contactEmail ||
+            !contactPhone ||
+            !founders ||
+            !id
+        ) {
+          res
+              .status(400)
+              .send({ error: "Please provide startup id and update details" });
+          return;
+        }
 
-      if (tags) updatedStartup.tags = tags;
-      if (foundedYear) updatedStartup.foundedYear = foundedYear;
-      if (valuationLastRound)
-        updatedStartup.valuationLastRound = valuationLastRound;
-      if (latitude) updatedStartup.latitude = latitude;
-      if (location) updatedStartup.location = location;
-      if (longitude) updatedStartup.longitude = longitude;
-      if (name) updatedStartup.name = name;
-      if (description) updatedStartup.description = description;
-      if (fundingStage) updatedStartup.fundingStage = fundingStage;
-      if (req.file) updatedStartup.image = image;
+        if (tags) updatedStartup.tags = tags;
+        if (foundedYear) updatedStartup.foundedYear = foundedYear;
+        if (valuationLastRound)
+          updatedStartup.valuationLastRound = valuationLastRound;
+        if (latitude) updatedStartup.latitude = latitude;
+        if (location) updatedStartup.location = location;
+        if (longitude) updatedStartup.longitude = longitude;
+        if (name) updatedStartup.name = name;
+        if (description) updatedStartup.description = description;
+        if (fundingStage) updatedStartup.fundingStage = fundingStage;
+        if (contactEmail) updatedStartup.contactEmail = contactEmail;
+        if (contactPhone) updatedStartup.contactPhone = contactPhone;
+        if (founders) updatedStartup.founders = founders;
+        if (image) updatedStartup.image = image;
 
       const startup = await Startup.findById(id).populate("owner");
       const startupToUpdate = startup as unknown as IStartup & { owner: IUser };
@@ -428,19 +597,20 @@ router.put(
  *       500:
  *         description: Error occurred during delete.
  */
-// DELETE PROJECT BY ID
+// DELETE STARTUP BY ID
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
+    const startupId = req.params.id;
 
-    if (!id) {
+    if (!startupId) {
       res.status(400).send({ error: "Please provide startup id" });
       return;
     }
 
-    const startup = await Startup.findById(id).populate("owner");
+    const startup = await Startup.findById(startupId).populate("owner");
+    const startupToDelete = startup as unknown as IStartup & { owner: IUser };
 
-    if (!startup) {
+    if (!startupToDelete) {
       res.status(404).send({ error: "Startup not found" });
       return;
     }
@@ -448,12 +618,17 @@ router.delete("/:id", async (req: Request, res: Response) => {
     const token = getAccessToken(req) || "";
     const { userId } = verifyAccessToken(token) || { userId: "" };
 
-    if (startup.owner._id.toString() !== userId) {
+    if (startupToDelete.owner._id.toString() !== userId) {
       res.status(401).send({ error: "No permission to delete this startup" });
       return;
     }
 
-    await Startup.deleteOne({ _id: id });
+    const user = startupToDelete.owner;
+    user.startups.pull(startupId);
+    await user.save();
+
+    await Startup.findByIdAndDelete(startupId);
+
     res.status(200).send({ message: "Startup successfully deleted" });
   } catch (error) {
     console.error("Error deleting startup:", error);

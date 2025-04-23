@@ -4,16 +4,29 @@ import { Startup, STARTUP_MOCK_DATA } from "../mocks/mocks";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
-const tagPool: string[] = [
-    "AI", "machine-learning", "data-analytics", "blockchain", "cybersecurity",
-    "cloud", "privacy", "fintech", "payments", "decentralized",
-    "healthtech", "telemedicine", "wearables", "mental-health", "wellness",
-    "edtech", "e-learning", "virtual-reality", "gamification", "spacetech",
-    "satellites", "exploration", "cleantech", "renewable-energy", "sustainability",
-    "foodtech", "supply-chain", "agritech", "robotics", "automation",
-    "autotech", "electric-vehicles", "IoT", "smart-cities", "enterprise",
-    "mobile-app", "big-data", "nanotech", "biotech", "3D-printing"
+export const STARTUP_CATEGORIES: string[] = [
+    "טכנולוגיה ירוקה",
+    "אנרגיה מתחדשת",
+    "קיימות",
+    "בינה מלאכותית",
+    "ביג דאטה",
+    "טכנולוגיית בריאות",
+    "מכשירים לבישים",
+    "ניתוח נתונים",
+    "טלמדיסין",
+    "אפליקציה סלולרית",
+    "טכנולוגיית חינוך",
+    "מציאות מדומה",
+    "למידה מקוונת",
+    "גיימיפיקציה",
+    "אבטחת סייבר",
+    "פרטיות",
+    "ענן",
+    "פתרונות לארגונים",
+    "בלוקצ'יין",
+    "טכנולוגיית מזון",
+    "שרשרת אספקה",
+    "אוטומציה",
 ];
 
 const fundingStagesPool: string[] = ["Pre-Seed", "Seed", "Series A", "Series B", "Series C"];
@@ -25,7 +38,7 @@ export const getInvestmentRecommendations = asyncHandler(async (req, res) => {
         const aiPrompt = `
       The user wants to invest in technology startups but doesn’t understand the tech world.
       Based on their preference: "${prompt}", extract the following:
-      1. Relevant tech tags from this list: ${JSON.stringify(tagPool)}.
+      1. Relevant tech tags from this list: ${JSON.stringify(STARTUP_CATEGORIES)}.
       2. Preferred funding stages from this list: ${JSON.stringify(fundingStagesPool)} (if mentioned, otherwise return empty array).
       3. Minimum founded year (e.g., "after 2020" means >= 2021, if not mentioned return null).
       4. Maximum founded year (e.g., "before 2022" means <= 2021, if not mentioned return null).
@@ -47,7 +60,7 @@ export const getInvestmentRecommendations = asyncHandler(async (req, res) => {
         const preferences = extractPreferencesFromResponse(aiResponse);
 
         // Filter and score startups
-        const scoredStartups = scoreStartups(STARTUP_MOCK_DATA, preferences);
+        const scoredStartups = scoreStartups(STARTUP_MOCK_DATA, preferences); //TODO: use the real startups
         const filteredStartups = scoredStartups.filter((s) => s.score > 0);
         const topMatches = filteredStartups
             .sort((a, b) => b.score - a.score)
@@ -69,7 +82,7 @@ function extractPreferencesFromResponse(aiResponse: string) {
         const cleanedResponse = aiResponse.trim().replace(/```json|```/g, "");
         const parsed = JSON.parse(cleanedResponse);
         return {
-            tags: Array.isArray(parsed.tags) ? parsed.tags.filter((t: string) => tagPool.includes(t)) : [],
+            tags: Array.isArray(parsed.tags) ? parsed.tags.filter((t: string) => STARTUP_CATEGORIES.includes(t)) : [],
             fundingStages: Array.isArray(parsed.fundingStages)
                 ? parsed.fundingStages.filter((f: string) => fundingStagesPool.includes(f))
                 : [],

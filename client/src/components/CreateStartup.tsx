@@ -10,11 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createStartup } from "@/actions/startupActions";
 import UploadImage from "./UploadImage";
-import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { STARTUP_CATEGORIES } from "../models/startupModel";
+import { STARTUP_CATEGORIES, FUNDING_STAGES } from "../models/StartupModel"
 import { MultiSelect } from "./ui/multi-select";
+import { toast } from "sonner";
 
 export interface NewStartup {
   name: string;
@@ -60,16 +60,27 @@ export default function CreateStartupModal({
     }
 
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${value}`
+      `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=il&q=${value}`
     );
+    
     const data = await res.json();
     setSearchResults(data);
   };
 
   const handleSelectLocation = (place: any) => {
+    const cityName =
+    place.address?.city ||
+    place.address?.town ||
+    place.address?.village ||
+    place.address?.hamlet ||
+    place.address?.municipality ||
+    place.address?.county ||
+    place.address?.state ||
+    place.address?.country;
+
     setStartupDetails({
       ...startupDetails,
-      location: place.display_name,
+      location: cityName || place.display_name,
       latitude: parseFloat(place.lat),
       longitude: parseFloat(place.lon),
     });
@@ -97,7 +108,7 @@ export default function CreateStartupModal({
       !valuationLastRound ||
       !location
     )
-      return alert("יש למלא את כל השדות");
+      return toast.error("יש למלא את כל השדות");
 
     setLoading(true);
     const newStartup = await createStartup(
@@ -108,8 +119,8 @@ export default function CreateStartupModal({
       foundedYear,
       valuationLastRound,
       location,
-      latitude,
-      longitude,
+      latitude || 0,
+      longitude || 0,
       image
     );
     setLoading(false);
@@ -183,17 +194,25 @@ export default function CreateStartupModal({
             />
 
             <label className={labelClass}>שלב מימון</label>
-            <Input
-              className={inputClass}
-              placeholder="שלב מימון"
-              value={startupDetails.fundingStage}
-              onChange={(e) =>
-                setStartupDetails({
-                  ...startupDetails,
-                  fundingStage: e.target.value,
-                })
-              }
-            />
+            <select
+                className={`w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputClass}`}
+                value={startupDetails.fundingStage}
+                onChange={(e) =>
+                    setStartupDetails({
+                      ...startupDetails,
+                      fundingStage: e.target.value,
+                    })
+                }
+            >
+              <option value="" disabled>
+                בחר שלב מימון
+              </option>
+              {FUNDING_STAGES.map((stage) => (
+                  <option key={stage} value={stage}>
+                    {stage}
+                  </option>
+              ))}
+            </select>
 
             <label className={labelClass}>שנת הקמה</label>
             <Input
@@ -206,7 +225,7 @@ export default function CreateStartupModal({
               onChange={(e) =>
                 setStartupDetails({
                   ...startupDetails,
-                  foundedYear: e.target.value,
+                  foundedYear: Number(e.target.value),
                 })
               }
             />
@@ -226,7 +245,7 @@ export default function CreateStartupModal({
                 const rawValue = e.target.value.replace(/[^\d]/g, ""); // remove non-numbers
                 setStartupDetails({
                   ...startupDetails,
-                  valuationLastRound: rawValue,
+                  valuationLastRound: Number(rawValue),
                 });
               }}
             />
@@ -277,7 +296,7 @@ export default function CreateStartupModal({
               <Button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-1/3 bg-[#5252cb] hover:bg-[#7878e0] border-none mt-2 just"
+                className="w-1/3 bg-blue-600 hover:bg-blue-400 border-none mt-2 just"
               >
                 {loading ? "מעלה את הסטארטאפ..." : "יצירה"}
               </Button>

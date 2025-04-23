@@ -1,102 +1,137 @@
 export interface Startup {
-    companyName: string;
+    _id: string;
+    name: string;
     tags: string[];
     description: string;
     fundingStage: string;
     location: string;
+    latitude: number;
+    longitude: number;
     foundedYear: number;
     valuationLastRound: number;
+    contactEmail: string;
+    contactPhone: string;
+    founders: string;
+    image?: string;
 }
 
 export const STARTUP_MOCK_DATA: Startup[] = [
     {
-        "companyName": "GreenTech Innovations",
-        "tags": ["cleantech", "renewable-energy", "sustainability", "AI", "big-data"],
-        "description": "Using AI and big data to optimize renewable energy solutions for urban areas.",
-        "fundingStage": "Series A",
-        "location": "San Francisco, CA",
-        "foundedYear": 2020,
-        "valuationLastRound": 25
+        _id: "1",
+        name: "GreenTech Innovations",
+        tags: ["טכנולוגיה ירוקה", "אנרגיה מתחדשת", "קיימות", "בינה מלאכותית", "ביג דאטה"],
+        description: "משתמשים בבינה מלאכותית ובביג דאטה כדי לייעל פתרונות אנרגיה מתחדשת באזורים עירוניים.",
+        fundingStage: "סבב A",
+        location: "תל אביב, ישראל",
+        latitude: 32.0853,
+        longitude: 34.7818,
+        foundedYear: 2020,
+        valuationLastRound: 87500000,
+        contactEmail: "contact@greentech.com",
+        contactPhone: "+972-50-1234567",
+        founders: "יובל כהן, דנה לוי",
+        image: undefined,
     },
     {
-        "companyName": "HealthSync",
-        "tags": ["healthtech", "wearables", "data-analytics", "telemedicine", "mobile-app"],
-        "description": "Wearable devices syncing with telemedicine platforms for real-time health monitoring.",
-        "fundingStage": "Seed",
-        "location": "Boston, MA",
-        "foundedYear": 2021,
-        "valuationLastRound": 8
+        _id: "67f7dbc48ede715934b244f8",
+        name: "HealthSync",
+        tags: ["טכנולוגיית בריאות", "מכשירים לבישים", "ניתוח נתונים", "טלמדיסין", "אפליקציה סלולרית"],
+        description: "מכשירים לבישים שמתחברים לפלטפורמות טלמדיסין לניטור בריאות בזמן אמת.",
+        fundingStage: "סיד",
+        location: "תל אביב, ישראל",
+        latitude: 32.0865,
+        longitude: 34.7822,
+        foundedYear: 2021,
+        valuationLastRound: 28000000,
+        contactEmail: "info@healthsync.com",
+        contactPhone: "+972-52-9876543",
+        founders: "איתן שמיר",
+        image: undefined,
     },
     {
-        "companyName": "EduVerse",
-        "tags": ["edtech", "virtual-reality", "e-learning", "gamification", "mobile-app"],
-        "description": "An immersive VR platform for interactive and gamified education experiences.",
-        "fundingStage": "Series B",
-        "location": "London, UK",
-        "foundedYear": 2019,
-        "valuationLastRound": 60
+        _id: "3",
+        name: "EduVerse",
+        tags: ["טכנולוגיית חינוך", "מציאות מדומה", "למידה מקוונת", "גיימיפיקציה", "אפליקציה סלולרית"],
+        description: "פלטפורמת מציאות מדומה סוחפת לחוויות חינוכיות אינטראקטיביות ומשחקיות.",
+        fundingStage: "סבב B",
+        location: "תל אביב, ישראל",
+        latitude: 32.0840,
+        longitude: 34.7805,
+        foundedYear: 2019,
+        valuationLastRound: 210000000,
+        contactEmail: "support@eduverse.com",
+        contactPhone: "+972-54-5551234",
+        founders: "מיכל בר, עידן גל",
+        image: undefined,
     },
     {
-        "companyName": "SecureNest",
-        "tags": ["cybersecurity", "privacy", "cloud", "enterprise", "blockchain"],
-        "description": "Enterprise-grade cloud security solutions with blockchain-enhanced data privacy.",
-        "fundingStage": "Series A",
-        "location": "Tel Aviv, Israel",
-        "foundedYear": 2020,
-        "valuationLastRound": 30
+        _id: "4",
+        name: "SecureNest",
+        tags: ["אבטחת סייבר", "פרטיות", "ענן", "פתרונות לארגונים", "בלוקצ'יין"],
+        description: "פתרונות אבטחת ענן ברמה ארגונית עם פרטיות נתונים משופרת באמצעות בלוקצ'יין.",
+        fundingStage: "סבב A",
+        location: "תל אביב, ישראל",
+        latitude: 32.0853,
+        longitude: 34.7818,
+        foundedYear: 2020,
+        valuationLastRound: 105000000,
+        contactEmail: "contact@securenest.com",
+        contactPhone: "+972-53-4567890",
+        founders: "רועי דניאל",
+        image: undefined,
     },
     {
-        "companyName": "FoodChain AI",
-        "tags": ["foodtech", "AI", "supply-chain", "sustainability", "automation"],
-        "description": "AI-driven solutions to streamline food supply chains and reduce waste.",
-        "fundingStage": "Pre-Seed",
-        "location": "Austin, TX",
-        "foundedYear": 2022,
-        "valuationLastRound": 5
+        _id: "5",
+        name: "FoodChain AI",
+        tags: ["טכנולוגיית מזון", "בינה מלאכותית", "שרשרת אספקה", "קיימות", "אוטומציה"],
+        description: "פתרונות מבוססי בינה מלאכותית לייעול שרשראות אספקת מזון ולהפחתת בזבוז.",
+        fundingStage: "פרה-סיד",
+        location: "תל אביב, ישראל",
+        latitude: 32.0837,
+        longitude: 34.7799,
+        foundedYear: 2022,
+        valuationLastRound: 17500000,
+        contactEmail: "info@foodchainai.com",
+        contactPhone: "+972-57-3216547",
+        founders: "שירן אמיר, תומר רז",
+        image: undefined,
     },
-    {
-        "companyName": "DriveSmart",
-        "tags": ["autotech", "electric-vehicles", "IoT", "smart-cities", "data-analytics"],
-        "description": "IoT solutions for electric vehicles integrated with smart city infrastructure.",
-        "fundingStage": "Series A",
-        "location": "Munich, Germany",
-        "foundedYear": 2021,
-        "valuationLastRound": 22
-    },
-    {
-        "companyName": "FinFlow",
-        "tags": ["fintech", "blockchain", "payments", "decentralized", "mobile-app"],
-        "description": "A decentralized payment platform leveraging blockchain for secure transactions.",
-        "fundingStage": "Seed",
-        "location": "Singapore",
-        "foundedYear": 2020,
-        "valuationLastRound": 15
-    },
-    {
-        "companyName": "SpaceXplor",
-        "tags": ["spacetech", "satellites", "AI", "exploration", "big-data"],
-        "description": "AI-driven satellites for low-cost space exploration and data collection.",
-        "fundingStage": "Series B",
-        "location": "Cape Canaveral, FL",
-        "foundedYear": 2018,
-        "valuationLastRound": 75
-    },
-    {
-        "companyName": "MindWell",
-        "tags": ["mental-health", "AI", "wellness", "mobile-app", "data-analytics"],
-        "description": "A mobile app using AI to provide personalized mental health support.",
-        "fundingStage": "Seed",
-        "location": "Toronto, Canada",
-        "foundedYear": 2021,
-        "valuationLastRound": 12
-    },
-    {
-        "companyName": "AgriBotics",
-        "tags": ["agritech", "robotics", "sustainability", "automation", "IoT"],
-        "description": "Robotics and IoT solutions for sustainable farming and automated crop management.",
-        "fundingStage": "Series A",
-        "location": "Amsterdam, Netherlands",
-        "foundedYear": 2019,
-        "valuationLastRound": 28
-    }
-]
+];
+
+// רשימת קטגוריות קבועה לבחירה
+export const STARTUP_CATEGORIES: string[] = [
+    "טכנולוגיה ירוקה",
+    "אנרגיה מתחדשת",
+    "קיימות",
+    "בינה מלאכותית",
+    "ביג דאטה",
+    "טכנולוגיית בריאות",
+    "מכשירים לבישים",
+    "ניתוח נתונים",
+    "טלמדיסין",
+    "אפליקציה סלולרית",
+    "טכנולוגיית חינוך",
+    "מציאות מדומה",
+    "למידה מקוונת",
+    "גיימיפיקציה",
+    "אבטחת סייבר",
+    "פרטיות",
+    "ענן",
+    "פתרונות לארגונים",
+    "בלוקצ'יין",
+    "טכנולוגיית מזון",
+    "שרשרת אספקה",
+    "אוטומציה",
+];
+
+export const FUNDING_STAGES: string[] = [
+    "פרה-סיד",
+    "סיד",
+    "סבב גיוס ראשון",
+    "סבב גיוס שני",
+    "סבב גיוס שלישי",
+    "סבב גיוס רביעי",
+    "מאוחר יותר",
+    "גשר",
+    "IPO",
+];

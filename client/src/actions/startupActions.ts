@@ -32,19 +32,22 @@ export const getStartupsById = async (startupId: string) => {
 };
 
 export const createStartup = async (
-  name: string,
-  tags: string[],
-  description: string,
-  fundingStage: string,
-  foundedYear: number,
-  valuationLastRound: number,
-  location: string,
-  latitude: number,
-  longitude: number,
-  image: string
+    name: string,
+    tags: string[],
+    description: string,
+    fundingStage: string,
+    foundedYear: number,
+    valuationLastRound: number,
+    location: string,
+    latitude: number,
+    longitude: number,
+    contactEmail: string,
+    contactPhone: string,
+    founders: string,
+    image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("startupImage", image);
   formData.append("name", name);
   formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
@@ -54,6 +57,9 @@ export const createStartup = async (
   formData.append("valuationLastRound", valuationLastRound.toString());
   formData.append("longitude", longitude.toString());
   formData.append("latitude", latitude.toString());
+  formData.append("contactEmail", contactEmail);
+  formData.append("contactPhone", contactPhone);
+  formData.append("founders", founders);
 
   const res = await axios.post(`${config.SERVER_URL}/startups`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
@@ -64,19 +70,23 @@ export const createStartup = async (
 };
 
 export const editStartup = async (
-  name: string,
-  tags: string[],
-  description: string,
-  fundingStage: string,
-  foundedYear: number,
-  valuationLastRound: number,
-  location: string,
-  latitude: number,
-  longitude: number,
-  image: string
+    startupId: string,
+    name: string,
+    tags: string[],
+    description: string,
+    fundingStage: string,
+    foundedYear: number,
+    valuationLastRound: number,
+    location: string,
+    latitude: number,
+    longitude: number,
+    contactEmail: string,
+    contactPhone: string,
+    founders: string,
+    image: File | null
 ) => {
   const formData = new FormData();
-  image && formData.append("image", image);
+  image && formData.append("startupImage", image);
   formData.append("name", name);
   formData.append("tags", tags.join(",")); // Join the array into a single string
   formData.append("description", description);
@@ -86,6 +96,9 @@ export const editStartup = async (
   formData.append("valuationLastRound", valuationLastRound.toString());
   formData.append("longitude", longitude.toString());
   formData.append("latitude", latitude.toString());
+  formData.append("contactEmail", contactEmail);
+  formData.append("contactPhone", contactPhone);
+  formData.append("founders", founders);
 
   const res = await axios.put(
     `${config.SERVER_URL}/startups/${startupId}`,
