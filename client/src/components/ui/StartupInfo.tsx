@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Startup } from "@/models/StartupModel.ts";
-import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building } from "lucide-react";
+import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2 } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -10,6 +11,24 @@ interface StartupInfoProps {
 }
 
 const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
+    const [simplifyLoading, setSimplifyLoading] = useState<boolean>(false);
+    const [simplifiedDesc, setSimplifiedDesc] = useState('');
+    const [isSimplified, setIsSimplified] = useState<boolean>(false);
+
+    const simplifyDescription = async (userInput: string) => {
+        if (!isSimplified && !simplifiedDesc) {
+            setSimplifyLoading(true);
+            const response = await axios.post(`${config.SERVER_URL}/api/smartSearch/simplify`, {
+                userText: userInput,
+            });
+
+            setSimplifyLoading(false);
+            setSimplifiedDesc(response.data.simplified);
+            console.log(response.data.simplified);
+        }
+        setIsSimplified(!isSimplified);
+    }
+
     const valuationInShekels = startup.valuationLastRound.toLocaleString("he-IL", {
         style: "currency",
         currency: "ILS",
@@ -51,7 +70,18 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                             <h2 className="text-xl font-semibold text-blue-950 flex items-center gap-2">
                                 <Building className="w-5 h-5" /> תיאור הסטארטאפ
                             </h2>
-                            <p className="text-gray-700 mt-2 text-lg">{startup.description}</p>
+                            <p className="text-gray-700 mt-2 text-lg">{isSimplified ? simplifiedDesc : startup.description}</p>
+                            <button
+                                onClick={() => simplifyDescription(startup.description)}
+                                className="bg-blue-600 w-1/5 text-white border-none focus:outline-none mt-2 flex items-center justify-center">
+                                {isSimplified ? 'חזרה למקור' :
+                                    (
+                                        <>
+                                            תסביר לי
+                                            {simplifyLoading && <Loader2 className="w-5 h-5 mr-2 animate-spin text-white" />}
+                                        </>
+                                    )}
+                            </button>
                         </div>
 
                         <div className="mb-6">
@@ -150,7 +180,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                         </div>
 
                         <div className="mt-6">
-                            <button className="bg-purple-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-purple-700 transition flex items-center gap-2 w-full justify-center">
+                            <button className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
                                 <span>ליצירת קשר</span>
                                 {/*//TODO: email and stuff*/}
                                 <ArrowLeftIcon className="w-5 h-5" />
