@@ -91,44 +91,44 @@ interface StartupRequestBody {
  */
 // CREATE NEW STARTUP
 router.post(
-    "/",
-    upload.single("startupImage"),
-    async (req: Request, res: Response) => {
-      try {
-        const {
-          tags,
-          foundedYear,
-          valuationLastRound,
-          location,
-          latitude,
-          longitude,
-          name,
-          description,
-          fundingStage,
-          contactEmail,
-          contactPhone,
-          founders,
-        }: StartupRequestBody = req.body;
-        const image = req.file
-            ? `${req.file?.destination}${req.file?.filename}`
-            : undefined;
-        if (
-            !name ||
-            !description ||
-            !fundingStage ||
-            !valuationLastRound ||
-            !location ||
-            !latitude ||
-            !longitude ||
-            !foundedYear ||
-            !tags ||
-            !contactEmail ||
-            !contactPhone ||
-            !founders
-        ) {
-          res.status(400).send({ error: "Please provide all details" });
-          return;
-        }
+  "/",
+  upload.single("startupImage"),
+  async (req: Request, res: Response) => {
+    try {
+      const {
+        tags,
+        foundedYear,
+        valuationLastRound,
+        location,
+        latitude,
+        longitude,
+        name,
+        description,
+        fundingStage,
+        contactEmail,
+        contactPhone,
+        founders,
+      }: StartupRequestBody = req.body;
+      const image = req.file
+        ? `${req.file?.destination}${req.file?.filename}`
+        : undefined;
+      if (
+        !name ||
+        !description ||
+        !fundingStage ||
+        !valuationLastRound ||
+        !location ||
+        !latitude ||
+        !longitude ||
+        !foundedYear ||
+        !tags ||
+        !contactEmail ||
+        !contactPhone ||
+        !founders
+      ) {
+        res.status(400).send({ error: "Please provide all details" });
+        return;
+      }
 
       const token = getAccessToken(req) || "";
       const { userId } = verifyAccessToken(token) || { userId: "" };
@@ -139,22 +139,22 @@ router.post(
         return;
       }
 
-        const newStartup = new Startup({
-          tags,
-          foundedYear,
-          valuationLastRound,
-          location,
-          latitude,
-          longitude,
-          name,
-          description,
-          fundingStage,
-          contactEmail,
-          contactPhone,
-          founders,
-          owner: userId,
-          image,
-        });
+      const newStartup = new Startup({
+        tags,
+        foundedYear,
+        valuationLastRound,
+        location,
+        latitude,
+        longitude,
+        name,
+        description,
+        fundingStage,
+        contactEmail,
+        contactPhone,
+        founders,
+        owner: userId,
+        image,
+      });
 
       await newStartup.save();
 
@@ -308,7 +308,7 @@ router.get("/sender/:sender", async (req: Request, res: Response) => {
       .populate("owner")
       .sort({ createdAt: -1 });
     if (!senderStartups.length) {
-      res.status(404).send({ error: "No startups found for this sender" });
+      res.status(200).send([]);
       return;
     }
     res.status(200).send(senderStartups);
@@ -478,65 +478,65 @@ router.get("/:id", async (req: Request, res: Response) => {
  */
 // UPDATE STARTUP BY ID
 router.put(
-    "/:id",
-    upload.single("startupImage"),
-    async (req: Request, res: Response) => {
-      try {
-        const updatedStartup: Partial<StartupRequestBody> = {};
-        const {
-          tags,
-          foundedYear,
-          valuationLastRound,
-          location,
-          latitude,
-          longitude,
-          name,
-          description,
-          fundingStage,
-          contactEmail,
-          contactPhone,
-          founders,
-        } = req.body;
-        const image = req.file
-            ? `${req.file?.destination}${req.file?.filename}`
-            : undefined;
-        const id = req.params.id;
+  "/:id",
+  upload.single("startupImage"),
+  async (req: Request, res: Response) => {
+    try {
+      const updatedStartup: Partial<StartupRequestBody> = {};
+      const {
+        tags,
+        foundedYear,
+        valuationLastRound,
+        location,
+        latitude,
+        longitude,
+        name,
+        description,
+        fundingStage,
+        contactEmail,
+        contactPhone,
+        founders,
+      } = req.body;
+      const image = req.file
+        ? `${req.file?.destination}${req.file?.filename}`
+        : undefined;
+      const id = req.params.id;
 
-        if (
-            !name ||
-            !description ||
-            !fundingStage ||
-            !valuationLastRound ||
-            !location ||
-            !latitude ||
-            !longitude ||
-            !foundedYear ||
-            !tags ||
-            !contactEmail ||
-            !contactPhone ||
-            !founders ||
-            !id
-        ) {
-          res
-              .status(400)
-              .send({ error: "Please provide startup id and update details" });
-          return;
-        }
+      if (
+        !name ||
+        !description ||
+        !fundingStage ||
+        !valuationLastRound ||
+        !location ||
+        !latitude ||
+        !longitude ||
+        !foundedYear ||
+        !tags ||
+        !contactEmail ||
+        !contactPhone ||
+        !founders ||
+        !id
+      ) {
+        res
+          .status(400)
+          .send({ error: "Please provide startup id and update details" });
+        return;
+      }
 
-        if (tags) updatedStartup.tags = tags;
-        if (foundedYear) updatedStartup.foundedYear = foundedYear;
-        if (valuationLastRound)
-          updatedStartup.valuationLastRound = valuationLastRound;
-        if (latitude) updatedStartup.latitude = latitude;
-        if (location) updatedStartup.location = location;
-        if (longitude) updatedStartup.longitude = longitude;
-        if (name) updatedStartup.name = name;
-        if (description) updatedStartup.description = description;
-        if (fundingStage) updatedStartup.fundingStage = fundingStage;
-        if (contactEmail) updatedStartup.contactEmail = contactEmail;
-        if (contactPhone) updatedStartup.contactPhone = contactPhone;
-        if (founders) updatedStartup.founders = founders;
-        if (image) updatedStartup.image = image;
+      if (tags) updatedStartup.tags = tags;
+      if (foundedYear) updatedStartup.foundedYear = foundedYear;
+      if (valuationLastRound)
+        updatedStartup.valuationLastRound = valuationLastRound;
+      if (latitude) updatedStartup.latitude = latitude;
+      if (location) updatedStartup.location = location;
+      if (longitude) updatedStartup.longitude = longitude;
+      if (name) updatedStartup.name = name;
+      if (description) updatedStartup.description = description;
+      if (fundingStage) updatedStartup.fundingStage = fundingStage;
+      if (contactEmail) updatedStartup.contactEmail = contactEmail;
+      if (contactPhone) updatedStartup.contactPhone = contactPhone;
+      if (founders) updatedStartup.founders = founders;
+      if (image) updatedStartup.image = image;
 
       const startup = await Startup.findById(id).populate("owner");
       const startupToUpdate = startup as unknown as IStartup & { owner: IUser };
