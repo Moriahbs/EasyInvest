@@ -21,7 +21,6 @@ export default function StartupsPage() {
     fetchData();
   }, []);
 
-
   return (
     <div className="flex flex-col flex-wrap items-start" dir="ltr">
       <FilterBar />
