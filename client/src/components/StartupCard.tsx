@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Startup } from "@/models/StartupModel.ts";
 import config from "@/config";
-import { MapPin, DollarSign, Star } from "lucide-react";
+import { MapPin, DollarSign, Star, Trash2, Pencil } from "lucide-react";
+import Cookies from "js-cookie";
+import { decodeToken } from "@/utils/authUtils";
 
 interface StartupCardProps {
   startup: Startup;
   isTopMatch?: boolean;
+  handleDeleteStartup?: (startupId: string) => void;
+  handleEditStartup?: (startup: Startup) => void;
 }
 
 const formatValuation = (value: number) => `₪ ${value.toLocaleString("he-IL")}`;
@@ -22,8 +26,13 @@ const getImageUrl = (imageSrc: string | undefined) => {
 const StartupCard: React.FC<StartupCardProps> = ({
   startup,
   isTopMatch = false,
+  handleDeleteStartup,
+  handleEditStartup,
 }) => {
   const [imgSrc, setImgSrc] = useState(getImageUrl(startup.image));
+
+  const token = Cookies.get("Authorization") || "";
+  const { userId } = decodeToken(token);
 
   return (
     <div className="relative max-w-sm w-full bg-white rounded-2xl shadow-lg overflow-hidden transition hover:shadow-xl border border-gray-100">
@@ -38,14 +47,32 @@ const StartupCard: React.FC<StartupCardProps> = ({
         src={imgSrc}
         alt={startup.name}
         className="w-full h-56 object-cover"
-        onError={() => setImgSrc("/default-image.png")}
+        onError={() => setImgSrc("/src/assets/default-image.png")}
       />
 
       <div className="p-4 flex flex-col gap-2">
-        <h2 className="text-xl font-bold text-gray-800">{startup.name}</h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl font-bold text-gray-800">{startup.name}</h2>
+          {startup.owner?._id === userId && (
+            <div className="flex items-center gap-0.5">
+              <div
+                className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleEditStartup?.(startup)}
+              >
+                <Pencil className="h-3 w-3 text-blue-600" />
+              </div>
+              <div
+                className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
+                onClick={() => handleDeleteStartup?.(startup._id)}
+              >
+                <Trash2 className="h-3 w-3 text-red-600" />
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="flex items-center text-gray-600 text-sm gap-1">
-          <MapPin className="w-4 h-4 text-blue-500" />
+          <MapPin className="w-4 h-4 min-w-4 min-h-4 flex-shrink-0 text-blue-500" />
           <span className="truncate max-w-[150px] block">
             {startup.location}
           </span>

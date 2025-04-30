@@ -32,19 +32,19 @@ export const getStartupsById = async (startupId: string) => {
 };
 
 export const createStartup = async (
-    name: string,
-    tags: string[],
-    description: string,
-    fundingStage: string,
-    foundedYear: number,
-    valuationLastRound: number,
-    location: string,
-    latitude: number,
-    longitude: number,
-    contactEmail: string,
-    contactPhone: string,
-    founders: string,
-    image: File | null
+  name: string,
+  tags: string[],
+  description: string,
+  fundingStage: string,
+  foundedYear: number,
+  valuationLastRound: number,
+  location: string,
+  latitude: number,
+  longitude: number,
+  contactEmail: string,
+  contactPhone: string,
+  founders: string,
+  image: File | null
 ) => {
   const formData = new FormData();
   image && formData.append("startupImage", image);
@@ -70,20 +70,20 @@ export const createStartup = async (
 };
 
 export const editStartup = async (
-    startupId: string,
-    name: string,
-    tags: string[],
-    description: string,
-    fundingStage: string,
-    foundedYear: number,
-    valuationLastRound: number,
-    location: string,
-    latitude: number,
-    longitude: number,
-    contactEmail: string,
-    contactPhone: string,
-    founders: string,
-    image: File | null
+  startupId: string,
+  name: string,
+  tags: string[],
+  description: string,
+  fundingStage: string,
+  foundedYear: number,
+  valuationLastRound: number,
+  location: string,
+  latitude: number,
+  longitude: number,
+  contactEmail: string,
+  contactPhone: string,
+  founders: string,
+  image: File | null
 ) => {
   const formData = new FormData();
   image && formData.append("startupImage", image);

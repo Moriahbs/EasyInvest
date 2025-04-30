@@ -6,11 +6,18 @@ import StartupCardSkeleton from "./skeleton/StartupCardSkeleton";
 interface StartupListProps {
   startups: Startup[];
   loading: boolean;
+  handleDeleteStartup?: (startupId: string) => void;
+  handleEditStartup?: (startup: Startup) => void;
 }
 
 const ITEMS_PER_PAGE = 4;
 
-const StartupList: React.FC<StartupListProps> = ({ startups, loading }) => {
+const StartupList: React.FC<StartupListProps> = ({
+  startups,
+  loading,
+  handleDeleteStartup,
+  handleEditStartup,
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(startups.length / ITEMS_PER_PAGE);
@@ -44,8 +51,14 @@ const StartupList: React.FC<StartupListProps> = ({ startups, loading }) => {
                 <StartupCardSkeleton key={index} />
               ))
             : visibleStartups.map((startup) => (
-                <StartupCard key={startup._id} startup={startup} />
+                <StartupCard
+                  key={startup._id}
+                  startup={startup}
+                  handleEditStartup={handleEditStartup}
+                  handleDeleteStartup={handleDeleteStartup}
+                />
               ))}
+          {!startups.length && <p>לא קיימים סטארטאפים</p>}
         </div>
       </div>
 
