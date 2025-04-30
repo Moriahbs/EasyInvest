@@ -10,15 +10,20 @@ interface StartupCardProps {
 
 const formatValuation = (value: number) => `₪ ${value.toLocaleString("he-IL")}`;
 
+const getImageUrl = (imageSrc: string | undefined) => {
+  if (imageSrc?.startsWith("https")) {
+    return imageSrc;
+  } else if (imageSrc) {
+    `${config.SERVER_URL}/${imageSrc}`;
+  }
+  return "/src/assets/default-image.png";
+};
+
 const StartupCard: React.FC<StartupCardProps> = ({
   startup,
   isTopMatch = false,
 }) => {
-  const [imgSrc, setImgSrc] = useState(
-    startup.image
-      ? `${config.SERVER_URL}/${startup.image}`
-      : "/default-image.png"
-  );
+  const [imgSrc, setImgSrc] = useState(getImageUrl(startup.image));
 
   return (
     <div className="relative max-w-sm w-full bg-white rounded-2xl shadow-lg overflow-hidden transition hover:shadow-xl border border-gray-100">
