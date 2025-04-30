@@ -18,7 +18,7 @@ const getImageUrl = (imageSrc: string | undefined) => {
   if (imageSrc?.startsWith("https")) {
     return imageSrc;
   } else if (imageSrc) {
-    `${config.SERVER_URL}/${imageSrc}`;
+    return `${config.SERVER_URL}/${imageSrc}`;
   }
   return "/src/assets/default-image.png";
 };
