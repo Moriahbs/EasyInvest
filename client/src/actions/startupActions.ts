@@ -109,7 +109,7 @@ export const editStartup = async (
   const formData = new FormData();
   image && formData.append("startupImage", image);
   formData.append("name", name);
-  formData.append("tags", tags.join(",")); // Join the array into a single string
+  tags.forEach(tag => formData.append("tags[]", tag));
   formData.append("description", description);
   formData.append("fundingStage", fundingStage);
   formData.append("location", location);
