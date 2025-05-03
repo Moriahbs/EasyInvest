@@ -16,6 +16,7 @@ export interface Startup {
   contactPhone: string;
   founders: string;
   image?: string;
+  country: string;
 }
 
 // רשימת קטגוריות קבועה לבחירה

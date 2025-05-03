@@ -62,27 +62,26 @@ const StartupList: React.FC<StartupListProps> = ({
         </div>
       </div>
 
-      {!loading && (
-        <div className="flex items-center gap-4 mt-6 mb-2">
-          <button
-            onClick={handlePrev}
-            disabled={currentPage === 0 || loading}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-          >
-            הקודם
-          </button>
-          <span className="text-gray-700 font-medium">
-            עמוד {currentPage + 1} מתוך {totalPages}
-          </span>
-          <button
-            onClick={handleNext}
-            disabled={currentPage >= totalPages - 1 || loading}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-          >
-            הבא
-          </button>
-        </div>
-      )}
+      <div className="flex items-center gap-4 mt-6 mb-2">
+        <button
+          onClick={handleNext}
+          disabled={currentPage >= totalPages - 1 || loading}
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+        >
+          הבא
+        </button>
+
+        <span className="text-gray-700 font-medium">
+          עמוד {currentPage + 1} מתוך {totalPages}
+        </span>
+        <button
+          onClick={handlePrev}
+          disabled={currentPage === 0 || loading}
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+        >
+          הקודם
+        </button>
+      </div>
     </div>
   );
 };

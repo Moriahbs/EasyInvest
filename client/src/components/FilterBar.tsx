@@ -1,8 +1,28 @@
-import { FUNDING_STAGES, STARTUP_CATEGORIES } from "@/models/StartupModel";
 import React, { useState } from "react";
+import { FUNDING_STAGES, STARTUP_CATEGORIES } from "@/models/StartupModel";
 import { FilterMultiSelect } from "./ui/filter-multi-select";
 
-const FilterBar: React.FC = () => {
+interface FilterBarProps {
+  region: string;
+  setRegion: React.Dispatch<React.SetStateAction<string>>;
+  fundingStages: string[];
+  setFundingStages: React.Dispatch<React.SetStateAction<string[]>>;
+  categories: string[];
+  setCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  valuation: string;
+  setValuation: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const FilterBar: React.FC<FilterBarProps> = ({
+  region,
+  setRegion,
+  fundingStages,
+  setFundingStages,
+  categories,
+  setCategories,
+  valuation,
+  setValuation,
+}) => {
   const VALUATION_OPTIONS = [
     { label: "עד 5 מיליון ₪", value: 5000000 },
     { label: "5-10 מיליון ₪", value: [5000000, 10000000] },
@@ -10,42 +30,44 @@ const FilterBar: React.FC = () => {
     { label: "מעל 20 מיליון ₪", value: 20000000 },
   ];
 
-  const [fundingStages, setFundingStages] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [region, setRegion] = useState("");
-  const [valuation, setValuation] = useState<string>("");
+  const HEBREW_COUNTRIES = [
+    "ארצות הברית",
+    "קנדה",
+    "צרפת",
+    "גרמניה",
+    "בריטניה",
+    "אוסטרליה",
+    "הודו",
+    "סין",
+    "יפן",
+    "ברזיל",
+    "רוסיה",
+    "ישראל",
+    "ספרד",
+    "איטליה",
+    "אחר",
+  ];
 
   const valuationFilter =
-  valuation !== ""
+    valuation !== ""
       ? VALUATION_OPTIONS[Number(valuation)].value
       : null;
 
-  const resetValuation = () => setValuation("");
-  const resetRegion = () => setRegion("");
 
   return (
     <div
       className="flex flex-wrap items-center gap-3 p-2 bg-gray-100 w-full rounded-lg shadow-sm"
       dir="rtl"
     >
-      {/* Search Input */}
-      <div className="relative min-w-[250px]">
-        <input
-          type="text"
-          placeholder="חיפוש"
-          className="w-full border border-blue-500 text-blue-500 px-4 py-2 rounded-lg placeholder-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-        />
-        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500">
-          🔍
-        </span>
-      </div>
-
       {/* Region Select */}
       <div className="relative min-w-[130px] pt-5 pb-5">
         {region && (
           <div className="absolute top-0 right-0 flex items-center justify-between w-full text-blue-500 text-sm px-2">
             <span>אזור</span>
-            <span onClick={resetRegion} className="cursor-pointer font-bold">
+            <span
+              onClick={() => setRegion("")}
+              className="cursor-pointer font-bold"
+            >
               ✕
             </span>
           </div>
@@ -58,9 +80,11 @@ const FilterBar: React.FC = () => {
           <option value="" disabled hidden>
             אזור
           </option>
-          <option value="צפון">צפון</option>
-          <option value="מרכז">מרכז</option>
-          <option value="דרום">דרום</option>
+          {HEBREW_COUNTRIES.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
         </select>
         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500">
           ▼
@@ -85,7 +109,10 @@ const FilterBar: React.FC = () => {
         {valuationFilter !== null && (
           <div className="absolute top-0 right-0 flex items-center justify-between w-full text-blue-500 text-sm px-2">
             <span>שווי בסיבוב האחרון</span>
-            <span onClick={resetValuation} className="cursor-pointer font-bold">
+            <span
+              onClick={() => setValuation("")}
+              className="cursor-pointer font-bold"
+            >
               ✕
             </span>
           </div>
@@ -109,11 +136,7 @@ const FilterBar: React.FC = () => {
         </span>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-2 mt-2 md:mt-0">
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-          סנן
-        </button>
         <button
           onClick={() => {
             setRegion("");
