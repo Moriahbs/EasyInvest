@@ -22,6 +22,7 @@ interface StartupRequestBody {
   contactPhone: string;
   founders: string;
   image: string;
+  country: string;
 }
 
 /**
@@ -47,6 +48,7 @@ interface StartupRequestBody {
  *               - foundedYear
  *               - tags
  *               - contactEmail
+ *               - country
  *               - contactPhone
  *               - founders
  *             properties:
@@ -71,6 +73,8 @@ interface StartupRequestBody {
  *               fundingStage:
  *                 type: string
  *               contactEmail:
+ *                 type: string
+ *               country:
  *                 type: string
  *               contactPhone:
  *                 type: string
@@ -108,6 +112,7 @@ router.post(
         contactEmail,
         contactPhone,
         founders,
+        country,
       }: StartupRequestBody = req.body;
       const image = req.file
         ? `${req.file?.destination}${req.file?.filename}`
@@ -124,7 +129,8 @@ router.post(
         !tags ||
         !contactEmail ||
         !contactPhone ||
-        !founders
+        !founders ||
+        !country
       ) {
         res.status(400).send({ error: "Please provide all details" });
         return;
@@ -154,6 +160,7 @@ router.post(
         founders,
         owner: userId,
         image,
+        country,
       });
 
       await newStartup.save();
@@ -172,15 +179,65 @@ router.post(
   }
 );
 
+const valuationRanges = [
+  { min: 0, max: 5000000 },
+  { min: 5000000, max: 10000000 },
+  { min: 10000000, max: 20000000 },
+  { min: 20000000, max: Infinity },
+];
+
+const HEBREW_COUNTRIES = [
+  "ארצות הברית",
+  "קנדה",
+  "צרפת",
+  "גרמניה",
+  "בריטניה",
+  "אוסטרליה",
+  "הודו",
+  "סין",
+  "יפן",
+  "ברזיל",
+  "רוסיה",
+  "ישראל",
+  "ספרד",
+  "איטליה",
+  "אחר",
+];
+
 /**
  * @swagger
  * /startups:
  *   get:
- *     summary: Retrieve all startups
+ *     summary: Retrieve filtered startups
  *     tags: [Startups]
+ *     parameters:
+ *       - in: query
+ *         name: region
+ *         required: false
+ *         description: The region where the startup is located (e.g., "ישראל", "חו״ל").
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: fundingStages
+ *         required: false
+ *         description: Comma-separated list of funding stages (e.g., "seed,series_a").
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: categories
+ *         required: false
+ *         description: Comma-separated list of startup categories (e.g., "tech,health").
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: valuation
+ *         required: false
+ *         description: The valuation range of the startup based on last funding round (e.g., "0,5000000" for valuation between 0 and 5 million).
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
- *         description: A list of all startups.
+ *         description: A list of filtered startups.
  *         content:
  *           application/json:
  *             schema:
@@ -208,6 +265,8 @@ router.post(
  *                     type: integer
  *                   contactEmail:
  *                     type: string
+ *                   country:
+ *                     type: string
  *                   contactPhone:
  *                     type: string
  *                   founders:
@@ -219,20 +278,46 @@ router.post(
  *                   image:
  *                     type: string
  *       500:
- *         description: Error occurred during fetch.
+ *         description: Error occurred during fetching the startups.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "An error occurred while fetching startups"
  */
 // GET ALL STARTUPS
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const allStartups = await Startup.find()
+    const { region, fundingStages, categories, valuation } = req.query;
+
+    const filter: any = {};
+    if (region) {
+      if (region === "אחר") {
+        filter.country = { $nin: HEBREW_COUNTRIES };
+      } else {
+        filter.country = region;
+      }
+    }
+    if (fundingStages)
+      filter.fundingStage = { $in: (fundingStages as string).split(",") };
+    if (categories) filter.tags = { $in: (categories as string).split(",") };
+    if (valuation !== undefined) {
+      const idx = parseInt(valuation as string, 10);
+      const range = valuationRanges[idx] || valuationRanges[0];
+      filter.valuationLastRound = { $gte: range.min, $lt: range.max };
+    }
+
+    const startups = await Startup.find(filter)
       .populate("owner")
       .sort({ createdAt: -1 });
-    res.status(200).send(allStartups);
-  } catch (error) {
-    console.error("Error fetching startups:", error);
-    res
-      .status(500)
-      .send({ error: "An error occurred while fetching startups" });
+
+    res.status(200).json(startups);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching startups" });
   }
 });
 
@@ -278,6 +363,8 @@ router.get("/", async (req: Request, res: Response) => {
  *                   foundedYear:
  *                     type: integer
  *                   contactEmail:
+ *                     type: string
+ *                   country:
  *                     type: string
  *                   contactPhone:
  *                     type: string
@@ -361,6 +448,8 @@ router.get("/sender/:sender", async (req: Request, res: Response) => {
  *                   type: integer
  *                 contactEmail:
  *                   type: string
+ *                 country:
+ *                   type: string
  *                 contactPhone:
  *                   type: string
  *                 founders:
@@ -432,6 +521,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  *               - foundedYear
  *               - tags
  *               - contactEmail
+ *               - country
  *               - contactPhone
  *               - founders
  *             properties:
@@ -456,6 +546,8 @@ router.get("/:id", async (req: Request, res: Response) => {
  *               fundingStage:
  *                 type: string
  *               contactEmail:
+ *                 type: string
+ *               country:
  *                 type: string
  *               contactPhone:
  *                 type: string
@@ -496,6 +588,7 @@ router.put(
         contactEmail,
         contactPhone,
         founders,
+        country,
       } = req.body;
       const image = req.file
         ? `${req.file?.destination}${req.file?.filename}`
@@ -515,7 +608,8 @@ router.put(
         !contactEmail ||
         !contactPhone ||
         !founders ||
-        !id
+        !id ||
+        !country
       ) {
         res
           .status(400)
@@ -534,6 +628,7 @@ router.put(
       if (description) updatedStartup.description = description;
       if (fundingStage) updatedStartup.fundingStage = fundingStage;
       if (contactEmail) updatedStartup.contactEmail = contactEmail;
+      if (country) updatedStartup.country = country;
       if (contactPhone) updatedStartup.contactPhone = contactPhone;
       if (founders) updatedStartup.founders = founders;
       if (image) updatedStartup.image = image;

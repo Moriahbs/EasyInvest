@@ -1,30 +1,50 @@
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
-import { getAllStartups } from "@/actions/startupActions";
+import { getAllStartups, StartupFilters } from "@/actions/startupActions";
 import { Startup } from "@/models/StartupModel";
-import FilterBar from "../components/FilterBar";
+import FilterBar from "@/components/FilterBar";
 import Map from "@/components/Map";
 import StartupList from "@/components/StartupList";
 
 export default function StartupsPage() {
-  const [startups, setStartUps] = useState<Startup[]>([]);
+  const [startups, setStartups] = useState<Startup[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [region, setRegion] = useState<string>("");
+  const [fundingStages, setFundingStages] = useState<string[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [valuation, setValuation] = useState<string>("");
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchFiltered = async () => {
       setLoading(true);
-      const res = await getAllStartups();
-      setStartUps(res);
+      const filters: StartupFilters = {
+        region,
+        fundingStages,
+        categories,
+        valuation,
+      };
+      const data = await getAllStartups(filters);
+      setStartups(data);
       setLoading(false);
     };
-
-    fetchData();
-  }, []);
+    fetchFiltered();
+  }, [region, fundingStages, categories, valuation]);
 
   return (
-    <div className="flex flex-col flex-wrap items-start" dir="ltr">
-      <FilterBar />
-      <div className="w-full flex flex-row flex-wrap justify-between">
+    <div className="flex flex-col" dir="ltr">
+      <FilterBar
+        region={region}
+        setRegion={setRegion}
+        fundingStages={fundingStages}
+        setFundingStages={setFundingStages}
+        categories={categories}
+        setCategories={setCategories}
+        valuation={valuation}
+        setValuation={setValuation}
+      />
+
+      <div className="flex flex-row flex-wrap w-full justify-between">
         <Map startups={startups} />
         <div className="w-full md:w-[35%]">
           <StartupList startups={startups} loading={loading} />

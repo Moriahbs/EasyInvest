@@ -40,6 +40,7 @@ export interface NewStartup {
   contactPhone: string;
   founders: string;
   image?: string;
+  country: string;
 }
 
 interface StartupFormProps {
@@ -57,6 +58,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       foundedYear: 2025,
       valuationLastRound: 0,
       location: "",
+      country: "",
       contactEmail: "",
       contactPhone: "",
       founders: "",
@@ -73,7 +75,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       return;
     }
     const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${value}`,
+      `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${value}`,
       { headers: { "User-Agent": "MyStartupApp/1.0 (your-email@example.com)" } }
     );
     const data = await res.json();
@@ -86,6 +88,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       location: place.display_name,
       latitude: parseFloat(place.lat),
       longitude: parseFloat(place.lon),
+      country: place?.address?.country || "",
     });
     setSearchResults([]);
   };
@@ -96,6 +99,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       tags,
       description,
       fundingStage,
+      country,
       foundedYear,
       valuationLastRound,
       latitude,
@@ -115,7 +119,8 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       !location ||
       !contactEmail ||
       !contactPhone ||
-      !founders
+      !founders ||
+      !country
     ) {
       return toast.error("יש למלא את כל השדות");
     }
@@ -136,7 +141,8 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         contactEmail,
         contactPhone,
         founders,
-        image
+        country,
+        image,
       );
       toast.success("הסטארטאפ עודכן בהצלחה!");
     } else {
@@ -153,7 +159,8 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         contactEmail,
         contactPhone,
         founders,
-        image
+        country,
+        image,
       );
       toast.success("הסטארטאפ נוצר בהצלחה!");
     }
@@ -171,6 +178,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       contactEmail: "",
       contactPhone: "",
       founders: "",
+      country: ""
     });
   };
 

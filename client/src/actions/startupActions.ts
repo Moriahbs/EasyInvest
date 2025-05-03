@@ -2,11 +2,29 @@ import config from "@/config";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
 
-export const getAllStartups = async () => {
+export interface StartupFilters {
+  region?: string;
+  fundingStages?: string[];
+  categories?: string[];
+  valuation?: string;
+}
+
+const buildFilterParams = (f: StartupFilters) => {
+  const params: Record<string, string> = {};
+  if (f.region) params.region = f.region;
+  if (f.fundingStages && f.fundingStages.length)
+    params.fundingStages = f.fundingStages.join(",");
+  if (f.categories && f.categories.length)
+    params.categories = f.categories.join(",");
+  if (f.valuation) params.valuation = f.valuation;
+  return params;
+};
+
+export const getAllStartups = async (filters: StartupFilters = {}) => {
   const res = await axios.get(`${config.SERVER_URL}/startups`, {
+    params: buildFilterParams(filters),
     withCredentials: true,
   });
-
   return res.data;
 };
 
@@ -44,6 +62,7 @@ export const createStartup = async (
   contactEmail: string,
   contactPhone: string,
   founders: string,
+  country: string,
   image: File | null
 ) => {
   const formData = new FormData();
@@ -58,6 +77,7 @@ export const createStartup = async (
   formData.append("longitude", longitude.toString());
   formData.append("latitude", latitude.toString());
   formData.append("contactEmail", contactEmail);
+  formData.append("country", country);
   formData.append("contactPhone", contactPhone);
   formData.append("founders", founders);
 
@@ -83,15 +103,17 @@ export const editStartup = async (
   contactEmail: string,
   contactPhone: string,
   founders: string,
+  country: string,
   image: File | null
 ) => {
   const formData = new FormData();
   image && formData.append("startupImage", image);
   formData.append("name", name);
-  formData.append("tags", tags.join(",")); // Join the array into a single string
+  tags.forEach(tag => formData.append("tags[]", tag));
   formData.append("description", description);
   formData.append("fundingStage", fundingStage);
   formData.append("location", location);
+  formData.append("country", country);
   formData.append("foundedYear", foundedYear.toString());
   formData.append("valuationLastRound", valuationLastRound.toString());
   formData.append("longitude", longitude.toString());

@@ -12,7 +12,7 @@ import { createStartup } from "@/actions/startupActions";
 import UploadImage from "./UploadImage";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { STARTUP_CATEGORIES, FUNDING_STAGES } from "../models/StartupModel"
+import { STARTUP_CATEGORIES, FUNDING_STAGES } from "../models/StartupModel";
 import { MultiSelect } from "./ui/multi-select";
 import { toast } from "sonner";
 
@@ -24,6 +24,7 @@ export interface NewStartup {
   foundedYear: number;
   valuationLastRound: number;
   location: string;
+  country: string;
   latitude?: number;
   longitude?: number;
   image?: string;
@@ -46,6 +47,7 @@ export default function CreateStartupModal({
     foundedYear: 2025,
     valuationLastRound: 0,
     location: "",
+    country: "",
   });
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -62,21 +64,21 @@ export default function CreateStartupModal({
     const res = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&countrycodes=il&q=${value}`
     );
-    
+
     const data = await res.json();
     setSearchResults(data);
   };
 
   const handleSelectLocation = (place: any) => {
     const cityName =
-    place.address?.city ||
-    place.address?.town ||
-    place.address?.village ||
-    place.address?.hamlet ||
-    place.address?.municipality ||
-    place.address?.county ||
-    place.address?.state ||
-    place.address?.country;
+      place.address?.city ||
+      place.address?.town ||
+      place.address?.village ||
+      place.address?.hamlet ||
+      place.address?.municipality ||
+      place.address?.county ||
+      place.address?.state ||
+      place.address?.country;
 
     setStartupDetails({
       ...startupDetails,
@@ -93,6 +95,7 @@ export default function CreateStartupModal({
       tags,
       description,
       fundingStage,
+      country,
       foundedYear,
       valuationLastRound,
       latitude,
@@ -106,7 +109,8 @@ export default function CreateStartupModal({
       !fundingStage ||
       !foundedYear ||
       !valuationLastRound ||
-      !location
+      !location ||
+      !country
     )
       return toast.error("יש למלא את כל השדות");
 
@@ -119,6 +123,7 @@ export default function CreateStartupModal({
       foundedYear,
       valuationLastRound,
       location,
+      country,
       latitude || 0,
       longitude || 0,
       image
@@ -134,6 +139,7 @@ export default function CreateStartupModal({
       foundedYear: 2025,
       valuationLastRound: 0,
       location: "",
+      country: ""
     });
   };
 
@@ -195,22 +201,22 @@ export default function CreateStartupModal({
 
             <label className={labelClass}>שלב מימון</label>
             <select
-                className={`w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputClass}`}
-                value={startupDetails.fundingStage}
-                onChange={(e) =>
-                    setStartupDetails({
-                      ...startupDetails,
-                      fundingStage: e.target.value,
-                    })
-                }
+              className={`w-full p-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputClass}`}
+              value={startupDetails.fundingStage}
+              onChange={(e) =>
+                setStartupDetails({
+                  ...startupDetails,
+                  fundingStage: e.target.value,
+                })
+              }
             >
               <option value="" disabled>
                 בחר שלב מימון
               </option>
               {FUNDING_STAGES.map((stage) => (
-                  <option key={stage} value={stage}>
-                    {stage}
-                  </option>
+                <option key={stage} value={stage}>
+                  {stage}
+                </option>
               ))}
             </select>
 
