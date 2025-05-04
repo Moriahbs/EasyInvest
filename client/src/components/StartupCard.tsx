@@ -98,6 +98,16 @@ const StartupCard: React.FC<StartupCardProps> = ({
             </span>
           )}
         </div>
+        <div className="mt-4">
+          <a
+            href={`/startup/${startup._id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-colors"
+          >
+            לפרטים נוספים
+          </a>
+        </div>
       </div>
     </div>
   );

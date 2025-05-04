@@ -9,7 +9,7 @@ export default function TopicsChat() {
   const [userInput, setUserInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [aiResponse, setAiResponse] = useState<any>(null);
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isMinimized, setIsMinimized] = useState<boolean>(true);
 
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;

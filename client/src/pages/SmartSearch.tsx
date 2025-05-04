@@ -81,13 +81,13 @@ export default function SmartSearchPage() {
                 <p>
                   <strong>שנת הקמה:</strong>{" "}
                   {preferences.minFoundedYear || preferences.maxFoundedYear
-                    ? `${preferences.minFoundedYear || "כל שנה"} - ${preferences.maxFoundedYear || "כל שנה"}`
+                    ? `${preferences.minFoundedYear || "כל שנה"} - ${preferences.maxFoundedYear || "2025"}`
                     : "כל שנה"}
                 </p>
                 <p>
                   <strong>שווי:</strong>{" "}
                   {preferences.minValuation || preferences.maxValuation
-                    ? `${preferences.minValuation || "כל סכום"}M - ${preferences.maxValuation || "כל סכום"}M`
+                    ? `${preferences.minValuation || "0"}M - ${preferences.maxValuation || "כל סכום"}M`
                     : "כל סכום"}
                 </p>
               </div>

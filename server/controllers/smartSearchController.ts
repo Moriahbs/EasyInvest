@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import asyncHandler from "express-async-handler";
-import { Startup, STARTUP_MOCK_DATA } from "../mocks/mocks";
+import { IStartup } from "../models/models";
+import { Startup } from "../db/dbUtils";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
@@ -29,38 +30,71 @@ export const STARTUP_CATEGORIES: string[] = [
     "אוטומציה",
 ];
 
-const fundingStagesPool: string[] = ["Pre-Seed", "Seed", "Series A", "Series B", "Series C"];
+export const FUNDING_STAGES: string[] = [
+    "פרה-סיד",
+    "סיד",
+    "סבב גיוס ראשון",
+    "סבב גיוס שני",
+    "סבב גיוס שלישי",
+    "סבב גיוס רביעי",
+    "מאוחר יותר",
+    "גשר",
+    "IPO",
+];
 
 export const getInvestmentRecommendations = asyncHandler(async (req, res) => {
     const { prompt } = req.body;
 
     try {
         const aiPrompt = `
-      The user wants to invest in technology startups but doesn’t understand the tech world.
-      Based on their preference: "${prompt}", extract the following:
-      1. Relevant tech tags from this list: ${JSON.stringify(STARTUP_CATEGORIES)}.
-      2. Preferred funding stages from this list: ${JSON.stringify(fundingStagesPool)} (if mentioned, otherwise return empty array).
-      3. Minimum founded year (e.g., "after 2020" means >= 2021, if not mentioned return null).
-      4. Maximum founded year (e.g., "before 2022" means <= 2021, if not mentioned return null).
-      5. Minimum valuation in millions USD (e.g., "more than 10 million" means >= 10, if not mentioned return null).
-      6. Maximum valuation in millions USD (e.g., "less than 50 million" means <= 50, if not mentioned return null).
-      Return the result as a JSON object like:
+     המשתמש רוצה להשקיע בסטארטאפים טכנולוגיים אך לא מבין בעולם הטכנולוגיה.
+בהתבסס על ההעדפה שלו:
+"${prompt}",
+חלץ את הפרטים הבאים:
+
+תגיות טכנולוגיה רלוונטיות מתוך הרשימה:
+${JSON.stringify(STARTUP_CATEGORIES)}
+
+שלבי מימון מועדפים מתוך הרשימה:
+${JSON.stringify(FUNDING_STAGES)}
+(אם צוינו, אחרת החזר מערך ריק)
+
+שנת הקמה מינימלית
+(לדוגמה, "אחרי 2020" משמעו >= 2021, אם לא צוינה החזר null)
+
+שנת הקמה מקסימלית
+(לדוגמה, "לפני 2022" משמעו <= 2021, אם לא צוינה החזר null)
+
+שווי מינימלי במיליוני דולרים
+(לדוגמה, "יותר מ-10 מיליון" משמעו >= 10, אם לא צוין החזר null)
+
+שווי מקסימלי במיליוני דולרים
+(לדוגמה, "פחות מ-50 מיליון" משמעו <= 50, אם לא צוין החזר null)
+
+החזר את התוצאה כאובייקט JSON בפורמט הבא:
       {
-        "tags": ["tag1", "tag2"],
-        "fundingStages": ["stage1", "stage2"],
-        "minFoundedYear": number | null,
-        "maxFoundedYear": number | null,
-        "minValuation": number | null,
-        "maxValuation": number | null
-      }
+  "tags": ["tag1", "tag2"],
+  "fundingStages": ["stage1", "stage2"],
+  "minFoundedYear": number | null,
+  "maxFoundedYear": number | null,
+  "minValuation": number | null,
+  "maxValuation": number | null
+}
     `;
 
         const result = await model.generateContent(aiPrompt);
+        console.log({ result });
+
         const aiResponse = result.response.text();
+        console.log({ aiResponse });
+
         const preferences = extractPreferencesFromResponse(aiResponse);
 
         // Filter and score startups
-        const scoredStartups = scoreStartups(STARTUP_MOCK_DATA, preferences); //TODO: use the real startups
+        const startups = await Startup.find()
+        console.log({startups});
+        
+        const scoredStartups = scoreStartups(startups, preferences); //TODO: use the real startups
         const filteredStartups = scoredStartups.filter((s) => s.score > 0);
         const topMatches = filteredStartups
             .sort((a, b) => b.score - a.score)
@@ -84,7 +118,7 @@ function extractPreferencesFromResponse(aiResponse: string) {
         return {
             tags: Array.isArray(parsed.tags) ? parsed.tags.filter((t: string) => STARTUP_CATEGORIES.includes(t)) : [],
             fundingStages: Array.isArray(parsed.fundingStages)
-                ? parsed.fundingStages.filter((f: string) => fundingStagesPool.includes(f))
+                ? parsed.fundingStages.filter((f: string) => FUNDING_STAGES.includes(f))
                 : [],
             minFoundedYear: typeof parsed.minFoundedYear === "number" ? parsed.minFoundedYear : null,
             maxFoundedYear: typeof parsed.maxFoundedYear === "number" ? parsed.maxFoundedYear : null,
@@ -104,7 +138,7 @@ function extractPreferencesFromResponse(aiResponse: string) {
     }
 }
 
-function scoreStartups(startups: Startup[], preferences: any) {
+function scoreStartups(startups: any[], preferences: any) {
     return startups.map((startup) => {
         let score = 0;
 
@@ -127,18 +161,17 @@ function scoreStartups(startups: Startup[], preferences: any) {
 
 export const simplifyDescription = asyncHandler(async (req, res) => {
     try {
-      const { userText } = req.body;
-  
-      const prompt = `Simplify this project description for a general audience in the same language:\n\n${userText}`;
-  
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const simplified = response.text();
-  
-      res.status(200).json({ simplified });
+        const { userText } = req.body;
+
+        const prompt = `Simplify this project description for a general audience in the same language:\n\n${userText}`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const simplified = response.text();
+
+        res.status(200).json({ simplified });
     } catch (error) {
-      console.error("Error simplifying description:", error);
-      res.status(500).json({ error: "Failed to simplify description" });
+        console.error("Error simplifying description:", error);
+        res.status(500).json({ error: "Failed to simplify description" });
     }
-  });
-  
+});

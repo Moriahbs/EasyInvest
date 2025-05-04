@@ -3,15 +3,15 @@ import BlueSearchAnimation from "../assets/SmartSearch.json";
 import LocationsOnMapAnimation from "../assets/LocationsOnMap.json";
 import ChatBotAnimation from "../assets/ChatBot.json";
 // import SmartSearch from "@/components/SmartSearch";
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+// import { Plus } from "lucide-react";
+// import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipProvider,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip";
 
 export default function HomePage() {
   // const [openSearch, setOpenSearch] = useState(false);
@@ -78,7 +78,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <TooltipProvider>
+      {/* <TooltipProvider> */}
         {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -105,7 +105,7 @@ export default function HomePage() {
             <p>Chat with AI</p>
           </TooltipContent>
         </Tooltip> */}
-        <Tooltip>
+        {/* <Tooltip>
           <TooltipTrigger asChild>
             <Link to="/create-startup">
               <Button
@@ -118,8 +118,8 @@ export default function HomePage() {
           <TooltipContent className="z-[999]">
             <p>יצירת סטרטאפ</p>
           </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+        </Tooltip> */}
+      {/* </TooltipProvider> */}
       {/* <SmartSearch open={openSearch} setOpen={setOpenSearch} /> */}
     </div>
   );
