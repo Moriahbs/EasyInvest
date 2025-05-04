@@ -92,8 +92,8 @@ ${JSON.stringify(FUNDING_STAGES)}
 
         // Filter and score startups
         const startups = await Startup.find()
-        console.log({startups});
-        
+        console.log({ startups });
+
         const scoredStartups = scoreStartups(startups, preferences); //TODO: use the real startups
         const filteredStartups = scoredStartups.filter((s) => s.score > 0);
         const topMatches = filteredStartups
@@ -163,7 +163,8 @@ export const simplifyDescription = asyncHandler(async (req, res) => {
     try {
         const { userText } = req.body;
 
-        const prompt = `Simplify this project description for a general audience in the same language:\n\n${userText}`;
+        const prompt = `פשט את תיאור הפרויקט הזה עבור קהל כללי באותה שפה. התעכב על נושאים מורכבים ונסה להסבירם בצורה פשוטה וברורה. אל תוסיף מידע על החברה שאינו מופיע בטקסט:\n\n` +
+        `${userText}`;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;

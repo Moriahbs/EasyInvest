@@ -70,11 +70,15 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                             <h2 className="text-xl font-semibold text-blue-950 flex items-center gap-2">
                                 <Building className="w-5 h-5" /> תיאור הסטארטאפ
                             </h2>
-                            <p className="text-gray-700 mt-2 text-lg">{isSimplified ? simplifiedDesc : startup.description}</p>
+                            <p className="text-gray-700 mt-2 text-lg">{startup.description}</p>
+                            {isSimplified && <div>
+                                <p className="text-gray-700 mt-2 text-lg font-bold underline">תיאור מוסבר:</p>
+                                <p className="text-gray-700 mt-2 text-lg">{simplifiedDesc}</p>
+                            </div>}
                             <button
                                 onClick={() => simplifyDescription(startup.description)}
                                 className="bg-blue-600 w-1/5 text-white border-none focus:outline-none mt-2 flex items-center justify-center">
-                                {isSimplified ? 'חזרה למקור' :
+                                {isSimplified ? 'הסתר' :
                                     (
                                         <>
                                             תסביר לי
