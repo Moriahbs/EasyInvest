@@ -53,22 +53,24 @@ const StartupCard: React.FC<StartupCardProps> = ({
       <div className="p-4 flex flex-col gap-2">
         <div className="flex justify-between">
           <h2 className="text-xl font-bold text-gray-800">{startup.name}</h2>
-          {startup.owner?._id === userId && (
-            <div className="flex items-center gap-0.5">
-              <div
-                className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
-                onClick={() => handleEditStartup?.(startup)}
-              >
-                <Pencil className="h-3 w-3 text-blue-600" />
+          {startup.owner?._id === userId &&
+            handleDeleteStartup &&
+            handleEditStartup && (
+              <div className="flex items-center gap-0.5">
+                <div
+                  className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleEditStartup?.(startup)}
+                >
+                  <Pencil className="h-3 w-3 text-blue-600" />
+                </div>
+                <div
+                  className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleDeleteStartup?.(startup._id)}
+                >
+                  <Trash2 className="h-3 w-3 text-red-600" />
+                </div>
               </div>
-              <div
-                className="p-1 rounded-full hover:bg-gray-200 cursor-pointer"
-                onClick={() => handleDeleteStartup?.(startup._id)}
-              >
-                <Trash2 className="h-3 w-3 text-red-600" />
-              </div>
-            </div>
-          )}
+            )}
         </div>
 
         <div className="flex items-center text-gray-600 text-sm gap-1">
