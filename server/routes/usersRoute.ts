@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "../db/dbUtils";
 import authMiddleware from "../handlers/auth";
 import upload from "../handlers/uploadUtils";
@@ -257,7 +256,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 
     // const user = await User.findById(id).populate("posts");
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("favorites");
 
     if (!user) {
       res.status(404).send({ error: "User not found" });
@@ -265,6 +264,32 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 
     res.status(200).send(user);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching the user" });
+  }
+});
+
+// GET USERS BY FAVORITE
+router.get("/favorite/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+    
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startup id" });
+      return;
+    }
+
+    const users = await User.find({ favorites: startupId });
+
+    if (!users) {
+      res.status(404).send({ error: "Users not found" });
+      return;
+    }
+
+    res.status(200).send(users);
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     res
@@ -433,3 +458,82 @@ router.delete("/:id", async (req: Request, res: Response) => {
 });
 
 export default router;
+
+// ADD STARTUP TO FAVORITES
+router.post("/favorite", async (req: Request, res: Response) => {
+  try {
+    const { startupId }: { startupId: string } = req.body;
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const token = getAccessToken(req) || "";
+    const { userId } = verifyAccessToken(token) || { userId: "" };
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+
+    const update = { $push: { favorites: startupId } };
+    const updatedUser = await User.findByIdAndUpdate(userId, update, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      res.status(404).send({ error: "Post not found" });
+      return;
+    }
+
+    res.status(201).send(updatedUser);
+  } catch (error) {
+    console.error("Error adding favorite:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while adding the favorite" });
+  }
+});
+
+// DELETE STARTUP FROM FAVORITES
+router.delete("/favorite/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const token = getAccessToken(req);
+    if (!token) {
+      res.status(401).send({ error: "Access token required" });
+      return;
+    }
+
+    const { userId } = verifyAccessToken(token) || {};
+    if (!userId) {
+      res.status(401).send({ error: "Invalid or expired token" });
+      return;
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favorites: startupId } },
+      { new: true }
+    );
+
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error("Error removing favorite:", error);
+    res.status(500).send({ error: "An error occurred while removing the favorite" });
+  }
+});

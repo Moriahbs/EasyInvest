@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import UploadProfile from "@/components/UploadProfile";
 import { Label } from "@/components/ui/label";
 import { getUser, updateUser, getAllUsers } from "@/actions/profileActions";
-import Cookies from "js-cookie";
 import { isTokenValid } from "@/utils/authUtils";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -40,6 +40,7 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [open, setOpen] = useState<boolean>(false);
   const [currentStartup, setCurrentStartup] = useState<Startup>();
+  const [favorites, setFavorites] = useState<Startup[]>([]);
 
   const token = Cookies.get("Authorization") || "";
 
@@ -79,8 +80,10 @@ export default function ProfilePage() {
 
   const getUserDetails = async () => {
     const currentUser = await getUser(token);
-    const { username, email, password, profilePhoto } = currentUser.data;
+
+    const { username, email, password, profilePhoto, favorites } = currentUser.data;
     setUser({ username, email, password, profilePhotoUrl: profilePhoto });
+    setFavorites(favorites);
   };
 
   const handleSave = () => {
@@ -109,7 +112,7 @@ export default function ProfilePage() {
 
   return (
     <div className="p-6 space-x-8 flex h-fit w-full justify-around">
-      <Card className="h-fit w-1/2 mt-4">
+      <Card className="h-fit w-1/3 mt-4">
         <CardHeader className="items-center">
           <h2 className="text-3xl font-bold text-gray-800 text-center">
             פרופיל אישי{" "}
@@ -165,14 +168,30 @@ export default function ProfilePage() {
           </div>
         </CardContent>
       </Card>
-      <div className="w-full md:w-[35%]">
-        <StartupList
-          startups={startups}
-          loading={loading}
-          handleEditStartup={handleEditStartup}
-          handleDeleteStartup={handleDeleteStartup}
-        />
-      </div>
+      {
+        startups.length !== 0 && (
+          <div className="w-full md:w-[35%]">
+            <StartupList
+              title={'הסטארטאפים שלך'}
+              startups={startups}
+              loading={loading}
+              handleEditStartup={handleEditStartup}
+              handleDeleteStartup={handleDeleteStartup}
+            />
+          </div>
+        )
+      }
+      {
+        favorites.length !== 0 && (
+          <div className="w-full md:w-[35%]">
+            <StartupList
+              title={'סטארטאפים שהתעניינת בהם'}
+              startups={favorites}
+              loading={loading}
+            />
+          </div>
+        )
+      }
       {open && currentStartup && (
         <EditStartupModal
           open={open}

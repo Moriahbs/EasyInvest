@@ -41,3 +41,39 @@ export const getAllUsers = async () => {
 
   return res.data;
 };
+
+export const addStartupToFavorites = async (startupId: string) => {
+  const res = await axios.post(
+    `${config.SERVER_URL}/users/favorite`,
+    {
+      startupId,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.status === 201;
+};
+
+export const deleteStartupFromFavorites = async (startupId: string) => {
+  const res = await axios.delete(
+    `${config.SERVER_URL}/users/favorite/${startupId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.status === 201;
+};
+
+export const getUsersByFavorite = async (startupId: string) => {
+  const res = await axios.get(
+    `${config.SERVER_URL}/users/favorite/${startupId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.data;
+};

@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 import StartupWrapperPage from "@/pages/StartupWrapperPage.tsx";
 import CreateStartupPage from "@/pages/CreateStartup.tsx";
 import SmartSearchPage from "@/pages/SmartSearch.tsx";
-import StartupsPage from "./pages/Srartups";
+import StartupsPage from "./pages/Startups";
 import TopicsChat from "./components/TopicsChat";
 
 
