@@ -1,7 +1,9 @@
 import { Startup } from "@/models/StartupModel";
+import { DollarSign, MapPin } from "lucide-react";
 import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
+import { formatValuation } from "./StartupCard";
 
 interface MapProps {
   startups: Startup[];
@@ -17,7 +19,7 @@ const Map: React.FC<MapProps> = ({ startups }) => {
       if (!map) return;
 
       if (startups.length === 0) {
-        map.setView([31.0461, 34.8516], 7); 
+        map.setView([31.0461, 34.8516], 7);
       } else {
         const latitudes = startups.map((startup) => startup.latitude);
         const longitudes = startups.map((startup) => startup.longitude);
@@ -39,9 +41,7 @@ const Map: React.FC<MapProps> = ({ startups }) => {
 
   return (
     <div className="w-full md:w-[65%]">
-      <MapContainer
-        style={{ height: "100%", width: "100%" }}
-      >
+      <MapContainer style={{ height: "100%", width: "100%" }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {startups?.map((startup) => (
           <Marker
@@ -53,14 +53,30 @@ const Map: React.FC<MapProps> = ({ startups }) => {
                 <strong className="text-lg font-bold text-blue-950">
                   {startup.name}
                 </strong>
-                <br />
-                <p className="text-gray-700">{startup.description}</p>
-                <button
-                  onClick={() => navigate(`/startup/${startup._id}`)}
-                  className="mt-2 bg-purple-600 text-white rounded-full py-2 px-4 text-sm font-medium hover:bg-purple-700 transition"
-                >
-                  לפרטים נוספים
-                </button>
+                <div className="flex mt-2">
+                  <div className="flex items-center text-gray-600 text-sm gap-1">
+                    <MapPin className="w-4 h-4 min-w-4 min-h-4 flex-shrink-0 text-blue-500" />
+                    <span className="truncate max-w-[150px] block">
+                      {startup.location}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600 text-sm gap-1">
+                    <DollarSign className="w-4 h-4 text-green-600" />
+                    <span>{formatValuation(startup.valuationLastRound)}</span>
+                  </div>
+                </div>
+                <div dir="rtl" className="text-gray-700 mt-1 mb-2">
+                  {startup.description}
+                </div>
+                <div className="w-full flex">
+                  <button
+                    onClick={() => navigate(`/startup/${startup._id}`)}
+                    className="inline-block bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-colors"
+                  >
+                    לפרטים נוספים
+                  </button>
+                </div>
               </div>
             </Popup>
           </Marker>
