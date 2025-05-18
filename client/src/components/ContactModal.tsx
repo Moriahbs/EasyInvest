@@ -33,7 +33,7 @@ export default function ContactModal({
 
     return (
         <Dialog open={open} onOpenChange={() => setOpen(false)}>
-            <DialogContent className="w-3/4 h-5/6 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
+            <DialogContent className="w-3/5 h-3/4 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
                 <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
                     <h2 className="text-2xl font-bold text-center">צור קשר</h2>
 
