@@ -1,12 +1,12 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
-import {sendEmail} from "@/actions/profileActions.ts";
+import { sendEmail } from "@/actions/profileActions.ts";
 
 export default function ContactModal({
-                                         open,
-                                         setOpen,
-                                         email,
-                                     }: {
+    open,
+    setOpen,
+    email,
+}: {
     open: boolean;
     setOpen: (state: boolean) => void;
     email: string;
@@ -33,8 +33,8 @@ export default function ContactModal({
 
     return (
         <Dialog open={open} onOpenChange={() => setOpen(false)}>
-            <DialogContent className="w-3/4 h-5/6 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <DialogContent className="w-3/5 h-3/4 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
+                <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
                     <h2 className="text-2xl font-bold text-center">צור קשר</h2>
 
                     <label className="flex flex-col text-right">
@@ -43,7 +43,7 @@ export default function ContactModal({
                             type="text"
                             value={subject}
                             onChange={(e) => setSubject(e.target.value)}
-                            className="p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-[100vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </label>
@@ -54,14 +54,14 @@ export default function ContactModal({
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             rows={6}
-                            className="p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-[100vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </label>
 
                     <button
                         type="submit"
-                        className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                        className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 w-[50vh]"
                         disabled={loading}
                     >
                         {loading ? "שולח..." : "שלח הודעה"}

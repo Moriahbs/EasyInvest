@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import StartupInfo from '@/components/ui/StartupInfo.tsx';
+import StartupInfo from '@/components/StartupInfo';
 import {Startup} from '@/models/StartupModel.ts';
 import {getAllStartups} from "@/actions/startupActions.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";

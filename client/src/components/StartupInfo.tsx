@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { Startup } from "@/models/StartupModel.ts";
-import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2 } from "lucide-react";
+import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2, BookmarkCheck, User as UserIcon, Sparkles } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { addStartupToFavorites, deleteStartupFromFavorites, getUser, getUsersByFavorite } from "@/actions/profileActions";
+import { User } from "@/models/userModel";
 import ContactModal from "@/components/ContactModal.tsx";
 
 interface StartupInfoProps {
@@ -15,7 +18,31 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
     const [simplifyLoading, setSimplifyLoading] = useState<boolean>(false);
     const [simplifiedDesc, setSimplifiedDesc] = useState('');
     const [isSimplified, setIsSimplified] = useState<boolean>(false);
+    const [favorited, setFavorited] = useState(false);
+    const [userId, setUserId] = useState<string>("");
+    const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const token = Cookies.get("Authorization") || "";
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getUserDetails();
+            await getInterestedUsers();
+        };
+        fetchData();
+    }, []);
+
+    const getUserDetails = async () => {
+        const currentUser = await getUser(token);
+        const { _id, favorites } = currentUser.data as { favorites: Startup[], _id: string };
+        setUserId(_id);
+        setFavorited(favorites.some(favorite => favorite._id === startup._id))
+    };
+
+    const getInterestedUsers = async () => {
+        const users = await getUsersByFavorite(startup._id);
+        setInterestedUsers(users);
+    };
 
     const simplifyDescription = async (userInput: string) => {
         if (!isSimplified && !simplifiedDesc) {
@@ -26,10 +53,19 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
 
             setSimplifyLoading(false);
             setSimplifiedDesc(response.data.simplified);
-            console.log(response.data.simplified);
         }
         setIsSimplified(!isSimplified);
     }
+
+    const onSaveClicked = async () => {
+        if (favorited) {
+            await deleteStartupFromFavorites(startup._id);
+        } else {
+            await addStartupToFavorites(startup._id);
+        }
+
+        setFavorited(!favorited);
+    };
 
     const valuationInShekels = startup.valuationLastRound.toLocaleString("he-IL", {
         style: "currency",
@@ -48,6 +84,15 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                 }}
             >
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <button
+                        onClick={onSaveClicked}
+                        className="absolute top-3 right-3 p-2 rounded-full bg-white bg-opacity-20 hover:bg-opacity-40 transition focus:outline-none"
+                        aria-label="Save to favorites"
+                    >
+                        <BookmarkCheck className={`w-7 h-7 ${favorited ? "text-green-700" : "text-white"
+                            }`} />
+                    </button>
+
                     <h1 className="text-4xl font-bold text-white">{startup.name}</h1>
                 </div>
             </div>
@@ -73,9 +118,11 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                                 <Building className="w-5 h-5" /> תיאור הסטארטאפ
                             </h2>
                             <p className="text-gray-700 mt-2 text-lg">{startup.description}</p>
-                            {isSimplified && <div>
-                                <p className="text-gray-700 mt-2 text-lg font-bold underline">תיאור מוסבר:</p>
-                                <p className="text-gray-700 mt-2 text-lg">{simplifiedDesc}</p>
+                            {isSimplified && <div className="border rounded-lg p-4 w-fit mt-4 mb-5">
+                                <p className="text-green-700 mt-2 text-lg font-bold flex items-center gap-2">
+                                    <Sparkles className="w-5 h-5" />הסבר במילים פשוטות
+                                </p>
+                                <p className="text-green-700 mt-2 text-lg">{simplifiedDesc}</p>
                             </div>}
                             <button
                                 onClick={() => simplifyDescription(startup.description)}
@@ -123,6 +170,24 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                                 </MapContainer>
                             </div>
                         </div>
+                        {
+                            userId === startup.owner._id && interestedUsers.length !== 0 && (
+                                <div>
+                                    <h2 className="text-xl font-semibold text-blue-950 flex items-center gap-2">
+                                        <BookmarkCheck className="w-5 h-5" /> לקוחות שהתעניינו בסטארטאפ
+                                    </h2>
+                                    {
+                                        interestedUsers.map((user) => (
+                                            <div key={user._id} className="flex items-center gap-4 border-b py-2">
+                                                <UserIcon className="w-5 h-5" />
+                                                <p className="text-blue-950 font-bold">{user.username}</p>
+                                                <p className="text-gray-500">{user.email}</p>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            )
+                        }
                     </div>
 
                     <div className="md:col-span-1 bg-blue-50 rounded-xl p-6 shadow-md">
