@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "../db/dbUtils";
 import authMiddleware from "../handlers/auth";
 import upload from "../handlers/uploadUtils";
@@ -10,6 +9,7 @@ import {
   getAccessToken,
   verifyAccessToken,
 } from "../handlers/authUtils";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 router.use(authMiddleware);
@@ -431,5 +431,80 @@ router.delete("/:id", async (req: Request, res: Response) => {
       .send({ error: "An error occurred while deleting the user" });
   }
 });
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+
+router.post("/:email", async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    const {subject, message} = req.body;
+
+    if (!email || !subject || !message) {
+      res.status(400).send({error: "Missing email, subject, or message"});
+    }
+
+    const token = getAccessToken(req) || "";
+    const {userId} = verifyAccessToken(token) || {userId: ""};
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(401).send({error: "Invalid user"});
+      return
+    }
+
+    // Optional: only allow sending to self or allow admins
+    if (user.email !== email /* && !user.isAdmin */) {
+      res.status(403).send({error: "No permission to send to this email"});
+      return
+    }
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: email,
+      subject,
+      text: message,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: user.email,
+      subject: "הודעה בדבר פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: user.email,
+      subject: "אישור פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    res.status(200).send({success: true, message: "Email sent successfully"});
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).send({error: "Failed to send email"});
+  }
+})
 
 export default router;

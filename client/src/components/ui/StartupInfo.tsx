@@ -5,6 +5,7 @@ import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Buildi
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import ContactModal from "@/components/ContactModal.tsx";
 
 interface StartupInfoProps {
     startup: Startup;
@@ -14,6 +15,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
     const [simplifyLoading, setSimplifyLoading] = useState<boolean>(false);
     const [simplifiedDesc, setSimplifiedDesc] = useState('');
     const [isSimplified, setIsSimplified] = useState<boolean>(false);
+    const [openModal, setOpenModal] = useState<boolean>(false);
 
     const simplifyDescription = async (userInput: string) => {
         if (!isSimplified && !simplifiedDesc) {
@@ -184,9 +186,17 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                         </div>
 
                         <div className="mt-6">
-                            <button className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
+                            <button
+                                onClick={() => setOpenModal(true)}
+                                className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
                                 <span>ליצירת קשר</span>
-                                {/*//TODO: email and stuff*/}
+                                {openModal && startup.contactEmail && (
+                                    <ContactModal
+                                        open={openModal}
+                                        setOpen={setOpenModal}
+                                        email={startup.contactEmail}
+                                    />
+                                )}
                                 <ArrowLeftIcon className="w-5 h-5" />
                             </button>
                         </div>
