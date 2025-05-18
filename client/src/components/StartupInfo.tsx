@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Startup } from "@/models/StartupModel.ts";
-import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2, BookmarkCheck, User as UserIcon, Sparkles, Sparkle } from "lucide-react";
+import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2, BookmarkCheck, User as UserIcon, Sparkles } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
