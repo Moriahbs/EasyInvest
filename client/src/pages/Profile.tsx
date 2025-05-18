@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { deleteStartup, getStartupsBySender } from "@/actions/startupActions";
 import { Startup } from "@/models/StartupModel";
 import StartupList from "@/components/StartupList";
-import EditStartupModal from "@/components/EditStartup";
+import EditStartup from "@/components/EditStartup";
 
 interface User {
   username: string;
@@ -193,7 +193,7 @@ export default function ProfilePage() {
         )
       }
       {open && currentStartup && (
-        <EditStartupModal
+        <EditStartup
           open={open}
           setOpen={setOpen}
           startup={currentStartup}

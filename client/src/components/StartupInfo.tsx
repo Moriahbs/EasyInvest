@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Startup } from "@/models/StartupModel.ts";
-import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2, BookmarkCheck, User as UserIcon } from "lucide-react";
+import { ArrowLeftIcon, MapPin, Mail, Phone, Users, DollarSign, Calendar, Building, Loader2, BookmarkCheck, User as UserIcon, Sparkles, Sparkle } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { addStartupToFavorites, deleteStartupFromFavorites, getUser, getUsersByFavorite } from "@/actions/profileActions";
 import { User } from "@/models/userModel";
+import ContactModal from "@/components/ContactModal.tsx";
 
 interface StartupInfoProps {
     startup: Startup;
@@ -20,6 +21,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
     const [favorited, setFavorited] = useState(false);
     const [userId, setUserId] = useState<string>("");
     const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
+    const [openModal, setOpenModal] = useState<boolean>(false);
     const token = Cookies.get("Authorization") || "";
 
     useEffect(() => {
@@ -116,9 +118,11 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                                 <Building className="w-5 h-5" /> תיאור הסטארטאפ
                             </h2>
                             <p className="text-gray-700 mt-2 text-lg">{startup.description}</p>
-                            {isSimplified && <div>
-                                <p className="text-gray-700 mt-2 text-lg font-bold underline">תיאור מוסבר:</p>
-                                <p className="text-gray-700 mt-2 text-lg">{simplifiedDesc}</p>
+                            {isSimplified && <div className="border rounded-lg p-4 w-fit mt-4 mb-5">
+                                <p className="text-green-700 mt-2 text-lg font-bold flex items-center gap-2">
+                                    <Sparkles className="w-5 h-5" />הסבר במילים פשוטות
+                                </p>
+                                <p className="text-green-700 mt-2 text-lg">{simplifiedDesc}</p>
                             </div>}
                             <button
                                 onClick={() => simplifyDescription(startup.description)}
@@ -167,7 +171,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                             </div>
                         </div>
                         {
-                            userId === startup.owner._id && (
+                            userId === startup.owner._id && interestedUsers.length !== 0 && (
                                 <div>
                                     <h2 className="text-xl font-semibold text-blue-950 flex items-center gap-2">
                                         <BookmarkCheck className="w-5 h-5" /> לקוחות שהתעניינו בסטארטאפ
@@ -247,9 +251,17 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                         </div>
 
                         <div className="mt-6">
-                            <button className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
+                            <button
+                                onClick={() => setOpenModal(true)}
+                                className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
                                 <span>ליצירת קשר</span>
-                                {/*//TODO: email and stuff*/}
+                                {openModal && startup.contactEmail && (
+                                    <ContactModal
+                                        open={openModal}
+                                        setOpen={setOpenModal}
+                                        email={startup.contactEmail}
+                                    />
+                                )}
                                 <ArrowLeftIcon className="w-5 h-5" />
                             </button>
                         </div>
