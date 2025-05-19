@@ -314,7 +314,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
               <Phone className="w-4 h-4" /> מספר טלפון ליצירת קשר
             </label>
             <Input
-              className="rounded-lg border-gray-200 focus:ring-indigo-500"
+              className="rounded-lg text-right border-gray-200 focus:ring-indigo-500"
               placeholder="מספר טלפון ליצירת קשר"
               type="tel"
               value={startupDetails.contactPhone}

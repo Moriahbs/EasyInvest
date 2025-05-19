@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   profilePhoto: { type: String, required: false },
   createdAt: { type: Date, default: Date.now },
   startups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Startup" }],
+  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Startup" }],
 });
 
 const startupSchema = new mongoose.Schema({

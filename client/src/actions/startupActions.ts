@@ -167,28 +167,3 @@ export const deleteStartup = async (startupId: string) => {
 
 //   return res.status === 201;
 // };
-
-// export const addLikeToPost = async (postId: string) => {
-//   const res = await axios.post(
-//     `${config.SERVER_URL}/posts/like`,
-//     {
-//       postId,
-//     },
-//     {
-//       withCredentials: true,
-//     }
-//   );
-
-//   return res.status === 201;
-// };
-
-// export const deleteLikeFromPost = async (postId: string) => {
-//   const res = await axios.delete(
-//     `${config.SERVER_URL}/posts/like/${postId}`,
-//     {
-//       withCredentials: true,
-//     }
-//   );
-
-//   return res.status === 201;
-// };

@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "../db/dbUtils";
 import authMiddleware from "../handlers/auth";
 import upload from "../handlers/uploadUtils";
@@ -10,6 +9,7 @@ import {
   getAccessToken,
   verifyAccessToken,
 } from "../handlers/authUtils";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 router.use(authMiddleware);
@@ -257,7 +257,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 
     // const user = await User.findById(id).populate("posts");
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("favorites");
 
     if (!user) {
       res.status(404).send({ error: "User not found" });
@@ -265,6 +265,32 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 
     res.status(200).send(user);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching the user" });
+  }
+});
+
+// GET USERS BY FAVORITE
+router.get("/favorite/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+    
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startup id" });
+      return;
+    }
+
+    const users = await User.find({ favorites: startupId });
+
+    if (!users) {
+      res.status(404).send({ error: "Users not found" });
+      return;
+    }
+
+    res.status(200).send(users);
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     res
@@ -429,6 +455,163 @@ router.delete("/:id", async (req: Request, res: Response) => {
     res
       .status(500)
       .send({ error: "An error occurred while deleting the user" });
+  }
+});
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
+
+
+router.post("/email/:email", async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    const {subject, message} = req.body;
+
+    if (!email || !subject || !message) {
+      res.status(400).send({error: "Missing email, subject, or message"});
+    }
+
+    const token = getAccessToken(req) || "";
+    const {userId} = verifyAccessToken(token) || {userId: ""};
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(401).send({error: "Invalid user"});
+      return
+    }
+
+    // Optional: only allow sending to self or allow admins
+    if (user.email !== email /* && !user.isAdmin */) {
+      res.status(403).send({error: "No permission to send to this email"});
+      return
+    }
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: email,
+      subject,
+      text: message,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: user.email,
+      subject: "הודעה בדבר פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + '>',
+      to: user.email,
+      subject: "אישור פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        'X-Mailer': 'Nodemailer',
+        'X-Priority': '1 (Highest)',
+      },
+    });
+
+    res.status(200).send({success: true, message: "Email sent successfully"});
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).send({error: "Failed to send email"});
+  }
+})
+
+
+// ADD STARTUP TO FAVORITES
+router.post("/favorite", async (req: Request, res: Response) => {
+  try {
+    console.log('here');
+    
+    const { startupId }: { startupId: string } = req.body;
+    
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const token = getAccessToken(req) || "";
+    const { userId } = verifyAccessToken(token) || { userId: "" };
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+    
+    const update = { $push: { favorites: startupId } };
+    const updatedUser = await User.findByIdAndUpdate(userId, update, {
+      new: true,
+    });
+    
+    if (!updatedUser) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+    
+    res.status(201).send(updatedUser);
+  } catch (error) {
+    console.error("Error adding favorite:", error);
+    res
+    .status(500)
+    .send({ error: "An error occurred while adding the favorite" });
+  }
+});
+
+// DELETE STARTUP FROM FAVORITES
+router.delete("/favorite/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+    
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+    
+    const token = getAccessToken(req);
+    if (!token) {
+      res.status(401).send({ error: "Access token required" });
+      return;
+    }
+    
+    const { userId } = verifyAccessToken(token) || {};
+    if (!userId) {
+      res.status(401).send({ error: "Invalid or expired token" });
+      return;
+    }
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+    
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favorites: startupId } },
+      { new: true }
+    );
+    
+    res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error("Error removing favorite:", error);
+    res.status(500).send({ error: "An error occurred while removing the favorite" });
   }
 });
 

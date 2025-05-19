@@ -47,7 +47,7 @@ export default function StartupsPage() {
       <div className="flex flex-row flex-wrap w-full justify-between">
         <Map startups={startups} />
         <div className="w-full md:w-[35%]">
-          <StartupList startups={startups} loading={loading} />
+          <StartupList title={'סטארטאפים רלוונטים עבורך'} startups={startups} loading={loading} />
         </div>
       </div>
     </div>

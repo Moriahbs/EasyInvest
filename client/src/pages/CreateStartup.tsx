@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import StartupForm from "@/components/StartupForm.tsx";
+import { Undo2 } from "lucide-react";
+
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -64,13 +66,7 @@ export default function CreateStartupPage() {
       <div className="sticky top-0 z-50 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-6 shadow-md">
         <div className="px-4 flex justify-between items-center">
           <h1 className="text-3xl font-bold">יצירת סטארטאפ חדש</h1>
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/home")}
-            className="text-black hover:bg-indigo-500 flex items-center gap-2"
-          >
-            חזור
-          </Button>
+          <Undo2 className="w-6 h-6 text-white cursor-pointer" onClick={() => navigate("/home")} />
         </div>
       </div>
 

@@ -19,7 +19,7 @@ const items = [
     icon: Map,
   },
   {
-    title: "פרופיל",
+    title: "אזור אישי",
     url: "/profile",
     icon: UserPen,
   },

@@ -23,12 +23,12 @@ export default function HomePage() {
         <h1 className="text-4xl font-bold mb-4">Easy Invest</h1>
         <h4 className="text-xl font-bold mb-4">השקעות בסטארטאפים מתחילים</h4>
         <div className="flex gap-4">
-          <Link
-            to="/create-startup"
-            className="px-6 py-2 bg-black hover:bg-gray-800 rounded-full text-white"
+          <button
+            className="px-6 py-2 bg-black hover:bg-gray-800 rounded-full"
+            onClick={() => navigate("/create-startup")}
           >
             ליצור פרויקט חדש
-          </Link>
+          </button>
           <button
             className="px-6 py-2 bg-black hover:bg-gray-800 rounded-full"
             onClick={() => navigate("/smart-search")}
@@ -79,7 +79,7 @@ export default function HomePage() {
       </div>
 
       {/* <TooltipProvider> */}
-        {/* <Tooltip>
+      {/* <Tooltip>
             <TooltipTrigger asChild>
               <Button
                   className="fixed bottom-36 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
@@ -92,7 +92,7 @@ export default function HomePage() {
               <p>Search Invest with AI</p>
             </TooltipContent>
           </Tooltip> */}
-        {/* <Tooltip>
+      {/* <Tooltip>
           <TooltipTrigger asChild>
             <Button
               className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
@@ -105,7 +105,7 @@ export default function HomePage() {
             <p>Chat with AI</p>
           </TooltipContent>
         </Tooltip> */}
-        {/* <Tooltip>
+      {/* <Tooltip>
           <TooltipTrigger asChild>
             <Link to="/create-startup">
               <Button

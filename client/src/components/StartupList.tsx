@@ -4,6 +4,7 @@ import StartupCard from "./StartupCard";
 import StartupCardSkeleton from "./skeleton/StartupCardSkeleton";
 
 interface StartupListProps {
+  title: string;
   startups: Startup[];
   loading: boolean;
   handleDeleteStartup?: (startupId: string) => void;
@@ -13,6 +14,7 @@ interface StartupListProps {
 const ITEMS_PER_PAGE = 4;
 
 const StartupList: React.FC<StartupListProps> = ({
+  title,
   startups,
   loading,
   handleDeleteStartup,
@@ -38,7 +40,7 @@ const StartupList: React.FC<StartupListProps> = ({
   return (
     <div className="w-full flex flex-col items-center gap-6 p-2">
       <h2 className="text-3xl font-bold text-gray-800 text-center">
-        סטארטאפים רלוונטים עבורך
+        {title}
       </h2>
 
       <div

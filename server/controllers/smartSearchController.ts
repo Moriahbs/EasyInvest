@@ -4,7 +4,7 @@ import { IStartup } from "../models/models";
 import { Startup } from "../db/dbUtils";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || "");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-8b' });
 export const STARTUP_CATEGORIES: string[] = [
     "טכנולוגיה ירוקה",
     "אנרגיה מתחדשת",
