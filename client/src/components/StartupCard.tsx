@@ -12,7 +12,8 @@ interface StartupCardProps {
   handleEditStartup?: (startup: Startup) => void;
 }
 
-const formatValuation = (value: number) => `₪ ${value.toLocaleString("he-IL")}`;
+export const formatValuation = (value: number) =>
+  `₪ ${value.toLocaleString("he-IL")}`;
 
 const getImageUrl = (imageSrc: string | undefined) => {
   if (imageSrc?.startsWith("https")) {
