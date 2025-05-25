@@ -22,6 +22,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
     const [userId, setUserId] = useState<string>("");
     const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
     const [openModal, setOpenModal] = useState<boolean>(false);
+    const [senderEmail, setSenderEmail] = useState<string>("");
     const token = Cookies.get("Authorization") || "";
 
     useEffect(() => {
@@ -182,6 +183,16 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                                                 <UserIcon className="w-5 h-5" />
                                                 <p className="text-blue-950 font-bold">{user.username}</p>
                                                 <p className="text-gray-500">{user.email}</p>
+                                                <button
+                                                    onClick={() => {
+                                                        setSenderEmail(user.email);
+                                                        setOpenModal(true)
+                                                    }}
+                                                    className="bg-blue-600 text-white rounded-full py-2 px-4 hover:bg-blue-600 flex ">
+                                                    <span>ליצירת קשר</span>
+
+                                                    <ArrowLeftIcon className="w-5 h-5" />
+                                                </button>
                                             </div>
                                         ))
                                     }
@@ -249,25 +260,29 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="mt-6">
-                            <button
-                                onClick={() => setOpenModal(true)}
-                                className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
-                                <span>ליצירת קשר</span>
-                                {openModal && startup.contactEmail && (
-                                    <ContactModal
-                                        open={openModal}
-                                        setOpen={setOpenModal}
-                                        email={startup.contactEmail}
-                                    />
-                                )}
-                                <ArrowLeftIcon className="w-5 h-5" />
-                            </button>
-                        </div>
+                        {startup.contactEmail &&
+                            <div className="mt-6">
+                                <button
+                                    onClick={() => {
+                                        setSenderEmail(startup.contactEmail)
+                                        setOpenModal(true)
+                                    }}
+                                    className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center">
+                                    <span>ליצירת קשר</span>
+                                    <ArrowLeftIcon className="w-5 h-5" />
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
+            {openModal && senderEmail && senderEmail !== "" && (
+                <ContactModal
+                    open={openModal}
+                    setOpen={setOpenModal}
+                    email={senderEmail}
+                />
+            )}
         </div>
     );
 };
