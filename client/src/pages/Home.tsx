@@ -2,19 +2,9 @@ import Lottie from "lottie-react";
 import BlueSearchAnimation from "../assets/SmartSearch.json";
 import LocationsOnMapAnimation from "../assets/LocationsOnMap.json";
 import ChatBotAnimation from "../assets/ChatBot.json";
-// import SmartSearch from "@/components/SmartSearch";
-// import { Plus } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipProvider,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
-  // const [openSearch, setOpenSearch] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -77,50 +67,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-
-      {/* <TooltipProvider> */}
-      {/* <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                  className="fixed bottom-36 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
-                  onClick={() => setOpenSearch(true)}
-              >
-                <Search className="w-6 h-6" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="z-[999]">
-              <p>Search Invest with AI</p>
-            </TooltipContent>
-          </Tooltip> */}
-      {/* <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              className="fixed bottom-20 right-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
-              onClick={() => setOpenChat(true)}
-            >
-              <MessageCircleMore className="w-6 h-6" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent className="z-[999]">
-            <p>Chat with AI</p>
-          </TooltipContent>
-        </Tooltip> */}
-      {/* <Tooltip>
-          <TooltipTrigger asChild>
-            <Link to="/create-startup">
-              <Button
-                className="fixed bottom-4 left-4 w-14 h-14 rounded-full flex items-center justify-center shadow-lg bg-blue-600 hover:bg-blue-400 border-0 text-white"
-              >
-                <Plus className="w-6 h-6" />
-              </Button>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent className="z-[999]">
-            <p>יצירת סטרטאפ</p>
-          </TooltipContent>
-        </Tooltip> */}
-      {/* </TooltipProvider> */}
-      {/* <SmartSearch open={openSearch} setOpen={setOpenSearch} /> */}
     </div>
   );
 }
