@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FUNDING_STAGES, STARTUP_CATEGORIES } from "@/models/StartupModel";
 import { FilterMultiSelect } from "./ui/filter-multi-select";
 
@@ -49,17 +49,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
   ];
 
   const valuationFilter =
-    valuation !== ""
-      ? VALUATION_OPTIONS[Number(valuation)].value
-      : null;
-
+    valuation !== "" ? VALUATION_OPTIONS[Number(valuation)].value : null;
 
   return (
     <div
       className="flex flex-wrap items-center gap-3 p-2 bg-gray-100 w-full rounded-lg shadow-sm"
       dir="rtl"
     >
-      {/* Region Select */}
       <div className="relative min-w-[130px] pt-5 pb-5">
         {region && (
           <div className="absolute top-0 right-0 flex items-center justify-between w-full text-blue-500 text-sm px-2">

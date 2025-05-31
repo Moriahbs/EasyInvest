@@ -68,7 +68,7 @@ export const createStartup = async (
   const formData = new FormData();
   image && formData.append("startupImage", image);
   formData.append("name", name);
-  formData.append("tags", tags.join(",")); // Join the array into a single string
+  formData.append("tags", tags.join(","));
   formData.append("description", description);
   formData.append("fundingStage", fundingStage);
   formData.append("location", location);
@@ -109,7 +109,7 @@ export const editStartup = async (
   const formData = new FormData();
   image && formData.append("startupImage", image);
   formData.append("name", name);
-  tags.forEach(tag => formData.append("tags[]", tag));
+  tags.forEach((tag) => formData.append("tags[]", tag));
   formData.append("description", description);
   formData.append("fundingStage", fundingStage);
   formData.append("location", location);
@@ -141,29 +141,3 @@ export const deleteStartup = async (startupId: string) => {
 
   return res.data;
 };
-
-// export const getCommentsByPost = async (postId: string) => {
-//   const res = await axios.get(
-//     `${config.SERVER_URL}/comments/postId/${postId}`,
-//     {
-//       withCredentials: true,
-//     }
-//   );
-
-//   return res.data;
-// };
-
-// export const addCommentToPost = async (postId: string, comment: string) => {
-//   const res = await axios.post(
-//     `${config.SERVER_URL}/comments`,
-//     {
-//       body: comment,
-//       postId,
-//     },
-//     {
-//       withCredentials: true,
-//     }
-//   );
-
-//   return res.status === 201;
-// };

@@ -142,7 +142,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         contactPhone,
         founders,
         country,
-        image,
+        image
       );
       toast.success("הסטארטאפ עודכן בהצלחה!");
     } else {
@@ -160,7 +160,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         contactPhone,
         founders,
         country,
-        image,
+        image
       );
       toast.success("הסטארטאפ נוצר בהצלחה!");
     }
@@ -178,7 +178,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
       contactEmail: "",
       contactPhone: "",
       founders: "",
-      country: ""
+      country: "",
     });
   };
 
@@ -188,7 +188,6 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
 
   return (
     <>
-      {/* העלאת תמונה */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-3 text-right flex items-center gap-2">
           תמונת הסטארטאפ
@@ -196,11 +195,10 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         <UploadImage setImage={setImage} />
       </div>
 
-      {/* טופס */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-5">
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Building className="w-4 h-4" /> שם הסטארטאפ
             </label>
             <Input
@@ -212,7 +210,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Tag className="w-4 h-4" /> קטגוריות
             </label>
             <MultiSelect
@@ -225,7 +223,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <FileText className="w-4 h-4" /> תיאור
             </label>
             <Textarea
@@ -237,7 +235,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <DollarSign className="w-4 h-4" /> שלב מימון
             </label>
             <select
@@ -257,7 +255,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Calendar className="w-4 h-4" /> שנת הקמה
             </label>
             <Input
@@ -276,7 +274,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
 
         <div className="space-y-5">
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <DollarSign className="w-4 h-4" /> שווי בסיבוב האחרון (בשקלים)
             </label>
             <Input
@@ -297,7 +295,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Mail className="w-4 h-4" /> מייל ליצירת קשר
             </label>
             <Input
@@ -310,7 +308,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Phone className="w-4 h-4" /> מספר טלפון ליצירת קשר
             </label>
             <Input
@@ -323,7 +321,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <Users className="w-4 h-4" /> שם המייסדים
             </label>
             <Input
@@ -335,7 +333,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
           </div>
 
           <div>
-            <label className="block font-semibold text-right text-sm mb-2 flex items-center gap-2">
+            <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
               <MapPin className="w-4 h-4" /> מיקום
             </label>
             <Input

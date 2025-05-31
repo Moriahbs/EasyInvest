@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import startupsRoute from "./routes/startupsRoute";
-// import commentsRoute from "./routes/commentsRoute";
 import usersRoute from "./routes/usersRoute";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./swaggerConfig";
@@ -44,13 +43,12 @@ const promise: Promise<Express> = new Promise((resolve, reject) => {
   app.use("/auth", googleRoute);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   app.use("/startups", startupsRoute);
-  // app.use("/comments", commentsRoute);
   app.use("/users", usersRoute);
   app.use("/images", express.static(path.join(__dirname, "images")));
   app.use("/api/chatbot", chatBotRoute);
-
   app.use("/api/smartSearch", smartSearchRoute);
   app.use("/api/topics", topicsRoute);
+
   // Database connection
   mongoose
     .connect(process.env.DATABASE_URL as string, {})

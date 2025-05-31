@@ -10,6 +10,7 @@ import {
   verifyAccessToken,
 } from "../handlers/authUtils";
 import nodemailer from "nodemailer";
+import mongoose from "mongoose";
 
 const router = express.Router();
 router.use(authMiddleware);
@@ -256,8 +257,9 @@ router.get("/:id", async (req: Request, res: Response) => {
       return;
     }
 
-    // const user = await User.findById(id).populate("posts");
-    const user = await User.findById(id).populate("favorites");
+    const user = await User.findById(id)
+      .populate("favorites")
+      .populate("visited");
 
     if (!user) {
       res.status(404).send({ error: "User not found" });
@@ -273,11 +275,34 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * @swagger
+ * /users/favorite/{startupId}:
+ *   get:
+ *     summary: Get users favorite by startup id
+ *     tags: [Users]
+ *     parameters:
+ *       - name: startupId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Startup ID
+ *     responses:
+ *       200:
+ *         description: Users details.
+ *       400:
+ *         description: Invalid input.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Error occurred during fetch.
+ */
 // GET USERS BY FAVORITE
 router.get("/favorite/:startupId", async (req: Request, res: Response) => {
   try {
     const startupId = req.params.startupId;
-    
+
     if (!startupId) {
       res.status(400).send({ error: "Please provide startup id" });
       return;
@@ -459,7 +484,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
 });
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
@@ -468,79 +493,38 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
-router.post("/email/:email", async (req: Request, res: Response) => {
-  try {
-    const email = req.params.email;
-    const {subject, message} = req.body;
-
-    if (!email || !subject || !message) {
-      res.status(400).send({error: "Missing email, subject, or message"});
-    }
-
-    const token = getAccessToken(req) || "";
-    const {userId} = verifyAccessToken(token) || {userId: ""};
-
-    const user = await User.findById(userId);
-    if (!user) {
-      res.status(401).send({error: "Invalid user"});
-      return
-    }
-
-    // Optional: only allow sending to self or allow admins
-    if (user.email !== email /* && !user.isAdmin */) {
-      res.status(403).send({error: "No permission to send to this email"});
-      return
-    }
-
-    await transporter.sendMail({
-      from: '"Easy Invest" <' + process.env.EMAIL + '>',
-      to: email,
-      subject,
-      text: message,
-      headers: {
-        'X-Mailer': 'Nodemailer',
-        'X-Priority': '1 (Highest)',
-      },
-    });
-
-    await transporter.sendMail({
-      from: '"Easy Invest" <' + process.env.EMAIL + '>',
-      to: user.email,
-      subject: "הודעה בדבר פנייה",
-      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
-      headers: {
-        'X-Mailer': 'Nodemailer',
-        'X-Priority': '1 (Highest)',
-      },
-    });
-
-    await transporter.sendMail({
-      from: '"Easy Invest" <' + process.env.EMAIL + '>',
-      to: user.email,
-      subject: "אישור פנייה",
-      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
-      headers: {
-        'X-Mailer': 'Nodemailer',
-        'X-Priority': '1 (Highest)',
-      },
-    });
-
-    res.status(200).send({success: true, message: "Email sent successfully"});
-  } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).send({error: "Failed to send email"});
-  }
-})
-
-
+/**
+ * @swagger
+ * /users/favorite:
+ *   post:
+ *     summary: add startup to favorites
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - startupId
+ *             properties:
+ *               startupId:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Added startup successfully.
+ *       400:
+ *         description: Invalid input data.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Failed to add.
+ */
 // ADD STARTUP TO FAVORITES
 router.post("/favorite", async (req: Request, res: Response) => {
   try {
-    console.log('here');
-    
     const { startupId }: { startupId: string } = req.body;
-    
+
     if (!startupId) {
       res.status(400).send({ error: "Please provide startupId" });
       return;
@@ -549,69 +533,370 @@ router.post("/favorite", async (req: Request, res: Response) => {
     const token = getAccessToken(req) || "";
     const { userId } = verifyAccessToken(token) || { userId: "" };
     const user = await User.findById(userId);
-    
+
     if (!user) {
       res.status(404).send({ error: "User not found" });
       return;
     }
-    
+
     const update = { $push: { favorites: startupId } };
     const updatedUser = await User.findByIdAndUpdate(userId, update, {
       new: true,
     });
-    
+
     if (!updatedUser) {
       res.status(404).send({ error: "User not found" });
       return;
     }
-    
+
     res.status(201).send(updatedUser);
   } catch (error) {
     console.error("Error adding favorite:", error);
     res
-    .status(500)
-    .send({ error: "An error occurred while adding the favorite" });
+      .status(500)
+      .send({ error: "An error occurred while adding the favorite" });
   }
 });
 
+/**
+ * @swagger
+ * /users/favorite/{startupId}:
+ *   delete:
+ *     summary: Delete startup from favorites
+ *     tags: [Users]
+ *     parameters:
+ *       - name: startupId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Startup Id
+ *     responses:
+ *       200:
+ *         description: Startup successfully deleted.
+ *       400:
+ *         description: Invalid input.
+ *       401:
+ *         description: Unauthorized.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Error occurred during delete.
+ */
 // DELETE STARTUP FROM FAVORITES
 router.delete("/favorite/:startupId", async (req: Request, res: Response) => {
   try {
     const startupId = req.params.startupId;
-    
+
     if (!startupId) {
       res.status(400).send({ error: "Please provide startupId" });
       return;
     }
-    
+
     const token = getAccessToken(req);
     if (!token) {
       res.status(401).send({ error: "Access token required" });
       return;
     }
-    
+
     const { userId } = verifyAccessToken(token) || {};
     if (!userId) {
       res.status(401).send({ error: "Invalid or expired token" });
       return;
     }
-    
+
     const user = await User.findById(userId);
     if (!user) {
       res.status(404).send({ error: "User not found" });
       return;
     }
-    
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { favorites: startupId } },
       { new: true }
     );
-    
+
     res.status(200).send(updatedUser);
   } catch (error) {
     console.error("Error removing favorite:", error);
-    res.status(500).send({ error: "An error occurred while removing the favorite" });
+    res
+      .status(500)
+      .send({ error: "An error occurred while removing the favorite" });
+  }
+});
+
+/**
+ * @swagger
+ * /users/email/{email}:
+ *   post:
+ *     summary: send email
+ *     tags: [Users]
+ *     parameters:
+ *       - name: email
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Email
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - subject
+ *               - message
+ *             properties:
+ *               subject:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Email sent successfully.
+ *       400:
+ *         description: Invalid input data.
+ *       401:
+ *         description: Invalid user.
+ *       403:
+ *         description: No permission to send email.
+ *       500:
+ *         description: Failed to send email.
+ */
+router.post("/email/:email", async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    const { subject, message } = req.body;
+
+    if (!email || !subject || !message) {
+      res.status(400).send({ error: "Missing email, subject, or message" });
+    }
+
+    const token = getAccessToken(req) || "";
+    const { userId } = verifyAccessToken(token) || { userId: "" };
+
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(401).send({ error: "Invalid user" });
+      return;
+    }
+
+    if (user.email !== email) {
+      res.status(403).send({ error: "No permission to send to this email" });
+      return;
+    }
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + ">",
+      to: email,
+      subject,
+      text: message,
+      headers: {
+        "X-Mailer": "Nodemailer",
+        "X-Priority": "1 (Highest)",
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + ">",
+      to: user.email,
+      subject: "הודעה בדבר פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        "X-Mailer": "Nodemailer",
+        "X-Priority": "1 (Highest)",
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Easy Invest" <' + process.env.EMAIL + ">",
+      to: user.email,
+      subject: "אישור פנייה",
+      text: ` שלום${user.username}, פנייתך נשלחה בהצלחה `,
+      headers: {
+        "X-Mailer": "Nodemailer",
+        "X-Priority": "1 (Highest)",
+      },
+    });
+
+    res.status(200).send({ success: true, message: "Email sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).send({ error: "Failed to send email" });
+  }
+});
+
+/**
+ * @swagger
+ * /users/visit:
+ *   post:
+ *     summary: add visit to startup
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - startupId
+ *             properties:
+ *               startupId:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Successfully added visit.
+ *       400:
+ *         description: Invalid input data.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Failed to add visit.
+ */
+// ADD STARTUP TO VISITED
+router.post("/visit", async (req: Request, res: Response) => {
+  try {
+    const { startupId }: { startupId: string } = req.body;
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const token = getAccessToken(req) || "";
+    const { userId } = verifyAccessToken(token) || { userId: "" };
+    const user = await User.findById(userId);
+
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+
+    const update = { $push: { visited: { startup: startupId } } };
+    const updatedUser = await User.findByIdAndUpdate(userId, update, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+
+    res.status(201).send(updatedUser);
+  } catch (error) {
+    console.error("Error adding visit:", error);
+    res.status(500).send({ error: "An error occurred while adding the visit" });
+  }
+});
+
+/**
+ * @swagger
+ * /users/visit/{startupId}:
+ *   get:
+ *     summary: Get users favorite by startup id
+ *     tags: [Users]
+ *     parameters:
+ *       - name: startupId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Startup ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - range
+ *             properties:
+ *               range:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Visit details.
+ *       400:
+ *         description: Invalid input.
+ *       500:
+ *         description: Error occurred during fetch.
+ */
+// GET VISITS OF STARTUP
+router.get("/visit/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+    const range = req.query.range as "daily" | "monthly";
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startup id" });
+      return;
+    }
+
+    const startupObjectId = new mongoose.Types.ObjectId(startupId);
+
+    let fromDate: Date;
+    let groupFormat: string;
+
+    if (range === "monthly") {
+      fromDate = new Date();
+      fromDate.setMonth(fromDate.getMonth() - 3);
+      groupFormat = "%Y-%m";
+    } else {
+      fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - 6);
+      groupFormat = "%Y-%m-%d";
+    }
+
+    const result = await User.aggregate([
+      { $unwind: "$visited" },
+      {
+        $match: {
+          "visited.startup": startupObjectId,
+          "visited.visitedAt": { $gte: fromDate },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            date: {
+              $dateToString: {
+                format: groupFormat,
+                date: "$visited.visitedAt",
+              },
+            },
+            userId: "$_id",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.date",
+          uniqueVisits: { $sum: 1 },
+          allVisits: { $sum: "$count" },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          allVisits: 1,
+          uniqueVisits: 1,
+        },
+      },
+    ]);
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching the user" });
   }
 });
 

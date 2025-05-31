@@ -20,7 +20,6 @@ export const User =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
 export interface IStartup extends Document {
-  // _id: string;
   owner: mongoose.Types.ObjectId;
   name: string;
   description: string;
@@ -38,10 +37,6 @@ export interface IStartup extends Document {
   tags: string[];
   updatedAt?: Date;
   hidden: boolean;
-  // meta: {
-  //   votes: number;
-  //   favs: number;
-  // };
 }
 
 const startupSchema = new Schema<IStartup>({
@@ -62,10 +57,6 @@ const startupSchema = new Schema<IStartup>({
   contactEmail: { type: String, required: true },
   contactPhone: { type: String, required: true },
   founders: { type: String, required: true },
-  // meta: {
-  //   votes: { type: Number, default: 0 },
-  //   favs: { type: Number, default: 0 },
-  // },
 });
 
 export const Startup =
