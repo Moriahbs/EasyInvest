@@ -3,6 +3,7 @@ import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
 
 export interface StartupFilters {
+  name?: string;
   region?: string;
   fundingStages?: string[];
   categories?: string[];
@@ -11,6 +12,7 @@ export interface StartupFilters {
 
 const buildFilterParams = (f: StartupFilters) => {
   const params: Record<string, string> = {};
+  if (f.name) params.name = f.name;
   if (f.region) params.region = f.region;
   if (f.fundingStages && f.fundingStages.length)
     params.fundingStages = f.fundingStages.join(",");

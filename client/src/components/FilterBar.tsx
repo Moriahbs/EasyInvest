@@ -3,6 +3,8 @@ import { FUNDING_STAGES, STARTUP_CATEGORIES } from "@/models/StartupModel";
 import { FilterMultiSelect } from "./ui/filter-multi-select";
 
 interface FilterBarProps {
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   region: string;
   setRegion: React.Dispatch<React.SetStateAction<string>>;
   fundingStages: string[];
@@ -14,6 +16,8 @@ interface FilterBarProps {
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
+  name,
+  setName,
   region,
   setRegion,
   fundingStages,
@@ -56,6 +60,27 @@ const FilterBar: React.FC<FilterBarProps> = ({
       className="flex flex-wrap items-center gap-3 p-2 bg-gray-100 w-full rounded-lg shadow-sm"
       dir="rtl"
     >
+      <div className="relative min-w-[200px] pt-5 pb-5">
+        {name !== "" && (
+          <div className="absolute top-0 right-0 flex items-center justify-between w-full text-blue-500 text-sm px-2">
+            <span>חיפוש לפי שם</span>
+            <span
+              onClick={() => setName("")}
+              className="cursor-pointer font-bold"
+            >
+              ✕
+            </span>
+          </div>
+        )}
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full border border-blue-500 text-blue-500 px-4 py-2 rounded-lg bg-white hover:bg-blue-50"
+          placeholder="חיפוש לפי שם"
+        />
+      </div>
+
       <div className="relative min-w-[130px] pt-5 pb-5">
         {region && (
           <div className="absolute top-0 right-0 flex items-center justify-between w-full text-blue-500 text-sm px-2">
@@ -135,6 +160,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       <div className="flex gap-2 mt-2 md:mt-0">
         <button
           onClick={() => {
+            setName("");
             setRegion("");
             setFundingStages([]);
             setCategories([]);

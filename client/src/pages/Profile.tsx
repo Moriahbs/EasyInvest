@@ -41,6 +41,9 @@ export default function ProfilePage() {
   const [open, setOpen] = useState<boolean>(false);
   const [currentStartup, setCurrentStartup] = useState<Startup>();
   const [favorites, setFavorites] = useState<Startup[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPageInterested, setCurrentPageInterested] = useState(0);
+
 
   const token = Cookies.get("Authorization") || "";
 
@@ -177,6 +180,8 @@ export default function ProfilePage() {
               loading={loading}
               handleEditStartup={handleEditStartup}
               handleDeleteStartup={handleDeleteStartup}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         )
@@ -188,6 +193,8 @@ export default function ProfilePage() {
               title={'סטארטאפים שהתעניינת בהם'}
               startups={favorites}
               loading={loading}
+              setCurrentPage={setCurrentPageInterested}
+              currentPage={currentPageInterested}
             />
           </div>
         )

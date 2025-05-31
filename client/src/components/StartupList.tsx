@@ -9,6 +9,8 @@ interface StartupListProps {
   loading: boolean;
   handleDeleteStartup?: (startupId: string) => void;
   handleEditStartup?: (startup: Startup) => void;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ITEMS_PER_PAGE = 4;
@@ -19,9 +21,9 @@ const StartupList: React.FC<StartupListProps> = ({
   loading,
   handleDeleteStartup,
   handleEditStartup,
+  currentPage,
+  setCurrentPage,
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-
   const totalPages = Math.ceil(startups.length / ITEMS_PER_PAGE);
 
   const handlePrev = () => {
@@ -39,9 +41,7 @@ const StartupList: React.FC<StartupListProps> = ({
 
   return (
     <div className="w-full flex flex-col items-center gap-6 p-2">
-      <h2 className="text-3xl font-bold text-gray-800 text-center">
-        {title}
-      </h2>
+      <h2 className="text-3xl font-bold text-gray-800 text-center">{title}</h2>
 
       <div
         className="overflow-y-auto w-full max-w-4xl px-2"
