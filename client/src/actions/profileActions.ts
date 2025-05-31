@@ -1,53 +1,62 @@
+import { Range } from "@/components/StartupGraph";
 import config from "@/config";
-import {decodeToken} from "@/utils/authUtils";
+import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
 
 export const getUser = async (token: string) => {
-    const {userId} = decodeToken(token);
-    const res = await axios.get(`${config.SERVER_URL}/users/${userId}`, {
-        withCredentials: true,
-    });
+  const { userId } = decodeToken(token);
+  const res = await axios.get(`${config.SERVER_URL}/users/${userId}`, {
+    withCredentials: true,
+  });
 
-    return res;
+  return res;
 };
 
 export const updateUser = async (
-    token: string,
-    username: string,
-    profilePhoto: File | null
+  token: string,
+  username: string,
+  profilePhoto: File | null
 ) => {
-    const {userId} = decodeToken(token);
+  const { userId } = decodeToken(token);
 
-    const formData = new FormData();
-    profilePhoto && formData.append("profileImage", profilePhoto);
-    formData.append("username", username);
+  const formData = new FormData();
+  profilePhoto && formData.append("profileImage", profilePhoto);
+  formData.append("username", username);
 
-    const res = await axios.put(
-        `${config.SERVER_URL}/users/${userId}`,
-        formData,
-        {
-            headers: {"Content-Type": "multipart/form-data"},
-            withCredentials: true,
-        }
-    );
+  const res = await axios.put(
+    `${config.SERVER_URL}/users/${userId}`,
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true,
+    }
+  );
 
-    return res.status === 201;
+  return res.status === 201;
 };
 
 export const getAllUsers = async () => {
-    const res = await axios.get(`${config.SERVER_URL}/users`, {
-        withCredentials: true,
-    });
+  const res = await axios.get(`${config.SERVER_URL}/users`, {
+    withCredentials: true,
+  });
 
-    return res.data;
+  return res.data;
 };
 
-export const sendEmail = async (email: string, subject: string, message: string) => {
-    const res = await axios.post(`${config.SERVER_URL}/users/email/${email}`, {subject, message}, {
-        withCredentials: true,
-    });
+export const sendEmail = async (
+  email: string,
+  subject: string,
+  message: string
+) => {
+  const res = await axios.post(
+    `${config.SERVER_URL}/users/email/${email}`,
+    { subject, message },
+    {
+      withCredentials: true,
+    }
+  );
 
-    return res.data;
+  return res.data;
 };
 
 export const addStartupToFavorites = async (startupId: string) => {
@@ -78,6 +87,31 @@ export const deleteStartupFromFavorites = async (startupId: string) => {
 export const getUsersByFavorite = async (startupId: string) => {
   const res = await axios.get(
     `${config.SERVER_URL}/users/favorite/${startupId}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.data;
+};
+
+export const addStartupToVisited = async (startupId: string) => {
+  const res = await axios.post(
+    `${config.SERVER_URL}/users/visit`,
+    {
+      startupId,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.status === 201;
+};
+
+export const getVisitsData = async (startupId: string, range: Range) => {
+  const res = await axios.get(
+    `${config.SERVER_URL}/users/visit/${startupId}?range=${range}`,
     {
       withCredentials: true,
     }
