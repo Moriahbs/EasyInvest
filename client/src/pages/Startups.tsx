@@ -9,8 +9,9 @@ import StartupList from "@/components/StartupList";
 export default function StartupsPage() {
   const [startups, setStartups] = useState<Startup[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [currentPage, setCurrentPage] = useState(0); 
   const [region, setRegion] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [fundingStages, setFundingStages] = useState<string[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [valuation, setValuation] = useState<string>("");
@@ -18,7 +19,9 @@ export default function StartupsPage() {
   useEffect(() => {
     const fetchFiltered = async () => {
       setLoading(true);
+      setCurrentPage(0);
       const filters: StartupFilters = {
+        name,
         region,
         fundingStages,
         categories,
@@ -29,11 +32,13 @@ export default function StartupsPage() {
       setLoading(false);
     };
     fetchFiltered();
-  }, [region, fundingStages, categories, valuation]);
+  }, [region, fundingStages, categories, valuation, name]);
 
   return (
     <div className="flex flex-col" dir="ltr">
       <FilterBar
+        name={name}
+        setName={setName}
         region={region}
         setRegion={setRegion}
         fundingStages={fundingStages}
@@ -47,7 +52,13 @@ export default function StartupsPage() {
       <div className="flex flex-row flex-wrap w-full justify-between">
         <Map startups={startups} />
         <div className="w-full md:w-[35%]">
-          <StartupList title={'סטארטאפים רלוונטים עבורך'} startups={startups} loading={loading} />
+          <StartupList
+            title={"סטארטאפים רלוונטים עבורך"}
+            startups={startups}
+            loading={loading}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage} 
+          />
         </div>
       </div>
     </div>

@@ -212,6 +212,12 @@ const HEBREW_COUNTRIES = [
  *     tags: [Startups]
  *     parameters:
  *       - in: query
+ *         name: name
+ *         required: false
+ *         description: The name of the startup
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: region
  *         required: false
  *         description: The region where the startup is located (e.g., "ישראל", "חו״ל").
@@ -291,9 +297,13 @@ const HEBREW_COUNTRIES = [
 // GET ALL STARTUPS
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const { region, fundingStages, categories, valuation } = req.query;
+    const { name, region, fundingStages, categories, valuation } = req.query;
 
     const filter: any = {};
+    if (name) {
+      filter.name = { $regex: name as string, $options: "i" };
+    }
+
     if (region) {
       if (region === "אחר") {
         filter.country = { $nin: HEBREW_COUNTRIES };
