@@ -9,6 +9,8 @@ import {
   BookmarkCheck,
   User as UserIcon,
   Sparkles,
+  ArrowLeftIcon,
+  MailPlus,
 } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -23,6 +25,7 @@ import {
 import { User } from "@/models/userModel";
 import StartupGraph from "./StartupGraph";
 import StartupInfoCard from "./StartupInfoCard";
+import ContactModal from "./ContactModal";
 
 interface StartupInfoProps {
   startup: Startup;
@@ -36,6 +39,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
   const [userId, setUserId] = useState<string>("");
   const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [senderEmail, setSenderEmail] = useState<string>("");
   const token = Cookies.get("Authorization") || "";
 
   useEffect(() => {
@@ -209,6 +213,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
             startup={startup}
             openModal={openModal}
             setOpenModal={setOpenModal}
+            setSenderEmail={setSenderEmail}
           />
         </div>
         <div className="border-t border-gray-200 my-4" />
@@ -224,11 +229,22 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
                 {interestedUsers.map((user) => (
                   <div
                     key={user._id}
-                    className="flex items-center gap-4 border-b py-2"
+                    className="flex justify-between border-b py-2 gap-2"
                   >
-                    <UserIcon className="w-5 h-5" />
-                    <p className="text-blue-950 font-bold">{user.username}</p>
-                    <p className="text-gray-500">{user.email}</p>
+                    <div className="flex gap-2 items-center">
+                      <UserIcon className="w-4 h-4" />
+                      <p className="text-blue-950 font-bold">{user.username}</p>
+                      <p className="text-gray-500">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setSenderEmail(user.email);
+                        setOpenModal(true);
+                      }}
+                      className="bg-blue-600 text-white hover:bg-blue-700 rounded-full p-2"
+                    >
+                      <MailPlus className="w-5 h-5" />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -236,6 +252,13 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
           </div>
         )}
       </div>
+      {openModal && senderEmail && senderEmail !== "" && (
+        <ContactModal
+          open={openModal}
+          setOpen={setOpenModal}
+          email={senderEmail}
+        />
+      )}
     </div>
   );
 };

@@ -16,12 +16,14 @@ interface StartupInfoProps {
   startup: Startup;
   openModal: boolean;
   setOpenModal: (openModal: boolean) => void;
+  setSenderEmail: (senderEmail: string) => void;
 }
 
 const StartupInfoCard: React.FC<StartupInfoProps> = ({
   startup,
   openModal,
   setOpenModal,
+  setSenderEmail,
 }) => {
   const valuationInShekels = startup.valuationLastRound.toLocaleString(
     "he-IL",
@@ -93,22 +95,20 @@ const StartupInfoCard: React.FC<StartupInfoProps> = ({
         </div>
       </div>
 
-      <div className="mt-6">
-        <button
-          onClick={() => setOpenModal(true)}
-          className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center"
-        >
-          <span>ליצירת קשר</span>
-          {openModal && startup.contactEmail && (
-            <ContactModal
-              open={openModal}
-              setOpen={setOpenModal}
-              email={startup.contactEmail}
-            />
-          )}
-          <ArrowLeftIcon className="w-5 h-5" />
-        </button>
-      </div>
+      {startup.contactEmail && (
+        <div className="mt-6">
+          <button
+            onClick={() => {
+              setSenderEmail(startup.contactEmail);
+              setOpenModal(true);
+            }}
+            className="bg-blue-600 text-white rounded-full py-2 px-4 text-base font-medium hover:bg-blue-600 transition flex items-center gap-2 w-full justify-center"
+          >
+            <span>ליצירת קשר</span>
+            <ArrowLeftIcon className="w-5 h-5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
