@@ -33,7 +33,7 @@ export default function StartupGraph({ startupId }: { startupId: string }) {
   return (
     <div className="w-2/3 h-96 p-4 bg-white rounded-2xl shadow">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Startup Stats ({view})</h2>
+        <h2 className="text-xl font-bold">לקוחות שצפו בסטארטאפ</h2>
         <Select
           onValueChange={(val) => setView(val as Range)}
           defaultValue="daily"
@@ -42,8 +42,8 @@ export default function StartupGraph({ startupId }: { startupId: string }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="daily">Daily</SelectItem>
-            <SelectItem value="monthly">Monthly</SelectItem>
+            <SelectItem value="daily">שבוע אחרון</SelectItem>
+            <SelectItem value="monthly">חודשי</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -68,8 +68,8 @@ export default function StartupGraph({ startupId }: { startupId: string }) {
             }}
             cursor={{ fill: "rgba(0,0,0,0.05)" }}
           />
-          <Bar dataKey="allVisits" fill="#2563EB" name="All visit" />
-          <Bar dataKey="uniqueVisits" fill="#DBEAFE" name="Unique visits" />
+          <Bar dataKey="allVisits" fill="#2563EB" name="כל הכניסות" />
+          <Bar dataKey="uniqueVisits" fill="#83b1ee" name="כניסות חדשות" />
         </BarChart>
       </ResponsiveContainer>
     </div>
