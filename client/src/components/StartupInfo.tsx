@@ -18,7 +18,6 @@ import "leaflet/dist/leaflet.css";
 import {
   addStartupToFavorites,
   deleteStartupFromFavorites,
-  addStartupToVisited,
   getUser,
   getUsersByFavorite,
 } from "@/actions/profileActions";
@@ -26,6 +25,7 @@ import { User } from "@/models/userModel";
 import StartupGraph from "./StartupGraph";
 import StartupInfoCard from "./StartupInfoCard";
 import ContactModal from "./ContactModal";
+import { addStartupToVisited } from "@/actions/startupActions";
 
 interface StartupInfoProps {
   startup: Startup;

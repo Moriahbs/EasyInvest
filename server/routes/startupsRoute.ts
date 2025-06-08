@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import mongoose from "mongoose";
 import { Startup, User } from "../db/dbUtils";
 import authMiddleware from "../handlers/auth";
 import { IStartup, IUser } from "../models/models";
@@ -486,7 +487,8 @@ router.get("/:id", async (req: Request, res: Response) => {
       return;
     }
 
-    const found = await Startup.findById(id).populate("owner");
+    const found = await Startup.findById(id).populate("owner").populate("visited");
+
     if (!found) {
       res.status(404).send({ error: "Startup not found" });
       return;
@@ -740,6 +742,170 @@ router.delete("/:id", async (req: Request, res: Response) => {
     res
       .status(500)
       .send({ error: "An error occurred while deleting the startup" });
+  }
+});
+
+/**
+ * @swagger
+ * /startups/{startupId}/visit:
+ *   post:
+ *     summary: Add visit to startup
+ *     tags: [Startups]
+ *     parameters:
+ *       - name: startupId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       201:
+ *         description: Successfully added visit.
+ *       400:
+ *         description: Invalid input data.
+ *       404:
+ *         description: Startup or user not found.
+ *       500:
+ *         description: Failed to add visit.
+ */
+router.post("/visit", async (req: Request, res: Response) => {
+  try {
+    const { startupId }: { startupId: string } = req.body;
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const token = getAccessToken(req) || "";
+    const { userId } = verifyAccessToken(token) || { userId: "" };
+
+    const [user, startup] = await Promise.all([
+      User.findById(userId),
+      Startup.findById(startupId),
+    ]);
+
+    if (!user || !startup) {
+      res.status(404).send({ error: "User or Startup not found" });
+      return;
+    }
+
+    // Add visit to Startup document
+    const update = {
+      $push: {
+        visits: {
+          user: userId,
+          visitedAt: new Date(),
+        },
+      },
+    };
+
+    const updatedStartup = await Startup.findByIdAndUpdate(startupId, update, { new: true });
+
+    res.status(201).send(updatedStartup);
+  } catch (error) {
+    console.error("Error adding visit to startup:", error);
+    res.status(500).send({ error: "An error occurred while adding the visit" });
+  }
+});
+
+
+/**
+ * @swagger
+ * /startups/{startupId}/visit:
+ *   get:
+ *     summary: Get visit stats for startup
+ *     tags: [Startups]
+ *     parameters:
+ *       - name: startupId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: range
+ *         in: query
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [daily, monthly]
+ *     responses:
+ *       200:
+ *         description: Visit details.
+ *       400:
+ *         description: Invalid input.
+ *       500:
+ *         description: Error occurred during fetch.
+ */
+router.get("/visit/:startupId", async (req: Request, res: Response) => {
+  try {
+    const startupId = req.params.startupId;
+    const range = req.query.range as "daily" | "monthly";
+
+    if (!startupId) {
+      res.status(400).send({ error: "Please provide startupId" });
+      return;
+    }
+
+    const startupObjectId = new mongoose.Types.ObjectId(startupId);
+
+    let fromDate: Date;
+    let groupFormat: string;
+
+    if (range === "monthly") {
+      fromDate = new Date();
+      fromDate.setMonth(fromDate.getMonth() - 3);
+      groupFormat = "%Y-%m";
+    } else {
+      fromDate = new Date();
+      fromDate.setDate(fromDate.getDate() - 6);
+      groupFormat = "%Y-%m-%d";
+    }
+
+    const result = await Startup.aggregate([
+      { $match: { _id: startupObjectId } },
+      { $unwind: "$visits" },
+      {
+        $match: {
+          "visits.visitedAt": { $gte: fromDate },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            date: {
+              $dateToString: {
+                format: groupFormat,
+                date: "$visits.visitedAt",
+              },
+            },
+            userId: "$visits.user",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.date",
+          uniqueVisits: { $sum: 1 },
+          allVisits: { $sum: "$count" },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+      {
+        $project: {
+          _id: 0,
+          date: "$_id",
+          allVisits: 1,
+          uniqueVisits: 1,
+        },
+      },
+    ]);
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("Error fetching startup visits:", error);
+    res.status(500).send({ error: "An error occurred while fetching visits" });
   }
 });
 

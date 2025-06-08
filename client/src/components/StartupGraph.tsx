@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import { getVisitsData } from "@/actions/profileActions";
+import { getVisitsData } from "@/actions/startupActions";
 
 export type Range = "daily" | "monthly";
 

@@ -143,3 +143,28 @@ export const deleteStartup = async (startupId: string) => {
 
   return res.data;
 };
+
+export const addStartupToVisited = async (startupId: string) => {
+  const res = await axios.post(
+    `${config.SERVER_URL}/startups/visit`,
+    {
+      startupId,
+    },
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.status === 201;
+};
+
+export const getVisitsData = async (startupId: string, range: Range) => {
+  const res = await axios.get(
+    `${config.SERVER_URL}/startups/visit/${startupId}?range=${range}`,
+    {
+      withCredentials: true,
+    }
+  );
+
+  return res.data;
+};
