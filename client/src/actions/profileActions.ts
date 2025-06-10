@@ -1,4 +1,4 @@
-import { Range } from "@/components/StartupGraph";
+import { Range } from "@/components/StartupVisitsGraph";
 import config from "@/config";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
@@ -95,27 +95,3 @@ export const getUsersByFavorite = async (startupId: string) => {
   return res.data;
 };
 
-export const addStartupToVisited = async (startupId: string) => {
-  const res = await axios.post(
-    `${config.SERVER_URL}/users/visit`,
-    {
-      startupId,
-    },
-    {
-      withCredentials: true,
-    }
-  );
-
-  return res.status === 201;
-};
-
-export const getVisitsData = async (startupId: string, range: Range) => {
-  const res = await axios.get(
-    `${config.SERVER_URL}/users/visit/${startupId}?range=${range}`,
-    {
-      withCredentials: true,
-    }
-  );
-
-  return res.data;
-};

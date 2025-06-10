@@ -13,6 +13,7 @@ import { deleteStartup, getStartupsBySender } from "@/actions/startupActions";
 import { Startup } from "@/models/StartupModel";
 import StartupList from "@/components/StartupList";
 import EditStartup from "@/components/EditStartup";
+import StartupOwnerCard from "@/components/StartupOwnerCard";
 
 interface User {
   username: string;
@@ -41,7 +42,6 @@ export default function ProfilePage() {
   const [open, setOpen] = useState<boolean>(false);
   const [currentStartup, setCurrentStartup] = useState<Startup>();
   const [favorites, setFavorites] = useState<Startup[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
   const [currentPageInterested, setCurrentPageInterested] = useState(0);
 
 
@@ -171,21 +171,21 @@ export default function ProfilePage() {
           </div>
         </CardContent>
       </Card>
-      {
-        startups.length !== 0 && (
-          <div className="w-full md:w-[35%]">
-            <StartupList
-              title={'הסטארטאפים שלך'}
-              startups={startups}
-              loading={loading}
-              handleEditStartup={handleEditStartup}
-              handleDeleteStartup={handleDeleteStartup}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
+
+      <div className="p-6 space-x-8 flex flex-col gap-5 h-fit">
+        <h2 className="text-3xl font-bold text-gray-800 text-center">הסטארטאפים שלך</h2>
+        {
+          startups.map((startup) => (
+            <StartupOwnerCard
+              startup={startup}
+              setStartups={setStartups}
+              setOpen={setOpen}
+              setCurrentStartup={setCurrentStartup}
             />
-          </div>
-        )
-      }
+          ))
+        }
+      </div>
+
       {
         favorites.length !== 0 && (
           <div className="w-full md:w-[35%]">
@@ -199,13 +199,15 @@ export default function ProfilePage() {
           </div>
         )
       }
-      {open && currentStartup && (
-        <EditStartup
-          open={open}
-          setOpen={setOpen}
-          startup={currentStartup}
-        />
-      )}
-    </div>
+      {
+        open && currentStartup && (
+          <EditStartup
+            open={open}
+            setOpen={setOpen}
+            startup={currentStartup}
+          />
+        )
+      }
+    </div >
   );
 }

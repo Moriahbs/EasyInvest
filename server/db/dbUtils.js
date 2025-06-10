@@ -8,12 +8,6 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   startups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Startup" }],
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Startup" }],
-  visited: [
-    {
-      startup: { type: mongoose.Schema.Types.ObjectId, ref: "Startup" },
-      visitedAt: { type: Date, default: Date.now },
-    },
-  ],
 });
 
 const startupSchema = new mongoose.Schema({
@@ -35,6 +29,12 @@ const startupSchema = new mongoose.Schema({
   country: { type: String, required: true },
   contactPhone: { type: String, required: true },
   founders: { type: String, required: true },
+  visits: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      visitedAt: { type: Date, default: Date.now },
+    },
+  ],  
 });
 
 const User = mongoose.model("User", userSchema);
