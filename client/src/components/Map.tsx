@@ -69,7 +69,7 @@ const Map: React.FC<MapProps> = ({ startups }) => {
                 <div dir="rtl" className="text-gray-700 mt-1 mb-2">
                   {startup.description}
                 </div>
-                <div className="w-full flex">
+                <div className="w-full flex justify-center mt-5">
                   <button
                     onClick={() => navigate(`/startup/${startup._id}`)}
                     className="inline-block bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-colors"
