@@ -33,7 +33,7 @@ export default function ContactModal({
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)}>
-      <DialogContent className="w-3/5 h-3/4 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
+      <DialogContent className="w-2/5 h-3/4 max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col items-center gap-4"
@@ -46,7 +46,7 @@ export default function ContactModal({
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              className="w-[100vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-[70vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </label>
@@ -56,15 +56,15 @@ export default function ContactModal({
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              rows={6}
-              className="w-[100vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={7}
+              className="w-[70vh] p-2 bg-white text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </label>
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 w-[50vh]"
+            className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 w-[30vh]"
             disabled={loading}
           >
             {loading ? "שולח..." : "שלח הודעה"}

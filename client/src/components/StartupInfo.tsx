@@ -7,10 +7,7 @@ import {
   Building,
   Loader2,
   BookmarkCheck,
-  User as UserIcon,
   Sparkles,
-  ArrowLeftIcon,
-  MailPlus,
 } from "lucide-react";
 import config from "@/config.ts";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
@@ -22,7 +19,6 @@ import {
   getUsersByFavorite,
 } from "@/actions/profileActions";
 import { User } from "@/models/userModel";
-import StartupGraph from "./StartupGraph";
 import StartupInfoCard from "./StartupInfoCard";
 import ContactModal from "./ContactModal";
 import { addStartupToVisited } from "@/actions/startupActions";
@@ -36,7 +32,6 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
   const [simplifiedDesc, setSimplifiedDesc] = useState("");
   const [isSimplified, setIsSimplified] = useState<boolean>(false);
   const [favorited, setFavorited] = useState(false);
-  const [userId, setUserId] = useState<string>("");
   const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [senderEmail, setSenderEmail] = useState<string>("");
@@ -53,11 +48,10 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
 
   const getUserDetails = async () => {
     const currentUser = await getUser(token);
-    const { _id, favorites } = currentUser.data as {
+    const { favorites } = currentUser.data as {
       favorites: Startup[];
       _id: string;
     };
-    setUserId(_id);
     setFavorited(favorites.some((favorite) => favorite._id === startup._id));
   };
 
@@ -216,41 +210,6 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
             setSenderEmail={setSenderEmail}
           />
         </div>
-        <div className="border-t border-gray-200 my-4" />
-        {userId === startup.owner._id && (
-          <div className="flex gap-8">
-            <StartupGraph startupId={startup._id} />
-            {interestedUsers.length !== 0 && (
-              <div>
-                <h2 className="text-xl font-semibold text-blue-950 flex items-center gap-2">
-                  <BookmarkCheck className="w-5 h-5" /> לקוחות שהתעניינו
-                  בסטארטאפ
-                </h2>
-                {interestedUsers.map((user) => (
-                  <div
-                    key={user._id}
-                    className="flex justify-between border-b py-2 gap-2"
-                  >
-                    <div className="flex gap-2 items-center">
-                      <UserIcon className="w-4 h-4" />
-                      <p className="text-blue-950 font-bold">{user.username}</p>
-                      <p className="text-gray-500">{user.email}</p>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setSenderEmail(user.email);
-                        setOpenModal(true);
-                      }}
-                      className="bg-blue-600 text-white hover:bg-blue-700 rounded-full p-2"
-                    >
-                      <MailPlus className="w-5 h-5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </div>
       {openModal && senderEmail && senderEmail !== "" && (
         <ContactModal

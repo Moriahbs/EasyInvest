@@ -1,4 +1,4 @@
-import { Range } from "@/components/StartupGraph";
+import { Range } from "@/components/StartupVisitsGraph";
 import config from "@/config";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
