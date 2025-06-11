@@ -1,4 +1,3 @@
-import { Range } from "@/components/StartupVisitsGraph";
 import config from "@/config";
 import { decodeToken } from "@/utils/authUtils";
 import axios from "axios";
@@ -94,4 +93,3 @@ export const getUsersByFavorite = async (startupId: string) => {
 
   return res.data;
 };
-

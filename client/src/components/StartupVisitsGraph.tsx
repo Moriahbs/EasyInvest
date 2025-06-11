@@ -18,7 +18,11 @@ import { getVisitsData } from "@/actions/startupActions";
 
 export type Range = "daily" | "monthly";
 
-export default function StartupVisitsGraph({ startupId }: { startupId: string }) {
+export default function StartupVisitsGraph({
+  startupId,
+}: {
+  startupId: string;
+}) {
   const [view, setView] = useState<Range>("daily");
   const [visitData, setVisitData] = useState([]);
 
@@ -34,6 +38,7 @@ export default function StartupVisitsGraph({ startupId }: { startupId: string })
     <div className="h-96 p-4 bg-white rounded-2xl shadow">
       <div className="flex justify-between items-center mb-4">
         <Select
+          value={view}
           onValueChange={(val) => setView(val as Range)}
           defaultValue="daily"
         >

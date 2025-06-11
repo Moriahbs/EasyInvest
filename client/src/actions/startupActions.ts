@@ -158,6 +158,8 @@ export const addStartupToVisited = async (startupId: string) => {
   return res.status === 201;
 };
 
+type Range = "daily" | "monthly";
+
 export const getVisitsData = async (startupId: string, range: Range) => {
   const res = await axios.get(
     `${config.SERVER_URL}/startups/visit/${startupId}?range=${range}`,
