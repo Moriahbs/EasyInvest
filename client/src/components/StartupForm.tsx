@@ -189,9 +189,6 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
   return (
     <>
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-3 text-right flex items-center gap-2">
-          תמונת הסטארטאפ
-        </h2>
         <UploadImage setImage={setImage} />
       </div>
 

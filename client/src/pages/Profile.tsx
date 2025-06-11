@@ -172,19 +172,23 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
 
-      <div className="p-6 space-x-8 flex flex-col gap-5 h-fit">
-        <h2 className="text-3xl font-bold text-gray-800 text-center">הסטארטאפים שלך</h2>
-        {
-          startups.map((startup) => (
-            <StartupOwnerCard
-              startup={startup}
-              setStartups={setStartups}
-              setOpen={setOpen}
-              setCurrentStartup={setCurrentStartup}
-            />
-          ))
-        }
-      </div>
+      {
+        startups.length !== 0 && (
+          <div className="p-6 space-x-8 flex flex-col gap-5 h-fit">
+            <h2 className="text-3xl font-bold text-gray-800 text-center">הסטארטאפים שלך</h2>
+            {
+              startups.map((startup) => (
+                <StartupOwnerCard
+                  startup={startup}
+                  setStartups={setStartups}
+                  setOpen={setOpen}
+                  setCurrentStartup={setCurrentStartup}
+                />
+              ))
+            }
+          </div>
+        )
+      }
 
       {
         favorites.length !== 0 && (

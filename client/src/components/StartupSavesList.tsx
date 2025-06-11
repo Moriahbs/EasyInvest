@@ -4,11 +4,7 @@ import { getUsersByFavorite } from "@/actions/profileActions";
 import { User } from "@/models/userModel";
 import ContactModal from "./ContactModal";
 
-export default function StartupSavesGraph({
-  startupId,
-}: {
-  startupId: string;
-}) {
+export default function StartupSavesList({ startupId }: { startupId: string }) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [senderEmail, setSenderEmail] = useState<string>("");
   const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
@@ -26,7 +22,7 @@ export default function StartupSavesGraph({
   };
 
   return (
-    <div className="h-96 p-4">
+    <div className="h-96 overflow-y-auto p-4">
       {interestedUsers.map((user) => (
         <div
           key={user._id}
