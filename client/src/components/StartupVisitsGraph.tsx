@@ -11,7 +11,11 @@ import { getVisitsData } from "@/actions/startupActions";
 
 export type Range = "daily" | "monthly";
 
-export default function StartupVisitsGraph({ startupId }: { startupId: string }) {
+export default function StartupVisitsGraph({
+  startupId,
+}: {
+  startupId: string;
+}) {
   const [view, setView] = useState<Range>("daily");
   const [visitData, setVisitData] = useState([]);
 
