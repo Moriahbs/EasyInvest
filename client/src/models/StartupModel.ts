@@ -1,5 +1,11 @@
 import { User } from "./userModel";
 
+export interface Visit {
+  _id: string;
+  user: User;
+  visitedAt: Date;
+}
+
 export interface Startup {
   _id: string;
   owner: User;
@@ -17,6 +23,7 @@ export interface Startup {
   founders: string;
   image?: string;
   country: string;
+  visits?: Visit[];
 }
 
 // רשימת קטגוריות קבועה לבחירה

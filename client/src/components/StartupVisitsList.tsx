@@ -1,41 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MailPlus, UserIcon } from "lucide-react";
-import { getUsersByFavorite } from "@/actions/profileActions";
-import { User } from "@/models/userModel";
+import dayjs from "dayjs";
 import ContactModal from "./ContactModal";
+import { Startup, Visit } from "@/models/StartupModel";
 
-export default function StartupSavesList({ startupId }: { startupId: string }) {
+export default function StartupSavesList({ startup }: { startup: Startup }) {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [senderEmail, setSenderEmail] = useState<string>("");
-    const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
-
-    useEffect(() => {
-        const fetchAndUpdateData = async () => {
-            await getInterestedUsers();
-        };
-        fetchAndUpdateData();
-    }, []);
-
-    const getInterestedUsers = async () => {
-        const users = await getUsersByFavorite(startupId);
-        setInterestedUsers(users);
-    };
+    const usersVisits = startup?.visits?.sort((a, b) => new Date(b.visitedAt) - new Date(a.visitedAt));
 
     return (
         <div className="h-96 overflow-y-auto p-4">
-            {interestedUsers.map((user) => (
+            {usersVisits?.map((visit: Visit) => (
                 <div
-                    key={user._id}
+                    key={visit.user._id}
                     className="flex justify-between border-b py-2 gap-2"
                 >
-                    <div className="flex gap-2 items-center">
-                        <UserIcon className="w-4 h-4" />
-                        <p className="text-blue-950 font-bold">{user.username}</p>
-                        <p className="text-gray-500">{user.email}</p>
+                    <div className="flex items-center">
+                        <UserIcon className="w-4 h-4 ml-2" />
+                        <p className="text-blue-950 font-bold ml-3">{visit.user.username}</p>
+                        <p className="text-gray-500">צפה בעמוד ב</p>
+                        <p className="text-gray-500">{dayjs(visit.visitedAt).format("DD/MM/YYYY HH:mm")}</p>
                     </div>
                     <button
                         onClick={() => {
-                            setSenderEmail(user.email);
+                            setSenderEmail(visit.user.email);
                             setOpenModal(true);
                         }}
                         className="bg-blue-600 text-white hover:bg-blue-700 rounded-full p-2"

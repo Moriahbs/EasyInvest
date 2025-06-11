@@ -7,13 +7,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "@/components/ui/select";
 import { getVisitsData } from "@/actions/startupActions";
 
 export type Range = "daily" | "monthly";
@@ -31,20 +24,35 @@ export default function StartupVisitsGraph({ startupId }: { startupId: string })
   }, [view]);
 
   return (
-    <div className="h-96 p-4 bg-white rounded-2xl shadow">
+    <div className="w-[100%] h-96 p-4 bg-white rounded-2xl shadow">
       <div className="flex justify-between items-center mb-4">
-        <Select
-          onValueChange={(val) => setView(val as Range)}
-          defaultValue="daily"
+        <div
+          dir="rtl"
+          className="relative inline-flex items-center bg-gray-200 rounded-full cursor-pointer select-none w-[120px] h-8 overflow-hidden"
         >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="daily">שבוע אחרון</SelectItem>
-            <SelectItem value="monthly">חודשי</SelectItem>
-          </SelectContent>
-        </Select>
+          <div
+            className={`absolute right-0 top-0 h-full w-1/2 bg-blue-600 rounded-full transition-transform duration-300 ease-in-out ${view === "monthly" ? "-translate-x-full" : "translate-x-0"
+              }`}
+          />
+
+          <button
+            onClick={() => setView("daily")}
+            className={`relative z-10 bg-transparent flex-1 text-center py-1 text-xs font-semibold transition-colors duration-300 focus:outline-none focus:ring-0 border-none
+ ${view === "daily" ? "text-white" : "text-gray-700"
+              }`}
+          >
+            שבועי
+          </button>
+
+          <button
+            onClick={() => setView("monthly")}
+            className={`relative z-10 bg-transparent flex-1 text-center py-1 text-xs font-semibold transition-colors duration-300 focus:outline-none focus:ring-0 border-none
+ ${view === "monthly" ? "text-white" : "text-gray-700"
+              }`}
+          >
+            חודשי
+          </button>
+        </div>
       </div>
 
       <ResponsiveContainer width="100%" height="100%">

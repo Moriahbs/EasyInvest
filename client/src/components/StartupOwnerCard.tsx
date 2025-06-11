@@ -17,7 +17,9 @@ import { deleteStartup, getStartupsBySender } from "@/actions/startupActions";
 import { Startup } from "@/models/StartupModel";
 import config from "@/config";
 import StartupVisitsGraph from "./StartupVisitsGraph";
-import StartupSavesGraph from "./StartupSavesList";
+import StartupSavesList from "./StartupSavesList";
+import StartupVisitsList from "./StartupVisitsList";
+import StartupSavesGraph from "./StartupSavesGraph";
 
 interface StartupOwnerCardProps {
     startup: Startup;
@@ -33,13 +35,23 @@ const StartupOwnerCard: React.FC<StartupOwnerCardProps> = ({ startup, setStartup
     const views = [
         {
             id: 0,
-            title: "לקוחות שצפו בסטארטאפ",
-            component: <StartupVisitsGraph startupId={startup._id} />,
+            title: "היסטוריית צפיות",
+            component: <StartupVisitsList startup={startup} />,
         },
         {
             id: 1,
-            title: "לקוחות ששמרו את הסטארטאפ",
-            component: <StartupSavesGraph startupId={startup._id} />,
+            title: "היסטוריית שמירות",
+            component: <StartupSavesList startupId={startup._id} />,
+        },
+        {
+            id: 2,
+            title: "כמות צפיות",
+            component: <StartupVisitsGraph startupId={startup._id} />,
+        },
+        {
+            id: 3,
+            title: "כמות שמירות",
+            component: <StartupSavesGraph startup={startup} />,
         },
     ];
 
@@ -111,11 +123,11 @@ const StartupOwnerCard: React.FC<StartupOwnerCardProps> = ({ startup, setStartup
             </DropdownMenu>
 
             <Dialog open={modalOpen} onOpenChange={() => setModalOpen(false)}>
-                <DialogContent className="bg-white w-3/5 h-5/6 text-center items-center max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
+                <DialogContent className="z-[50] bg-white w-3/5 h-5/6 text-center items-center max-w-screen-xl p-6 overflow-y-auto !z-[2147483647] bg-white text-black rounded-lg shadow-lg [&>button.absolute]:hidden">
                     <DialogTitle className="text-2xl">פעילות משתמשים</DialogTitle>
                     <h2 className="text-lg">{views[selectedViewId].title}</h2>
                     <div className="flex flex-row h-[60vh] justify-center gap-10">
-                        <div className="flex flex-col w-1/3 divide-y divide-gray-20 mt-10">
+                        <div className="flex flex-col w-1/4 divide-y divide-gray-20 mt-10">
                             {
                                 views.map((view) =>
                                     <div className="cursor-pointer" onClick={() => setSelectedViewId(view.id)}>
