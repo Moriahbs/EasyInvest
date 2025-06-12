@@ -10,7 +10,6 @@ import {
   verifyAccessToken,
 } from "../handlers/authUtils";
 import nodemailer from "nodemailer";
-import mongoose from "mongoose";
 
 const router = express.Router();
 router.use(authMiddleware);
@@ -257,8 +256,7 @@ router.get("/:id", async (req: Request, res: Response) => {
       return;
     }
 
-    const user = await User.findById(id)
-      .populate("favorites");
+    const user = await User.findById(id).populate("favorites");
 
     if (!user) {
       res.status(404).send({ error: "User not found" });
@@ -664,6 +662,7 @@ router.delete("/favorite/:startupId", async (req: Request, res: Response) => {
  *       500:
  *         description: Failed to send email.
  */
+// SEND EMAIL TO USER
 router.post("/email/:email", async (req: Request, res: Response) => {
   try {
     const email = req.params.email;

@@ -172,6 +172,7 @@ router.post(
       const found = await Startup.findById(newStartup._id).populate("owner");
       res.status(201).send(found);
     } catch (error) {
+      console.log("errorrr", error);
       console.error("Error creating startup:", error);
       res
         .status(500)
@@ -487,7 +488,9 @@ router.get("/:id", async (req: Request, res: Response) => {
       return;
     }
 
-    const found = await Startup.findById(id).populate("owner").populate("visited");
+    const found = await Startup.findById(id)
+      .populate("owner")
+      .populate("visits");
 
     if (!found) {
       res.status(404).send({ error: "Startup not found" });
@@ -746,6 +749,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
 });
 
 /**
+ *
  * @swagger
  * /startups/{startupId}/visit:
  *   post:
@@ -767,6 +771,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
  *       500:
  *         description: Failed to add visit.
  */
+//ADD VISIT TO STARTUP
 router.post("/visit", async (req: Request, res: Response) => {
   try {
     const { startupId }: { startupId: string } = req.body;
@@ -789,7 +794,6 @@ router.post("/visit", async (req: Request, res: Response) => {
       return;
     }
 
-    // Add visit to Startup document
     const update = {
       $push: {
         visits: {
@@ -799,7 +803,9 @@ router.post("/visit", async (req: Request, res: Response) => {
       },
     };
 
-    const updatedStartup = await Startup.findByIdAndUpdate(startupId, update, { new: true });
+    const updatedStartup = await Startup.findByIdAndUpdate(startupId, update, {
+      new: true,
+    });
 
     res.status(201).send(updatedStartup);
   } catch (error) {
@@ -807,7 +813,6 @@ router.post("/visit", async (req: Request, res: Response) => {
     res.status(500).send({ error: "An error occurred while adding the visit" });
   }
 });
-
 
 /**
  * @swagger
@@ -835,6 +840,7 @@ router.post("/visit", async (req: Request, res: Response) => {
  *       500:
  *         description: Error occurred during fetch.
  */
+//GET VISIT COUNT OF STARTUP
 router.get("/visit/:startupId", async (req: Request, res: Response) => {
   try {
     const startupId = req.params.startupId;

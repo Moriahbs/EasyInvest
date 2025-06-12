@@ -124,7 +124,9 @@
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -134,7 +136,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,28 +144,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,7 +164,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose, { Schema, Document } from "mongoose";
 &nbsp;
@@ -192,7 +196,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   createdAt: Date;
-  posts: mongoose.Types.Array&lt;mongoose.Types.ObjectId&gt;;
+  startups: mongoose.Types.Array&lt;mongoose.Types.ObjectId&gt;;
 }
 &nbsp;
 const userSchema = new Schema&lt;IUser&gt;({
@@ -200,52 +204,54 @@ const userSchema = new Schema&lt;IUser&gt;({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   createdAt: { type: Date, default: Date.now },
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+  startups: [{ type: Schema.Types.ObjectId, ref: "Startup" }],
 });
 &nbsp;
 export const User =
   mongoose.models.User || <span class="branch-1 cbranch-no" title="branch not covered" >mongoose.model&lt;IUser&gt;("User", userSchema);</span>
 &nbsp;
-export interface IPost extends Document {
-  title: string;
-  body: string;
-  author: mongoose.Types.ObjectId;
-  comments: {
-    body: string;
-    date: Date;
-    user: mongoose.Types.ObjectId;
-  }[];
+export interface IStartup extends Document {
+  owner: mongoose.Types.ObjectId;
+  name: string;
+  description: string;
+  location: string;
+  fundingStage: string;
+  image?: string;
+  valuationLastRound: number;
+  contactEmail: string;
+  contactPhone: string;
+  founders: string;
+  latitude: number;
+  longitude: number;
   createdAt: Date;
+  foundedYear: number;
+  tags: string[];
   updatedAt?: Date;
   hidden: boolean;
-  meta: {
-    votes: number;
-    favs: number;
-  };
 }
 &nbsp;
-const postSchema = new Schema&lt;IPost&gt;({
-  title: { type: String, required: true },
-  body: { type: String, required: true },
-  author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  comments: [
-    {
-      body: { type: String, required: true },
-      date: { type: Date, default: Date.now },
-      user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    },
-  ],
+const startupSchema = new Schema&lt;IStartup&gt;({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  fundingStage: { type: String, required: true },
+  owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date },
   hidden: { type: Boolean, default: false },
-  meta: {
-    votes: { type: Number, default: 0 },
-    favs: { type: Number, default: 0 },
-  },
+  image: { type: String, required: false },
+  location: { type: String, required: true },
+  valuationLastRound: { type: Number, required: true },
+  latitude: { type: Number, required: true },
+  longitude: { type: Number, required: true },
+  foundedYear: { type: Number, required: true },
+  tags: { type: [String], required: true },
+  contactEmail: { type: String, required: true },
+  contactPhone: { type: String, required: true },
+  founders: { type: String, required: true },
 });
 &nbsp;
-export const Post =
-  mongoose.models.Post || <span class="branch-1 cbranch-no" title="branch not covered" >mongoose.model&lt;IPost&gt;("Post", postSchema);</span>
+export const Startup =
+  mongoose.models.Startup || <span class="branch-1 cbranch-no" title="branch not covered" >mongoose.model&lt;IStartup&gt;("Startup", startupSchema);</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -253,7 +259,7 @@ export const Post =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-12T13:22:54.486Z
+                at 2025-06-12T10:32:53.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
