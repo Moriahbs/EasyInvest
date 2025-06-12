@@ -405,6 +405,7 @@ router.get("/sender/:sender", async (req: Request, res: Response) => {
     }
     const senderStartups = await Startup.find({ owner: sender })
       .populate("owner")
+      .populate("visits.user")
       .sort({ createdAt: -1 });
     if (!senderStartups.length) {
       res.status(200).send([]);
@@ -488,9 +489,7 @@ router.get("/:id", async (req: Request, res: Response) => {
       return;
     }
 
-    const found = await Startup.findById(id)
-      .populate("owner")
-      .populate("visits");
+    const found = await Startup.findById(id).populate("owner");
 
     if (!found) {
       res.status(404).send({ error: "Startup not found" });
