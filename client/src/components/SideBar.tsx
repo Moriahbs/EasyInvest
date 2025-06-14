@@ -1,6 +1,7 @@
 import { LogOut, UserPen, Map, Search, Plus } from "lucide-react";
 import { logoutUser } from "@/actions/authActions";
 import { useNavigate } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 const items = [
   {
@@ -37,10 +38,11 @@ export function Sidebar() {
     <div className="bg-gray-800 text-white py-4 px-6 shadow-md">
       <div className="flex items-center justify-between">
         <div
-          className="text-lg font-semibold cursor-pointer"
+          className="text-lg font-semibold cursor-pointer flex gap-2 items-center"
           onClick={() => navigate("/Home")}
         >
           Easy Invest
+          <img src={logo} width={29} />
         </div>
         <div className="flex gap-4">
           {items.map((item) => (
