@@ -21,7 +21,7 @@ const getImageUrl = (imageSrc: string | undefined) => {
   } else if (imageSrc) {
     return `${config.SERVER_URL}/${imageSrc}`;
   }
-  return "/src/assets/default-image.png";
+  return "/assets/default-image.png";
 };
 
 const StartupCard: React.FC<StartupCardProps> = ({
@@ -48,7 +48,7 @@ const StartupCard: React.FC<StartupCardProps> = ({
         src={imgSrc}
         alt={startup.name}
         className="w-full h-56 object-cover"
-        onError={() => setImgSrc("/src/assets/default-image.png")}
+        onError={() => setImgSrc("/assets/default-image.png")}
       />
 
       <div className="p-4 flex flex-col gap-2">

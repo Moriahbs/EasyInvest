@@ -9,7 +9,7 @@ import StartupList from "@/components/StartupList";
 export default function StartupsPage() {
   const [startups, setStartups] = useState<Startup[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [currentPage, setCurrentPage] = useState(0); 
+  const [currentPage, setCurrentPage] = useState(0);
   const [region, setRegion] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [fundingStages, setFundingStages] = useState<string[]>([]);
@@ -28,7 +28,7 @@ export default function StartupsPage() {
         valuation,
       };
       const data = await getAllStartups(filters);
-      setStartups(data);
+      setStartups(data || []);
       setLoading(false);
     };
     fetchFiltered();
@@ -48,19 +48,20 @@ export default function StartupsPage() {
         valuation={valuation}
         setValuation={setValuation}
       />
-
-      <div className="flex flex-row flex-wrap w-full justify-between">
-        <Map startups={startups} />
-        <div className="w-full md:w-[35%]">
-          <StartupList
-            title={"סטארטאפים רלוונטים עבורך"}
-            startups={startups}
-            loading={loading}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage} 
-          />
+      {Array.isArray(startups) &&
+        <div className="flex flex-row flex-wrap w-full justify-between">
+          <Map startups={startups} />
+          <div className="w-full md:w-[35%]">
+            <StartupList
+              title={"סטארטאפים רלוונטים עבורך"}
+              startups={startups}
+              loading={loading}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 }

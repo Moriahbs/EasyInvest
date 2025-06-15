@@ -22,6 +22,21 @@ import { User } from "@/models/userModel";
 import StartupInfoCard from "./StartupInfoCard";
 import ContactModal from "./ContactModal";
 import { addStartupToVisited } from "@/actions/startupActions";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// ✅ Import marker assets
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// ✅ Fix the icon URLs once before using Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 interface StartupInfoProps {
   startup: Startup;
@@ -32,7 +47,7 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
   const [simplifiedDesc, setSimplifiedDesc] = useState("");
   const [isSimplified, setIsSimplified] = useState<boolean>(false);
   const [favorited, setFavorited] = useState(false);
-  const [interestedUsers, setInterestedUsers] = useState<User[]>([]);
+  const [, setInterestedUsers] = useState<User[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [senderEmail, setSenderEmail] = useState<string>("");
   const token = Cookies.get("Authorization") || "";
@@ -103,9 +118,8 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
             aria-label="Save to favorites"
           >
             <BookmarkCheck
-              className={`w-7 h-7 ${
-                favorited ? "text-green-700" : "text-white"
-              }`}
+              className={`w-7 h-7 ${favorited ? "text-green-700" : "text-white"
+                }`}
             />
           </button>
 
@@ -120,12 +134,12 @@ const StartupInfo: React.FC<StartupInfoProps> = ({ startup }) => {
               src={
                 startup.image
                   ? `${config.SERVER_URL}/${startup.image}`
-                  : "/src/assets/default-image.png"
+                  : "/assets/default-image.png"
               }
               alt={startup.name}
               className="w-full h-full rounded-full border-4 border-white shadow-lg object-cover transition-transform duration-300 hover:scale-105"
               onError={(e) => {
-                e.currentTarget.src = "/src/assets/default-image.png";
+                e.currentTarget.src = "/assets/default-image.png";
               }}
             />
           </div>

@@ -4,6 +4,8 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "prod": "cp .env_prod .env && tsc -p tsconfig_prod.json && sudo node ./dist/server.js",
+    "build": "cp .env_prod .env && tsc -p tsconfig_prod.json",
     "start": "ts-node server.ts",
     "test": "set DATABASE_URL=mongodb+srv://shalevpro105:AkZKc4LxHsa9jpHd@cluster0.6vpnops.mongodb.net/test && jest --detectOpenHandles --coverage --forceExit"
   },
@@ -30,9 +32,7 @@
     "passport-google-oauth20": "^2.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^11.1.0"
-  },
-  "devDependencies": {
+    "uuid": "^11.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.5",
     "@types/cookie": "^0.6.0",

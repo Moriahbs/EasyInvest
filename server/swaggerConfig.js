@@ -1,3 +1,4 @@
+const { url } = require("inspector");
 const swaggerJSDoc = require("swagger-jsdoc");
 
 const swaggerDefinition = {
@@ -9,11 +10,8 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url:
-        process.env.NODE_ENV === "production"
-          ? "https://193.106.55.235"
-          : "http://localhost:3000",
-    },
+      url: "http://localhost:3000",
+    }, {url: "http://10.10.248.74"},{url: "https://10.10.248.74"},
   ],
 };
 

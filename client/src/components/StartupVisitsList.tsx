@@ -7,8 +7,10 @@ import { Startup, Visit } from "@/models/StartupModel";
 export default function StartupSavesList({ startup }: { startup: Startup }) {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [senderEmail, setSenderEmail] = useState<string>("");
-    const usersVisits = startup?.visits?.sort((a, b) => new Date(b.visitedAt) - new Date(a.visitedAt));
-
+    const usersVisits = startup?.visits?.sort(
+        (a: Visit, b: Visit) => new Date(b.visitedAt).getTime() - new Date(a.visitedAt).getTime()
+      );
+      
     return (
         <div className="h-96 overflow-y-auto p-4">
             {usersVisits?.map((visit: Visit) => (

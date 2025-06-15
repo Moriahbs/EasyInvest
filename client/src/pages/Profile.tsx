@@ -9,7 +9,7 @@ import { getUser, updateUser, getAllUsers } from "@/actions/profileActions";
 import { isTokenValid } from "@/utils/authUtils";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { deleteStartup, getStartupsBySender } from "@/actions/startupActions";
+import { getStartupsBySender } from "@/actions/startupActions";
 import { Startup } from "@/models/StartupModel";
 import StartupList from "@/components/StartupList";
 import EditStartup from "@/components/EditStartup";
@@ -103,16 +103,6 @@ export default function ProfilePage() {
     }
   };
 
-  const handleEditStartup = async (startup: Startup) => {
-    setOpen(true);
-    setCurrentStartup(startup);
-  };
-
-  const handleDeleteStartup = async (startupId: string) => {
-    await deleteStartup(startupId);
-    await getStartups();
-  };
-
   return (
     <div className="p-6 space-x-8 flex h-fit w-full justify-around">
       <Card className="h-fit w-1/3 mt-4">
@@ -173,7 +163,7 @@ export default function ProfilePage() {
       </Card>
 
       {
-        startups.length !== 0 && (
+        startups && startups.length !== 0 && (
           <div className="p-6 space-x-8 flex flex-col gap-5 h-fit">
             <h2 className="text-3xl font-bold text-gray-800 text-center">הסטארטאפים שלך</h2>
             {
@@ -191,7 +181,7 @@ export default function ProfilePage() {
       }
 
       {
-        favorites.length !== 0 && (
+        favorites && favorites.length !== 0 && (
           <div className="w-full md:w-[35%]">
             <StartupList
               title={'סטארטאפים שהתעניינת בהם'}

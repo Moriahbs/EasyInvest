@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Startup } from "@/models/StartupModel.ts";
 import StartupCard from "./StartupCard";
 import StartupCardSkeleton from "./skeleton/StartupCardSkeleton";
@@ -50,16 +50,16 @@ const StartupList: React.FC<StartupListProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading
             ? Array.from({ length: 4 }).map((_, index) => (
-                <StartupCardSkeleton key={index} />
-              ))
-            : visibleStartups.map((startup) => (
-                <StartupCard
-                  key={startup._id}
-                  startup={startup}
-                  handleEditStartup={handleEditStartup}
-                  handleDeleteStartup={handleDeleteStartup}
-                />
-              ))}
+              <StartupCardSkeleton key={index} />
+            ))
+            : Array.isArray(visibleStartups) && visibleStartups.map((startup) => (
+              <StartupCard
+                key={startup._id}
+                startup={startup}
+                handleEditStartup={handleEditStartup}
+                handleDeleteStartup={handleDeleteStartup}
+              />
+            ))}
           {!startups.length && <p>לא קיימים סטארטאפים</p>}
         </div>
       </div>

@@ -62,7 +62,7 @@ const StartupOwnerCard: React.FC<StartupOwnerCardProps> = ({
     } else if (imageSrc) {
       return `${config.SERVER_URL}/${imageSrc}`;
     }
-    return "/src/assets/default-image.png";
+    return "/assets/default-image.png";
   };
 
   const token = Cookies.get("Authorization") || "";

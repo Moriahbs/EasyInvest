@@ -1,12 +1,10 @@
 interface Config {
   SERVER_URL: string;
-  CLIENT_URL: string;
   API_KEY: string;
 }
 
 const config: Config = {
-  SERVER_URL: import.meta.env.VITE_SERVER_URL || "",
-  CLIENT_URL: import.meta.env.VITE_CLIENT || "",
+  SERVER_URL: import.meta.env.VITE_BACKEND_URL || "",
   API_KEY: import.meta.env.VITE_API_KEY || "",
 };
 

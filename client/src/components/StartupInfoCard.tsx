@@ -10,7 +10,6 @@ import {
   Calendar,
 } from "lucide-react";
 import "leaflet/dist/leaflet.css";
-import ContactModal from "@/components/ContactModal.tsx";
 
 interface StartupInfoProps {
   startup: Startup;
@@ -21,7 +20,6 @@ interface StartupInfoProps {
 
 const StartupInfoCard: React.FC<StartupInfoProps> = ({
   startup,
-  openModal,
   setOpenModal,
   setSenderEmail,
 }) => {

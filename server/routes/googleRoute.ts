@@ -27,7 +27,7 @@ router.get(
 
     const clientPort = process.env.CLIENT_PORT || 5173;
 
-    res.redirect(`http://localhost:${clientPort}`);
+    res.redirect(`https://easy-invest.cs.colman.ac.il:${clientPort}`);
   }
 );
 

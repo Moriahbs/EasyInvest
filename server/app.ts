@@ -16,40 +16,67 @@ import smartSearchRoute from "./routes/smartSearchRoute";
 import topicsRoute from "./routes/topicsRoute";
 import path from "path";
 
+dotenv.config(); // Make sure this is called early
+
 const promise: Promise<Express> = new Promise((resolve, reject) => {
-  dotenv.config();
   const app = express();
 
-  const corsOptions: cors.CorsOptions = {
-    origin: process.env.ALLOWED_ORIGIN,
+  // ✅ Define all allowed frontend origins
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://10.10.248.74',
+    'https://easy-invest.cs.colman.ac.il',
+  ];
+
+  // ✅ Secure & flexible CORS setup
+  const corsOptions = {
+    origin: (origin: string | undefined, callback: Function) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   };
 
-  const expressSessionOptions = {
+  app.use(express.static(path.join(__dirname, "front")));
+  app.use(cors(corsOptions));
+
+  // ✅ Set up express-session (used only if necessary)
+  const expressSessionOptions: any = {
     secret: process.env.SESSION_SECRET || "mysecret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    cookie: {
+      secure: true,           // ⚠️ set to true if HTTPS (on production!)
+      sameSite: 'none',       // ✅ allow cross-site cookie
+    },
   };
-
-  // Middlewares
-  app.use(cors(corsOptions));
   app.use(expressSession(expressSessionOptions));
+
+  // ✅ Required parsers & passport
   app.use(bodyParser.json());
   app.use(cookieParser());
   app.use(passport.initialize());
 
-  // Routes
+  // ✅ Your routes
   app.use("/auth", googleRoute);
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   app.use("/startups", startupsRoute);
   app.use("/users", usersRoute);
-  app.use("/images", express.static(path.join(__dirname, "images")));
+  app.use("/images", express.static("images"));
   app.use("/api/chatbot", chatBotRoute);
   app.use("/api/smartSearch", smartSearchRoute);
   app.use("/api/topics", topicsRoute);
+  app.use("/assets", express.static("assets"));
 
-  // Database connection
+  // ✅ Static file serving for frontend
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "front", "index.html"));
+  });
+
+  // ✅ MongoDB Connection
   mongoose
     .connect(process.env.DATABASE_URL as string, {})
     .then(() => {

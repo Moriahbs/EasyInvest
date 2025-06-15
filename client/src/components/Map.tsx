@@ -4,6 +4,21 @@ import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { formatValuation } from "./StartupCard";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// ✅ Import marker assets
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+// ✅ Fix the icon URLs once before using Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 interface MapProps {
   startups: Startup[];
@@ -43,7 +58,7 @@ const Map: React.FC<MapProps> = ({ startups }) => {
     <div className="w-full md:w-[65%]">
       <MapContainer style={{ height: "100%", width: "100%" }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {startups?.map((startup) => (
+        {Array.isArray(startups) && startups?.map((startup) => (
           <Marker
             key={startup._id}
             position={[startup.latitude, startup.longitude]}
