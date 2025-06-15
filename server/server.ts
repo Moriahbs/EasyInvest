@@ -11,5 +11,6 @@ appPromise.then((app: Express) => {
   }
   app.get("/", (req, res) => {
     res.send("Easy Invest server running!! 🚀");
+    
   });
 });
