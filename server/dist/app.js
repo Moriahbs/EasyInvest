@@ -49,7 +49,7 @@ const promise = new Promise((resolve, reject) => {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: true, // ⚠️ set to true if HTTPS (on production!)
+            secure: process.env.NODE_ENV === "production", // only true in prod
             sameSite: 'none', // ✅ allow cross-site cookie
         },
     };

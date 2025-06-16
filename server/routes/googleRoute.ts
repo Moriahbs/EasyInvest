@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import "../handlers/passportConfig";
+import "../handlers/passportConfig"; // Make sure this initializes the strategy
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -25,9 +25,8 @@ router.get(
     res.cookie("refreshToken", refreshToken);
     res.cookie("Authorization", `Bearer ${accessToken}`);
 
-    const clientPort = process.env.CLIENT_PORT || 5173;
 
-    res.redirect(`https://easy-invest.cs.colman.ac.il:${clientPort}`);
+    res.redirect("https://easy-invest.cs.colman.ac.il");
   }
 );
 

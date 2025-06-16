@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 passport_1.default.use(new passport_google_oauth20_1.Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `https://easy-invest.cs.colman.ac.il:${PORT}/auth/google/callback`,
+    callbackURL: `https://easy-invest.cs.colman.ac.il/auth/google/callback`,
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         let userId;

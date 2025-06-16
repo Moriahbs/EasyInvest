@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
-require("../handlers/passportConfig");
+require("../handlers/passportConfig"); // Make sure this initializes the strategy
 const authUtils_1 = require("../handlers/authUtils");
 const router = express_1.default.Router();
 router.get("/google", passport_1.default.authenticate("google", { scope: ["profile", "email"] }));
@@ -15,7 +15,6 @@ router.get("/google/callback", passport_1.default.authenticate("google", { failu
     const refreshToken = (0, authUtils_1.generateRefreshToken)({ userId });
     res.cookie("refreshToken", refreshToken);
     res.cookie("Authorization", `Bearer ${accessToken}`);
-    const clientPort = process.env.CLIENT_PORT || 5173;
-    res.redirect(`https://easy-invest.cs.colman.ac.il:${clientPort}`);
+    res.redirect("https://easy-invest.cs.colman.ac.il");
 });
 exports.default = router;
