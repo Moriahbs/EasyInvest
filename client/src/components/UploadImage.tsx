@@ -32,7 +32,7 @@ const UploadImage: React.FC<UploadProfileProps> = ({ setImage, imageUrl }) => {
             <AvatarImage src={`${config.SERVER_URL}/${imageUrl}`} />
           ) : (
             <AvatarImage
-              src={"./src//assets/default.png"}
+              src={"./src/assets/default.png"}
               className="bg-gray-300"
             />
           )}
