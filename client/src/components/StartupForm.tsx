@@ -189,7 +189,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
   return (
     <>
       <div className="mb-8">
-        <UploadImage setImage={setImage} />
+        <UploadImage setImage={setImage} imageUrl={existingStartup?.image} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
