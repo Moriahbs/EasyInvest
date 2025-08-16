@@ -28,10 +28,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
   setValuation,
 }) => {
   const VALUATION_OPTIONS = [
-    { label: "עד 5 מיליון ₪", value: 5000000 },
-    { label: "5-10 מיליון ₪", value: [5000000, 10000000] },
-    { label: "10-20 מיליון ₪", value: [10000000, 20000000] },
-    { label: "מעל 20 מיליון ₪", value: 20000000 },
+    { label: "עד 5 מיליון $", value: 5000000 },
+    { label: "5-10 מיליון $", value: [5000000, 10000000] },
+    { label: "10-20 מיליון $", value: [10000000, 20000000] },
+    { label: "מעל 20 מיליון $", value: 20000000 },
   ];
 
   const HEBREW_COUNTRIES = [
@@ -144,7 +144,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
           className="w-full border border-blue-500 text-blue-500 px-4 py-2 rounded-lg appearance-none bg-white hover:bg-blue-50"
         >
           <option value="" disabled hidden>
-            שווי בסיבוב האחרון (₪)
+            שווי בסיבוב האחרון ($)
           </option>
           {VALUATION_OPTIONS.map((option, index) => (
             <option key={index} value={index.toString()}>

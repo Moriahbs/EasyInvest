@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const accessTokenOptions: SignOptions = {
-  expiresIn: "15m",
+  expiresIn: "2h",
   algorithm: "HS256",
 };
 const refreshTokenOptions: SignOptions = {
