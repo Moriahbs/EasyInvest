@@ -23,27 +23,35 @@ export default function StartupSavesList({ startupId }: { startupId: string }) {
 
   return (
     <div className="h-96 overflow-y-auto p-4">
-      {interestedUsers.map((user) => (
-        <div
-          key={user._id}
-          className="flex justify-between border-b py-2 gap-2"
-        >
-          <div className="flex gap-2 items-center">
-            <UserIcon className="w-4 h-4" />
-            <p className="text-blue-950 font-bold">{user.username}</p>
-            <p className="text-gray-500">{user.email}</p>
-          </div>
-          <button
-            onClick={() => {
-              setSenderEmail(user.email);
-              setOpenModal(true);
-            }}
-            className="bg-blue-600 text-white hover:bg-blue-700 rounded-full p-2"
-          >
-            <MailPlus className="w-5 h-5" />
-          </button>
+      {interestedUsers.length ? (
+        <>
+          {interestedUsers.map((user) => (
+            <div
+              key={user._id}
+              className="flex justify-between border-b py-2 gap-2"
+            >
+              <div className="flex gap-2 items-center">
+                <UserIcon className="w-4 h-4" />
+                <p className="text-blue-950 font-bold">{user.username}</p>
+                <p className="text-gray-500">{user.email}</p>
+              </div>
+              <button
+                onClick={() => {
+                  setSenderEmail(user.email);
+                  setOpenModal(true);
+                }}
+                className="bg-blue-600 text-white hover:bg-blue-700 rounded-full p-2"
+              >
+                <MailPlus className="w-5 h-5" />
+              </button>
+            </div>
+          ))}
+        </>
+      ) : (
+        <div className="size-full items-center flex justify-center">
+          <p className="text-gray-600 ml-3">אין נתונים להצגה</p>
         </div>
-      ))}
+      )}
 
       {openModal && senderEmail && senderEmail !== "" && (
         <ContactModal

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1749724373406" clover="3.2.0">
-  <project timestamp="1749724373406" name="All files">
-    <metrics statements="639" coveredstatements="405" conditionals="214" coveredconditionals="91" methods="50" coveredmethods="30" elements="903" coveredelements="526" complexity="0" loc="639" ncloc="639" packages="6" files="15" classes="15"/>
+<coverage generated="1755417883704" clover="3.2.0">
+  <project timestamp="1755417883704" name="All files">
+    <metrics statements="663" coveredstatements="410" conditionals="222" coveredconditionals="92" methods="54" coveredmethods="31" elements="939" coveredelements="533" complexity="0" loc="663" ncloc="663" packages="6" files="15" classes="15"/>
     <package name="server">
-      <metrics statements="49" coveredstatements="47" conditionals="4" coveredconditionals="2" methods="5" coveredmethods="3"/>
-      <file name="app.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\app.ts">
-        <metrics statements="44" coveredstatements="42" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="3"/>
+      <metrics statements="58" coveredstatements="54" conditionals="6" coveredconditionals="3" methods="7" coveredmethods="4"/>
+      <file name="app.ts" path="/home/cs139/EasyInvest/server/app.ts">
+        <metrics statements="52" coveredstatements="48" conditionals="6" coveredconditionals="3" methods="7" coveredmethods="4"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -24,45 +24,54 @@
         <line num="16" count="2" type="stmt"/>
         <line num="17" count="2" type="stmt"/>
         <line num="19" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
         <line num="21" count="2" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="36" count="2" type="stmt"/>
-        <line num="37" count="2" type="stmt"/>
-        <line num="38" count="2" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="34" count="21" type="cond" truecount="2" falsecount="2"/>
+        <line num="35" count="21" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
         <line num="43" count="2" type="stmt"/>
         <line num="44" count="2" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
         <line num="47" count="2" type="stmt"/>
-        <line num="48" count="2" type="stmt"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
-        <line num="53" count="2" type="stmt"/>
         <line num="56" count="2" type="stmt"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="61" count="2" type="stmt"/>
         <line num="64" count="2" type="stmt"/>
         <line num="65" count="2" type="stmt"/>
         <line num="66" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
         <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="71" count="2" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="83" count="2" type="stmt"/>
+        <line num="84" count="2" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="96" count="2" type="stmt"/>
       </file>
-      <file name="swaggerConfig.js" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\swaggerConfig.js">
-        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
+      <file name="swaggerConfig.js" path="/home/cs139/EasyInvest/server/swaggerConfig.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
         <line num="25" count="2" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
       </file>
     </package>
     <package name="server.controllers">
-      <metrics statements="69" coveredstatements="14" conditionals="31" coveredconditionals="2" methods="13" coveredmethods="0"/>
-      <file name="smartSearchController.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\controllers\smartSearchController.ts">
+      <metrics statements="85" coveredstatements="15" conditionals="39" coveredconditionals="2" methods="15" coveredmethods="0"/>
+      <file name="smartSearchController.ts" path="/home/cs139/EasyInvest/server/controllers/smartSearchController.ts">
         <metrics statements="56" coveredstatements="9" conditionals="29" coveredconditionals="1" methods="12" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -121,26 +130,42 @@
         <line num="175" count="0" type="stmt"/>
         <line num="176" count="0" type="stmt"/>
       </file>
-      <file name="topicsController.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\controllers\topicsController.ts">
-        <metrics statements="13" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="0"/>
+      <file name="topicsController.ts" path="/home/cs139/EasyInvest/server/controllers/topicsController.ts">
+        <metrics statements="29" coveredstatements="6" conditionals="10" coveredconditionals="1" methods="3" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="4" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="5" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
-        <line num="12" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="18" count="0" type="stmt"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="25" count="0" type="stmt"/>
+        <line num="12" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
       </file>
     </package>
     <package name="server.db">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="dbUtils.js" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\db\dbUtils.js">
+      <file name="dbUtils.js" path="/home/cs139/EasyInvest/server/db/dbUtils.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -152,7 +177,7 @@
     </package>
     <package name="server.handlers">
       <metrics statements="99" coveredstatements="60" conditionals="21" coveredconditionals="8" methods="12" coveredmethods="8"/>
-      <file name="auth.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\handlers\auth.ts">
+      <file name="auth.ts" path="/home/cs139/EasyInvest/server/handlers/auth.ts">
         <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="2" count="2" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
@@ -162,7 +187,7 @@
         <line num="18" count="18" type="cond" truecount="1" falsecount="0"/>
         <line num="21" count="2" type="stmt"/>
       </file>
-      <file name="authUtils.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\handlers\authUtils.ts">
+      <file name="authUtils.ts" path="/home/cs139/EasyInvest/server/handlers/authUtils.ts">
         <metrics statements="54" coveredstatements="31" conditionals="10" coveredconditionals="2" methods="6" coveredmethods="5"/>
         <line num="1" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -219,7 +244,7 @@
         <line num="105" count="0" type="stmt"/>
         <line num="106" count="0" type="stmt"/>
       </file>
-      <file name="passportConfig.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\handlers\passportConfig.ts">
+      <file name="passportConfig.ts" path="/home/cs139/EasyInvest/server/handlers/passportConfig.ts">
         <metrics statements="24" coveredstatements="10" conditionals="4" coveredconditionals="1" methods="3" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -246,7 +271,7 @@
         <line num="53" count="0" type="stmt"/>
         <line num="56" count="2" type="stmt"/>
       </file>
-      <file name="uploadUtils.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\handlers\uploadUtils.ts">
+      <file name="uploadUtils.ts" path="/home/cs139/EasyInvest/server/handlers/uploadUtils.ts">
         <metrics statements="14" coveredstatements="12" conditionals="3" coveredconditionals="1" methods="2" coveredmethods="2"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -266,7 +291,7 @@
     </package>
     <package name="server.models">
       <metrics statements="5" coveredstatements="5" conditionals="4" coveredconditionals="2" methods="0" coveredmethods="0"/>
-      <file name="models.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\models\models.ts">
+      <file name="models.ts" path="/home/cs139/EasyInvest/server/models/models.ts">
         <metrics statements="5" coveredstatements="5" conditionals="4" coveredconditionals="2" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
@@ -276,9 +301,9 @@
       </file>
     </package>
     <package name="server.routes">
-      <metrics statements="411" coveredstatements="273" conditionals="154" coveredconditionals="77" methods="20" coveredmethods="19"/>
-      <file name="googleRoute.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\routes\googleRoute.ts">
-        <metrics statements="15" coveredstatements="8" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <metrics statements="410" coveredstatements="270" conditionals="152" coveredconditionals="77" methods="20" coveredmethods="19"/>
+      <file name="googleRoute.ts" path="/home/cs139/EasyInvest/server/routes/googleRoute.ts">
+        <metrics statements="14" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -291,11 +316,10 @@
         <line num="23" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
-        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="34" count="2" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
       </file>
-      <file name="smartSearchRoute.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\routes\smartSearchRoute.ts">
+      <file name="smartSearchRoute.ts" path="/home/cs139/EasyInvest/server/routes/smartSearchRoute.ts">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -304,7 +328,7 @@
         <line num="7" count="2" type="stmt"/>
         <line num="9" count="2" type="stmt"/>
       </file>
-      <file name="startupsRoute.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\routes\startupsRoute.ts">
+      <file name="startupsRoute.ts" path="/home/cs139/EasyInvest/server/routes/startupsRoute.ts">
         <metrics statements="177" coveredstatements="119" conditionals="89" coveredconditionals="53" methods="8" coveredmethods="8"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -366,38 +390,39 @@
         <line num="403" count="0" type="stmt"/>
         <line num="404" count="0" type="stmt"/>
         <line num="406" count="1" type="stmt"/>
-        <line num="409" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="410" count="0" type="stmt"/>
+        <line num="410" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="411" count="0" type="stmt"/>
-        <line num="413" count="1" type="stmt"/>
-        <line num="415" count="0" type="stmt"/>
+        <line num="412" count="0" type="stmt"/>
+        <line num="414" count="1" type="stmt"/>
         <line num="416" count="0" type="stmt"/>
-        <line num="483" count="2" type="stmt"/>
-        <line num="484" count="1" type="stmt"/>
+        <line num="417" count="0" type="stmt"/>
+        <line num="484" count="2" type="stmt"/>
         <line num="485" count="1" type="stmt"/>
-        <line num="486" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="487" count="0" type="stmt"/>
+        <line num="486" count="1" type="stmt"/>
+        <line num="487" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="488" count="0" type="stmt"/>
-        <line num="491" count="1" type="stmt"/>
-        <line num="495" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="489" count="0" type="stmt"/>
+        <line num="492" count="1" type="stmt"/>
+        <line num="494" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="495" count="0" type="stmt"/>
         <line num="496" count="0" type="stmt"/>
-        <line num="497" count="0" type="stmt"/>
-        <line num="500" count="1" type="stmt"/>
+        <line num="499" count="1" type="stmt"/>
+        <line num="501" count="0" type="stmt"/>
         <line num="502" count="0" type="stmt"/>
-        <line num="503" count="0" type="stmt"/>
-        <line num="587" count="2" type="stmt"/>
+        <line num="586" count="2" type="stmt"/>
+        <line num="590" count="1" type="stmt"/>
         <line num="591" count="1" type="stmt"/>
-        <line num="592" count="1" type="stmt"/>
-        <line num="607" count="1" type="stmt"/>
-        <line num="608" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="611" count="1" type="stmt"/>
-        <line num="613" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="629" count="0" type="stmt"/>
-        <line num="632" count="0" type="stmt"/>
+        <line num="606" count="1" type="stmt"/>
+        <line num="607" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="610" count="1" type="stmt"/>
+        <line num="612" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="628" count="0" type="stmt"/>
+        <line num="631" count="0" type="stmt"/>
+        <line num="634" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="635" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="636" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="637" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="638" count="1" type="stmt"/>
+        <line num="637" count="1" type="stmt"/>
+        <line num="638" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="639" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="640" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="641" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -407,84 +432,83 @@
         <line num="645" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="646" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="647" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="648" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="649" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="648" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="650" count="1" type="stmt"/>
         <line num="651" count="1" type="stmt"/>
-        <line num="652" count="1" type="stmt"/>
-        <line num="654" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="653" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="654" count="0" type="stmt"/>
         <line num="655" count="0" type="stmt"/>
-        <line num="656" count="0" type="stmt"/>
+        <line num="658" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="659" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="660" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="662" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="661" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="662" count="0" type="stmt"/>
         <line num="663" count="0" type="stmt"/>
-        <line num="664" count="0" type="stmt"/>
-        <line num="667" count="1" type="stmt"/>
-        <line num="675" count="1" type="stmt"/>
+        <line num="666" count="1" type="stmt"/>
+        <line num="674" count="1" type="stmt"/>
+        <line num="676" count="0" type="stmt"/>
         <line num="677" count="0" type="stmt"/>
-        <line num="678" count="0" type="stmt"/>
-        <line num="711" count="2" type="stmt"/>
+        <line num="710" count="2" type="stmt"/>
+        <line num="711" count="1" type="stmt"/>
         <line num="712" count="1" type="stmt"/>
-        <line num="713" count="1" type="stmt"/>
-        <line num="715" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="714" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="715" count="0" type="stmt"/>
         <line num="716" count="0" type="stmt"/>
-        <line num="717" count="0" type="stmt"/>
+        <line num="719" count="1" type="stmt"/>
         <line num="720" count="1" type="stmt"/>
-        <line num="721" count="1" type="stmt"/>
-        <line num="723" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="722" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="723" count="0" type="stmt"/>
         <line num="724" count="0" type="stmt"/>
-        <line num="725" count="0" type="stmt"/>
+        <line num="727" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="728" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="729" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="731" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="730" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="731" count="0" type="stmt"/>
         <line num="732" count="0" type="stmt"/>
-        <line num="733" count="0" type="stmt"/>
+        <line num="735" count="1" type="stmt"/>
         <line num="736" count="1" type="stmt"/>
         <line num="737" count="1" type="stmt"/>
-        <line num="738" count="1" type="stmt"/>
-        <line num="740" count="1" type="stmt"/>
-        <line num="742" count="1" type="stmt"/>
+        <line num="739" count="1" type="stmt"/>
+        <line num="741" count="1" type="stmt"/>
+        <line num="743" count="0" type="stmt"/>
         <line num="744" count="0" type="stmt"/>
-        <line num="745" count="0" type="stmt"/>
-        <line num="775" count="2" type="stmt"/>
+        <line num="774" count="2" type="stmt"/>
+        <line num="775" count="1" type="stmt"/>
         <line num="776" count="1" type="stmt"/>
-        <line num="777" count="1" type="stmt"/>
-        <line num="779" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="778" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="779" count="0" type="stmt"/>
         <line num="780" count="0" type="stmt"/>
-        <line num="781" count="0" type="stmt"/>
+        <line num="783" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="784" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="785" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="787" count="1" type="stmt"/>
-        <line num="792" count="1" type="cond" truecount="2" falsecount="1"/>
+        <line num="786" count="1" type="stmt"/>
+        <line num="791" count="1" type="cond" truecount="2" falsecount="1"/>
+        <line num="792" count="0" type="stmt"/>
         <line num="793" count="0" type="stmt"/>
-        <line num="794" count="0" type="stmt"/>
-        <line num="797" count="1" type="stmt"/>
-        <line num="806" count="1" type="stmt"/>
-        <line num="810" count="1" type="stmt"/>
+        <line num="796" count="1" type="stmt"/>
+        <line num="805" count="1" type="stmt"/>
+        <line num="809" count="1" type="stmt"/>
+        <line num="811" count="0" type="stmt"/>
         <line num="812" count="0" type="stmt"/>
-        <line num="813" count="0" type="stmt"/>
-        <line num="844" count="2" type="stmt"/>
+        <line num="843" count="2" type="stmt"/>
+        <line num="844" count="1" type="stmt"/>
         <line num="845" count="1" type="stmt"/>
         <line num="846" count="1" type="stmt"/>
-        <line num="847" count="1" type="stmt"/>
-        <line num="849" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="848" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="849" count="0" type="stmt"/>
         <line num="850" count="0" type="stmt"/>
-        <line num="851" count="0" type="stmt"/>
-        <line num="854" count="1" type="stmt"/>
-        <line num="859" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="853" count="1" type="stmt"/>
+        <line num="858" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="859" count="0" type="stmt"/>
         <line num="860" count="0" type="stmt"/>
         <line num="861" count="0" type="stmt"/>
-        <line num="862" count="0" type="stmt"/>
+        <line num="863" count="1" type="stmt"/>
         <line num="864" count="1" type="stmt"/>
         <line num="865" count="1" type="stmt"/>
-        <line num="866" count="1" type="stmt"/>
-        <line num="869" count="1" type="stmt"/>
-        <line num="911" count="1" type="stmt"/>
+        <line num="868" count="1" type="stmt"/>
+        <line num="910" count="1" type="stmt"/>
+        <line num="912" count="0" type="stmt"/>
         <line num="913" count="0" type="stmt"/>
-        <line num="914" count="0" type="stmt"/>
-        <line num="918" count="2" type="stmt"/>
+        <line num="917" count="2" type="stmt"/>
       </file>
-      <file name="topicsRoute.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\routes\topicsRoute.ts">
+      <file name="topicsRoute.ts" path="/home/cs139/EasyInvest/server/routes/topicsRoute.ts">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
@@ -492,8 +516,8 @@
         <line num="6" count="2" type="stmt"/>
         <line num="8" count="2" type="stmt"/>
       </file>
-      <file name="usersRoute.ts" path="C:\Users\h_ben\OneDrive\Desktop\pood\SchoolProjects\final project\EasyInvest\server\routes\usersRoute.ts">
-        <metrics statements="208" coveredstatements="135" conditionals="63" coveredconditionals="24" methods="11" coveredmethods="11"/>
+      <file name="usersRoute.ts" path="/home/cs139/EasyInvest/server/routes/usersRoute.ts">
+        <metrics statements="208" coveredstatements="132" conditionals="63" coveredconditionals="24" methods="11" coveredmethods="11"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -696,9 +720,9 @@
         <line num="685" count="0" type="stmt"/>
         <line num="686" count="0" type="stmt"/>
         <line num="689" count="1" type="stmt"/>
-        <line num="700" count="1" type="stmt"/>
-        <line num="711" count="1" type="stmt"/>
-        <line num="722" count="1" type="stmt"/>
+        <line num="700" count="0" type="stmt"/>
+        <line num="711" count="0" type="stmt"/>
+        <line num="722" count="0" type="stmt"/>
         <line num="724" count="0" type="stmt"/>
         <line num="725" count="0" type="stmt"/>
         <line num="729" count="2" type="stmt"/>

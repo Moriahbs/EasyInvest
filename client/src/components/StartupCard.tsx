@@ -13,7 +13,7 @@ interface StartupCardProps {
 }
 
 export const formatValuation = (value: number) =>
-  `₪ ${value.toLocaleString("he-IL")}`;
+  `${value.toLocaleString("he-IL")}`;
 
 const getImageUrl = (imageSrc: string | undefined) => {
   if (imageSrc?.startsWith("https")) {

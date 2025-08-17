@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const accessTokenOptions = {
-    expiresIn: "15m",
+    expiresIn: "2h",
     algorithm: "HS256",
 };
 const refreshTokenOptions = {

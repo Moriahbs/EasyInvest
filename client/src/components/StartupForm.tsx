@@ -204,7 +204,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
   return (
     <>
       <div className="mb-8">
-        <UploadImage setImage={setImage} />
+        <UploadImage setImage={setImage} imageUrl={existingStartup?.image} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -287,14 +287,14 @@ const StartupForm: React.FC<StartupFormProps> = ({ existingStartup }) => {
         <div className="space-y-5">
           <div>
             <label className="font-semibold text-right text-sm mb-2 flex items-center gap-2">
-              <DollarSign className="w-4 h-4" /> שווי בסיבוב האחרון (בשקלים)
+              <DollarSign className="w-4 h-4" /> שווי בסיבוב האחרון (בדולרים)
             </label>
             <Input
               className="rounded-lg border-gray-200 focus:ring-indigo-500"
-              placeholder="שווי בסיבוב האחרון (בשקלים)"
+              placeholder="שווי בסיבוב האחרון (בדולרים)"
               value={
                 startupDetails.valuationLastRound
-                  ? `₪ ${Number(
+                  ? `$ ${Number(
                       startupDetails.valuationLastRound
                     ).toLocaleString("he-IL")}`
                   : ""
