@@ -83,19 +83,15 @@ ${JSON.stringify(FUNDING_STAGES)}
     `;
 
         const result = await model.generateContent(aiPrompt);
-        console.log({ result });
 
         const aiResponse = result.response.text();
-        console.log({ aiResponse });
 
         const preferences = extractPreferencesFromResponse(aiResponse);
 
-        // Filter and score startups
         const startups = await Startup.find()
-        console.log({ startups });
 
-        const scoredStartups = scoreStartups(startups, preferences); //TODO: use the real startups
-        const filteredStartups = scoredStartups.filter((s) => s.score > 0);
+        const scoredStartups = scoreStartups(startups, preferences);
+        const filteredStartups = scoredStartups.filter((s) => s.score > 2);
         const topMatches = filteredStartups
             .sort((a, b) => b.score - a.score)
             .slice(0, 3);
@@ -143,10 +139,10 @@ function scoreStartups(startups: any[], preferences: any) {
         let score = 0;
 
         const tagMatches = preferences.tags.filter((tag: string) => startup.tags.includes(tag)).length;
-        score += tagMatches * 1;
+        score += tagMatches * 2;
 
         if (preferences.fundingStages.length > 0 && preferences.fundingStages.includes(startup.fundingStage)) {
-            score += 2;
+            score += 1;
         }
 
         if (preferences.minFoundedYear && startup.foundedYear >= preferences.minFoundedYear) score += 1;
